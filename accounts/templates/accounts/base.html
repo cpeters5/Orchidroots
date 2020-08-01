@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+{% load static %}
+{% load humanize %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'utils/images/favicon.ico?v=2' %}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if species %}
+    <title>{{species.genus}} {{species.species}}</title>
+
+    {% else %}
+    <title>Bluenanta OrchidsRoots</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash|Fondamento" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!--    <link rel="stylesheet" type="text/css" href="{% static 'utils/css/lightbox.css' %}">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="{% static '/utils/css/style.css' %}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<style>
+
+	a {text-decoration: none}
+
+    .navbar-nav > li > a {padding-top:0 !important; padding-bottom:0 !important;}
+
+    body {
+        width:100%;
+    }
+
+    @media only screen and (max-width: 600px){
+    }
+
+.navbar {
+  min-height: 40px;
+}
+/*option:nth-child(2), option:nth-child(3) {*/
+/*    font-weight:bold;*/
+/*}*/
+
+.bannerfont {
+  font-family: "Lucida Calligraphy", "Comic Sans MS", "Adobe Song Std L", century, vivaldi ;
+  font-size: 20pt;
+  color: #ffff33;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+    .navbar-nav {
+      flex-direction: row;
+    }
+
+    .nav-link {
+      padding-right: .5rem !important;
+      padding-left: .5rem !important;
+    }
+
+</style>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Brand -->
+            <a class="navbar-brand mb-0 bannerfont" href="/" style="color: #ffff07;line-height: 11px;"><b>Orchid<br>R<span style="font-size:18px;">oots</span></b><span style="font-size:12px;color:darkgrey;font-family:Lucida;"> ©2019</span></a>
+        </div>
+<!-- Links -->
+
+        <div class="collapse navbar-collapse" id="nav-content">
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"><span style="color:white">{{user}}&nbsp;</span></a>
+                            <ul class="dropdown-menu">
+                                {% if user.tier.tier == 5 %}
+                                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
+                                    <li><a class="dropdown-item" href="https://analytics.google.com/analytics/web/?utm_source=marketingplatform.google.com&utm_medium=et&utm_campaign=marketingplatform.google.com%2Fabout%2Fanalytics%2F#/realtime/rt-location/a128957305w207417477p200133280/&att=">Google Analytics</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'update_profile' %}?next=/&att=">Update profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}?next=/&att=">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item" style="margin-top:8px;">
+                            <a class="nav-link" href="{% url 'register' %}?next=/login&att=">Register</a>
+                    </li>
+                    <li class="nav-item" style="margin-top:8px;">
+                            <a class="nav-link" href="{% url 'login' %}?next=/&att=">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+        </div>
+<!-- Search -->
+
+  </div>
+
+</nav>
+
+<!--<nav class="navbar navbar-expand-md navbar-dark bg-dark" >-->
+{% if messages %}
+  <div class="row">
+  <div class="col-sm-12">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+          <p>x-{{ message }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endif %}
+{% block content %}
+    {%  block body %}
+
+
+    {% endblock %}
+{% endblock %}
+
+
+
+
+<script>
+
+    (function($) {
+
+  $('#search-button').on('click', function(e) {
+    if($('#search-input-container').hasClass('hdn')) {
+      e.preventDefault();
+      $('#search-input-container').removeClass('hdn')
+      return false;
+    }
+  });
+
+  $('#hide-search-input-container').on('click', function(e) {
+    e.preventDefault();
+    $('#search-input-container').addClass('hdn')
+    return false;
+  });
+
+})(jQuery);
+
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

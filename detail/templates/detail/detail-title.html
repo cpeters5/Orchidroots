@@ -1,0 +1,91 @@
+<!--Title-->
+<br>
+<br>
+
+<style>
+.nav2 {
+    font-size: 13px;
+}
+   h1 {
+        font-size: 24px;
+    }
+
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 18px;
+
+    }
+    .nav2 {
+        font-size: 11px;
+        font-weight: bold;
+        /*height: 20px;*/
+        /*margin-bottom:30px;*/
+    }
+}
+
+</style>
+
+    {% if title == 'myphoto' %}
+          <div style="margin:0 auto;font-size: 15px; text-align: center;width:80%">
+                <h1 style="display:none">{{species.genus}} {{species.species}}</h1>
+                <h6><a href="{% url 'orchidlist:browse' %}?type={{species.type}}&gen={{species.gen_id}}&role={{role}}&alpha={{species.species|title|make_list|first}}"><i>{{species.genus}}</i></a>
+                    {{species.get_species}}
+                    {% if species.year %}{{species.year}}{% endif %}
+                    {% if species.author %}{{species.author}} {% endif %}
+                </h6>
+<!--              <a href="{% url 'orchidlist:browsegen' %}?type=species"><i>Go to Browse</i></a>-->
+          </div>
+    {% else %}
+        {% if title != 'curate_newupload' and title != 'curate_pending' and title != 'myphoto_browse' %}
+            <div class="nav2 detail-title" style="text-align:center">
+                <h1 style="display:none">{{species.genus}} {{species.species}}</h1>
+                <h1><a href="{% url 'orchidlist:browse' %}?type={{species.type}}&gen={{species.gen_id}}&role={{role}}&alpha={{species.species|title|make_list|first}}"><i>{{species.genus}}</i></a>
+                    {{species.get_species}}
+                    {% if species.year %}{{species.year}}{% endif %}</h1>
+                    {% if species.author %}{{species.author}} {% endif %}
+                     <a href="{{species.sourceurl}}" target="_blank">({{species.source}}</a> {{species.status}})
+                    <br>
+                <div style="">
+                {% if species.type == 'species' %}
+                    {% if species.accepted.subgenus %}
+                        Subgenus <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.subgenus}}</i></a>
+                    {% endif %}
+                    {% if species.accepted.section %}
+                        {% if species.accepted.subgenus %}
+                            Section <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.section}}</i></a>
+                        {% else %}
+                            Section <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.section}}</i></a>
+                        {% endif %}
+                    {% endif %}
+                    {% if species.accepted.subsection %}
+                        {% if species.accepted.section %}
+                            Subsection <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.subsection}}</i></a>
+                        {% else %}
+                            Subsection <a href="{% url 'orchidlist:browse' %}?subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.subsection}}</i></a>
+                        {% endif %}
+                    {% endif %}
+                    {% if species.accepted.series %}
+                        Series <a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.series}}</i></a>
+                    {% endif %}
+                {% else %}
+                    {% if species.hybrid.seed_id.pid %}
+                        {{species.hybrid.registered_seed_name_long|safe}}</a>
+                    {% else %}
+                        na
+                    {% endif %}
+
+                    ×
+
+                    {% if species.hybrid.pollen_id.pid %}
+                        {{species.hybrid.registered_pollen_name_long|safe}}</a>
+                    {% else %}
+                        na
+                    {% endif %}
+                {% endif %}
+                </div>
+                <br>
+            </div>
+        {% endif %}
+        <div style="clear:left;"></div>
+    {% endif %}
+

@@ -1,0 +1,55 @@
+<style>
+.pagination a{
+    font-size:11px;
+}
+.pagination a.hover {
+    background-color: #f5f9f9;
+}
+
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+</style>
+
+        <div class="pagination" style="display:inline;margin:0 auto; padding:0;width:100%;">
+            <!--Page-->
+            <div style="float:left; margin:0; border: 0 solid #eee; padding-left: 40px;">
+            {% if last_page > 1 %}
+                {% if last_page > num_show %}
+                    {% if my_list.number > 1 %}
+                        <a href="?page=1&year={{year}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&gn={{gn}}&pp={{pollen}}&a={{accepted}}&att=">
+                            <span style="font-size:12px;">first</span></a>
+                    {% else %}
+                        <span style="font-size:12px;"></span>
+                    {% endif %}
+                {% endif %}
+                {% if my_list.has_previous %}
+                    <a href="?page={{my_list.previous_page_number}}&year={{year}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&pp={{pollen}}&a={{accepted}}&att="><span style="font-size:12px">previous</span></a>
+                {% else %}
+                <a href="#"><span style="font-size:12px"></span></a>
+                {% endif %}
+                {% for pg in page_range %}
+                    {% if my_list.number == pg %}
+                <a class="active" href="?page={{pg}}&year={{year}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&pp={{pollen}}&a={{accepted}}&att=" style="background-color:#4CAF50;">{{pg}}</a>
+                    {% else %}
+                        <a href="?page={{pg}}&year={{year}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&pp={{pollen}}&a={{accepted}}&att=">{{pg}}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if my_list.has_next %}
+                    <a href="?page={{my_list.next_page_number}}&year={{year}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&gn={{gn}}&pp={{pollen}}&a={{accepted}}&att="><span style="font-size:12px;">next</span></a>
+                {% else %}
+                    <span style="font-size:15px"></span>
+                {% endif %}
+                {% if last_page > num_show %}
+                    {% if my_list.number < last_page %}
+                        <a href="?page={{last_page}}&year={{year}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&pp={{pollen}}&a={{accepted}}&att="><span style="font-size:12px;">last</span></a>
+                    {% else %}
+                        <span class="fa fa-angle-double-right" style="font-size:15px;"></span>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>

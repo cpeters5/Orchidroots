@@ -1,0 +1,14 @@
+#settings.py # lets add this git, add local_settings instead
+__pycache__/
+__init__.py
+migrations/
+old/
+src/
+.idea/
+*.pyc
+src/
+.coverage
+.env
+myproject/.env
+myproject.sock
+

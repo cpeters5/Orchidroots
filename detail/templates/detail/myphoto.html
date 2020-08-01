@@ -1,0 +1,328 @@
+{% load static %}
+{% include "base.html" %}
+{% block body %}
+{% include "detail/detail-title.html" %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'utils/css/lightbox.css' %}">
+    <script type="text/javascript" src="{% static 'utils/js/lightbox.js' %}"></script>
+</head>
+
+<style>
+.mybtn {
+    font-size:13px;
+    width:200px;
+    background-color: white;
+    border: 1px solid grey;
+    margin: 3px;
+}
+
+.imageitem {
+    display:inline-block;
+    border:1px solid lightgrey;
+    margin:0 2px;
+    width : 18vw;
+    background-color: #f7f7f7;
+    border:1px solid lightgrey;
+    text-align:center;
+}
+
+.box {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    margin: 0 auto;
+    width:100%;
+}
+
+.thumbnails {
+   object-fit: cover;
+   overflow: hidden;
+   height: 16vw;
+   width : 16vw;
+   padding:2px;
+    margin:0 auto;
+}
+
+.imgcaption {
+    font-size: 10px;
+    text-align: center;
+    height:70px;
+    /*overflow: hidden;*/
+}
+
+div.text {
+    position: absolute;
+    font-size:10px;
+    color: white
+}
+
+div.text-br {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+}
+
+
+@media only screen and (max-width: 800px){
+   .imageitem {
+        width: 30vw;
+        height : 250px;
+    }
+    .imgcaption {
+        font-size: 10px;
+        /*height: 0px;*/
+    }
+   .box {
+        /*width: 35vw;*/
+        font-size: 10px;
+        margin-left:-3px;
+    }
+    .thumbnails {
+       height: 190px !important;
+       width : 95% !important;
+    }
+
+    div.text {
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .imageitem {
+        width: 36vw;
+        height : 170px;
+    }
+    .box {
+        width: 35vw;
+        font-size: 10px;
+        margin-left:-3px;
+    }
+    .thumbnails {
+       height: 110px !important;
+       width : 95% !important;
+    }
+
+    .imgcaption {
+       width : 34vw;
+        font-size: 9px;
+        height: 59px;
+    }
+    div.text {
+        font-size: 10px;
+    }
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding  : 8px 5px;
+    width: 147px;
+    /*padding  : .5rem .5rem;*/
+    font-size  : .8rem;
+    line-height  : .65;
+    border-radius : .2rem;
+}
+
+    .subtitle {
+        font-size: 13px;
+    }
+</style>
+
+<!--My species and my hybrids-->
+<div style="clear:both"></div>
+
+
+<div style="width:95%;margin:0 auto;">
+    <div class="d-flex flex-row flex-wrap justify-content-center">
+        {% if myspecies_list %}
+            <div class="p-2 dropdown" >
+                <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species List</button>
+                <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                    {% for spc in myspecies_list %}
+                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=species&tab=pri&author={{author.author_id}}&att=">{{spc.textname|safe}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="dropdown" >
+                <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species List (empty)</button>
+            </div>
+        {% endif %}
+
+        {% if myhybrid_list %}
+            <div class="p-2 dropdown">
+                <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Hybrids List</button>
+                <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                    {% for spc in myhybrid_list %}
+                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=hybrid&tab=pri&author={{author.author_id}}&att=">{{spc.textname|safe}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="dropdown" >
+                <button class="btn btn-default mybtn dropdown-toggle" type="button" data-toggle="dropdown">My Hybrids List (empty)</button>
+            </div>
+        {% endif %}
+
+        {% if user.is_authenticated and user.tier.tier > 2 %}
+            <form class="form-inline justify-content-center" action="?" id="filter">
+            <input type="hidden" name="author" value="{{author.author_id}}" />
+            <input type="hidden" name="genus" value="{{genus}}" />
+            <input type="hidden" name="role" value="cur" />
+            <select form='filter' name="author" class="" tabindex="-1" aria-hidden="true" style="width:150px;height:27px;margin:0;border:1px solid lightgrey;padding:0;"  data-toggle="tooltip"  data-placement="bottom"  title="genus parent #1" style="margin:0 auto">
+                {% if author %}
+                    <option selected disabled>{{author}}</option>
+                {% else %}
+                    <option selected disabled>Select an author</option>
+               {% endif %}
+                <option></option>
+                {% for author in author_list %}
+                    {% if author == author.author_id %}
+                        <option selected="selected" disabled>{{author.displayname}}</option>
+                    {% else %}
+                        <option value="{{author.author_id}}">{{author.displayname}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button form="filter" style="height:27px;margin:0;background-color: #1d6c6c; color:white">Submit</button>
+            </form>
+        {% endif %}
+
+    </div>
+
+    <br>
+    {% if author.author_id == 'anonymous' %}
+        <div style="text-align:center; width:100%;padding:0 20%; font-size:14px;">
+            <b>Alert!</b>
+            {{user}}, your profile is not synchronized with the current credit attribution name.  Please update your profile form the dropdown menu under your user name and select the name we use to attribute your photos from the drop down menu in the update profile form"
+            to <a href="https://www.facebook.com/Orchidrootscom-306266603228487/inbox/?mailbox_id=306266603228487&selected_item_id=631912977">OrchidRoots In-Box</a>
+        </div>
+    {% endif %}
+
+    {% include "detail/private-nav.html" %}
+
+    <!--main section-->
+    {% if species.pid %}
+    <div class="tab-content clearfix" style="background-color: white; margin:0;border-left:1px solid lightgrey;border-right:1px solid lightgrey;border-bottom:1px solid lightgrey">
+        <div style="margin:0 10px; text-align: center;min-height:100px;">
+            <h6><small>My {{genus.genus}} public photos <small></h6>
+            {% if public_list %}
+                {% for x in public_list %}
+                                    <div class="imageitem">
+                    {% if x.image_file %}
+                        <div style="display:inline-block;">
+                            <a href="{% static x.image_dir %}{{x.image_file}}" data-lightbox="public" data-title="{{x.pid}}">
+                                <img class="thumbnails" alt="" src="{% static x.image_dir %}{{ x.image_file }}" class="img-fluid fullimg">
+                            </a>
+                        </div>
+                    {% else %}
+                                            <div class="box">
+                                                <img  class="thumbnails" alt="" src="{{x.image_url}}" style="padding:0; border:1px solid darkgrey;">
+                                                <div class="text text-br" >
+                                                    <span style="color:darkgrey">{{image.pid}}</span>
+                                                </div>
+                                            </div>
+                    {% endif %}
+                            <div style="font-size:10px">
+                                <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri&att=">Update</a> |
+                                <a style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto&att=" >delete</a>
+                            </div>
+                                    </div>
+                {% endfor %}
+            {% else %}
+                <span style="font-size:12px;">
+                None
+                </span>
+            {% endif %}
+        </div>
+        <hr>
+
+<!--        My private photos            -->
+        <div style="text-align: center"><h6><small>My Private Photos</small></h6></div>
+        <div style="margin:0 10px; text-align: center;min-height:100px;">
+            <br>
+            {% if private_list %}
+                {% for x in private_list %}
+                <div class="imageitem">
+                    <div style="display: inline-block"id>
+                        {% if x.image_file %}
+                        <a href="{% static x.image_dir %}{{x.image_file}}" data-lightbox="private" data-title="{{x.pid}}">
+                            <img class="thumbnails" alt="" src="{% static x.image_dir %}{{ x.image_file }}"  data-lightbox="private">
+                        </a>
+                        {% else %}
+                             <img class="thumbnails" alt="" src="{{x.image_url}}" style="padding:0; border:1px solid darkgrey;">
+                       {% endif %}
+                        <br>
+                        <div style="font-size:10px">
+                            <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri&att=">Update</a> |
+                            <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto&att=" >delete</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+            <hr>
+        <div style="text-align: center"><h6>My Upload Files</h6></div>
+        <div style="margin:0 10px; text-align: center;min-height:100px;">
+
+            {% if upload_list %}
+                {% for x in upload_list %}
+                    <div style="display: inline-block">
+                        <a href="{% static 'media/' %}{{ x.image_file_path }}" data-lightbox="upload" data-title="{{x.pid}}">
+                            <img class="thumbnails" alt="" src="{% static 'media/' %}{{ x.image_file_path }}" data-lightbox="upload">
+                        </a>
+                        <br>
+                        <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletephoto' x.id %}?origin=myphoto&att=" >delete</a>
+                    </div>
+                {% endfor %}
+           {% endif %}
+
+
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+        localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = localStorage.getItem('activeTab');
+    if(activeTab){
+        $('#myTab a[href="' + activeTab + '"]').tab('show');
+    }
+});
+
+$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });
+
+
+// Thumbnail rendering
+document.addEventListener("DOMContentLoaded", function(event) {
+  var addImageOrientationClass = function(img) {
+    if(img.naturalHeight > img.naturalWidth) {
+      img.classList.add("portrait");
+    }
+  }
+
+  // Add "portrait" class to thumbnail images that are portrait orientation
+  var images = document.querySelectorAll(".thumbnails img");
+  for(var i=0; i<images.length; i++) {
+    if(images[i].complete) {
+      addImageOrientationClass(images[i]);
+    } else {
+      images[i].addEventListener("load", function(evt) {
+        addImageOrientationClass(evt.target);
+      });
+    }
+  }
+
+});
+
+</script>
+
+{% endblock %}

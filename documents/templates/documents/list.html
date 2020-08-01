@@ -1,0 +1,57 @@
+{% load static %}
+{% include 'base.html' %}
+
+<style>
+.doc {
+    overflow-wrap: break-word;
+    font-size: 14px;
+    padding:10px;
+    margin:0 auto;
+    border:1px solid lightgrey;
+}
+
+</style>
+<br>
+<div style="text-align: center;"><h3>Public inspection requirements</h3></div>
+
+<div style="font-size: 14px; padding:5px; margin:0 auto; width:80%">
+    "Tax-exempt organizations must make annual returns and exemption applications filed with
+    the IRS available for public inspection and copying upon request..." The IRS.<br>
+    To conform with this reqirement, all relevant foprms and publications are posted below.
+</div>
+
+<br>
+
+<div style="margin:0 auto; width:70%;">
+
+    <div style="font-size: 14px; padding:10px; margin:0 auto; border:1px solid lightgrey; ">
+        <a href="{% url 'documents:articles' %}" target="_blank">Article Of Incorporation</a>
+    </div>
+<br>
+    <div style="font-size: 14px; padding:10px; margin:0 auto; border:1px solid lightgrey; ">
+        <a href="{% url 'documents:bylaws' %}" target="_blank">Bylaws</a>
+    </div>
+<br>
+    <div style="font-size: 14px; padding:10px; margin:0 auto; border:1px solid lightgrey; ">
+        <a href="{% url 'documents:req501c3' %}" target="_blank">Application for Recognition of Exemption Under 501(c)(3) of the Internal Revenue Code</a>
+    </div>
+<br>
+
+   <div style="font-size: 14px; padding:10px; margin:0 auto; border:1px solid lightgrey; ">
+         Maryland Association of Nonprofit Organizations, Conflic of Interest
+    </div>
+<br>
+
+    <div style="margin:0 auto;border:1px solid lightgrey;">
+        <div class="btn" href="">Tax (Form 990-PF)</div>
+        <div class="btn" href="">2019</div>
+        <div class="btn" href="">2020</div>
+        <div class="btn" href="">2021</div>
+        <div class="btn" href="">2022</div>
+        <div class="btn" href="">2023</div>
+    </div>
+
+</div>
+
+
+

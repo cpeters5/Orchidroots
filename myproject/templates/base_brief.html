@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+{% load static %}
+{% load humanize %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'utils/images/favicon.ico?v=2' %}"/>
+<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-128957305-1"></script>-->
+<!--    <script>-->
+<!--        window.dataLayer = window.dataLayer || [];-->
+<!--        function gtag(){dataLayer.push(arguments);}-->
+<!--        gtag('js', new Date());-->
+<!--        gtag('config', 'UA-128957305-1');-->
+<!--    </script>-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if species %}
+    <title>{{species.genus}} {{species.species}}</title>
+
+    {% else %}
+    <title>Bluenanta OrchidsRoots</title>
+    {% endif %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash|Fondamento" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="{% static '/utils/css/style.css' %}">
+
+<!--    Get rid of apple-touch error caused by requests from cellphone. Doesn't work anyway oh what to do??? -->
+<!--    <link rel="apple-touch-icon" href="apple-touch-icon.png">-->
+<!--    <link rel="icon" sizes="196x196" href="apple-touch-icon.png">-->
+<!--    <link rel="icon" sizes="120x120" href="apple-touch-icon.png">-->
+<!--    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">-->
+<!--    <link rel="apple-touch-icon-precomposed apple-touch-icon" href="apple-touch-icon-precomposed.png">-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'utils/css/lightbox.css' %}">
+    <script type="text/javascript" src="{% static 'utils/js/lightbox.js' %}"></script>
+
+<!--	<script src="{% static 'utils/js/jstree.min.js' %}"></script>-->
+
+<!--    Select2-->
+<!--    <link href="select2.css" rel="stylesheet"/>-->
+<!--    <script src="select2.js"></script>-->
+    <script>
+        $(document).ready(function() { $("#genselect").select2(
+            {
+                placeholder: "Select a Genus",
+                allowClear: true,
+                closeOnSelect: false
+            }
+
+
+        ); });
+        $(document).ready(function() { $("#spcselect").select2();});
+        $(document).ready(function() { $("#hybselect").select2();});
+    </script>
+
+    <style>
+
+    .mytable>tbody>tr>td, .mytable>tbody>tr>th, .mytable>tfoot>tr>td, .mytable>tfoot>tr>th, .mytable>thead>tr>td, .mytable>thead>tr>th {
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+    .mytable>tbody>tr>th { font-size: 16px; }
+    .mytable>tbody>tr>td { font-size: 12px !important; }
+	a {text-decoration: none}
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .navbar-nav > li > a {padding-top:0 !important; padding-bottom:0 !important;}
+
+</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-128957305-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-128957305-4');
+</script>
+
+</head>
+
+<style>
+
+body {
+    width:100%;
+}
+
+#wrapper {
+     width: 100%;
+     text-align: center;
+}
+#pub2, #pri2, #pub3, #pri3, #cur3 {
+    float: left;
+}
+.rolebtn {
+    font-size:12px !important;
+}
+.rolebtn:hover {
+    background-color: #cad4f7;
+}
+#pub2, #pri2 {
+    width: 17%;
+}
+#pub3, #pri3, #cur3 {
+    width: 17%;
+}
+
+#log, #reg {
+    float: right;
+     width: 17%;
+     text-align: center;
+}
+
+.thumbnails {
+   object-fit: cover;
+   overflow: hidden;
+   height: 12vw;
+   width : 12vw;
+    padding:2px;
+}
+
+.imgcaption {
+    font-size: 11px;
+    text-align: center;
+    height:40px;
+    overflow: hidden;
+}
+
+.table-text {
+    font-size:13px;
+    text-align: left;
+    line-height: 20px;
+}
+
+.searchbox {
+        margin:2px;
+        font-size: 11px;
+    }
+.nav-style {
+    font-size:18px;
+    width:100px;
+}
+
+@media only screen and (max-width: 800px){
+    .imgcaption {
+        font-size: 10px;
+        height: 50px;
+        overflow: hidden
+    }
+    .table-text {
+        font-size:12px;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .searchbox {
+        margin:2px;
+        font-size: 11px;
+    }
+    .modal-content {
+        width: 100%;
+    }
+    .imgcaption {
+        font-size: 9px;
+        height: 60px;
+        overflow: hidden
+    }
+    .table-text {
+        font-size:12px;
+    }
+   .thumbnails {
+        width: 22vw;
+        height: 22vw;
+    }
+    .detail-title {
+        font-size:13px;
+    }
+    .dropdown-content a {
+        font-size:10px;
+
+    }
+}
+
+.navbar2 {
+    background-color: #fef9ff;
+    color: black;
+    width:100%;
+    margin:0;
+    float:left;
+    padding:4px;
+    font-size: 15px;
+    border: 1px solid lightgrey;
+}
+
+.navbar2:hover {
+    text-decoration: none;
+}
+.selected {
+    background-color: #bac4e8;
+    border: 1px solid #808080;
+    color: black;
+}
+
+.item-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.item-list:hover {
+    text-decoration: none;
+}
+
+.dropdown-item {
+    padding: 5px 10px;
+}
+
+.dropdown-menu {
+    padding: 5px 10px;
+
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+
+/*.nav-link {*/
+/*    color:grey;*/
+/*    font-size:13px !important;*/
+/*}*/
+/*.item-list:hover {*/
+/*    text-decoration: none;*/
+/*    color:white;*/
+/*}*/
+    /*Expandable search*/
+    /*input[type=text] {*/
+    /*  width: 130px;*/
+    /*  -webkit-transition: width 0.4s ease-in-out;*/
+    /*  transition: width 0.4s ease-in-out;*/
+    /*}*/
+
+    /*!* When the input field gets focus, change its width to 100% *!*/
+    /*input[type=text]:focus {*/
+    /*  width: 100%;*/
+    /*}*/
+.select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+}
+.navbar {
+  min-height: 40px;
+}
+/*option:nth-child(2), option:nth-child(3) {*/
+/*    font-weight:bold;*/
+/*}*/
+
+.bannerfont {
+  font-family: "Lucida Calligraphy", "Comic Sans MS", "Adobe Song Std L", century, vivaldi ;
+  font-size: 20pt;
+  color: #ffff33;
+}
+
+.selectedText{
+    color:blue;
+    font-weight:bold;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+    .navbar-nav {
+      flex-direction: row;
+    }
+
+    .nav-link {
+      padding-right: .5rem !important;
+      padding-left: .5rem !important;
+    }
+
+.custom-find{
+    color: #292929;
+}
+
+.custom-find:hover {
+    text-decoration: none;
+    background-color: #353547;
+    color: white;
+}
+
+</style>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Brand -->
+            <a class="navbar-brand mb-0 bannerfont" href="/" style="color: #ffff07;line-height: 11px;"><b>Orchid<br>R<span style="font-size:18px;">oots</span></b><span style="font-size:12px;color:darkgrey;font-family:Lucida;"> ©2019</span></a>
+        </div>
+<!-- Links -->
+
+        <div class="collapse navbar-collapse" id="nav-content">
+            <div style="margin:0 20px;">
+            <form class="form-inline" action="{% url 'search:search_match' %}">
+                <input type="hidden" name="role" value="{{ role }}" />
+                <input type="text" class="form-control border border-right-0 searchbox" style="width:200px;" name="search" value="" onfocus="this.select()" pattern=".{3,}" placeholder="Search..." required title="Include genus to speed up the search.">
+            </form>
+            </div>
+            <ul class="navbar-nav">
+                <a class="nav-link custom-find" href="{% url 'search:nomenclature' %}" style="margin:0 20px;">Nomenclature</a>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"><span style="color:white">{{user}}&nbsp;</span></a>
+                            <ul class="dropdown-menu">
+                                {% if user.tier.tier == 5 %}
+                                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
+                                    <li><a class="dropdown-item" href="https://analytics.google.com/analytics/web/?utm_source=marketingplatform.google.com&utm_medium=et&utm_campaign=marketingplatform.google.com%2Fabout%2Fanalytics%2F#/realtime/rt-location/a128957305w207417477p200133280/&att=">Google Analytics</a></li>
+                                {% endif %}
+                                {% if user.tier.tier >= 3 %}
+                                    <li><a class="dropdown-item" href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked&att=">Curator</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'detail:comments' %}?sort=-latest">Comments</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public Collection</a></li>
+                                <li><a class="dropdown-item" href="{% url 'detail:myphoto_browse_spc' %}?tab=brg&role=pri&att=">My Collection</a></li>
+    <!--                            <hr style="margin:0;padding:0;">-->
+                                <li><a class="dropdown-item" href="{% url 'update_profile' %}?next=/&att=">Update profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}?next=/&att=">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item" style="margin-top:8px;">
+                            <a class="nav-link" href="{% url 'register' %}?next=/login&att=">Register</a>
+                    </li>
+                    <li class="nav-item" style="margin-top:8px;">
+                            <a class="nav-link" href="{% url 'login' %}?next=/&att=">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+        </div>
+<!-- Search -->
+
+  </div>
+
+</nav>
+
+<!--<nav class="navbar navbar-expand-md navbar-dark bg-dark" >-->
+
+
+
+
+
+
+
+
+
+<div id="wrapper">
+    {% if user.is_authenticated %}
+            {% if user.tier.tier > 1 %}
+                {% if user.tier.tier == 2 %}
+                    <div class="dropdown" id="pub2">
+                        {% if species %}
+                            {% if role == 'pub' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                            {% endif %}
+                        {% else %}
+                            {% if role == 'pub' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                            {% endif %}
+
+                        {% endif %}
+                    </div>
+                    <div class="dropdown" id="pri2">
+                        {% if species %}
+                            {% if role == 'pri' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                            {% endif %}
+                        {% else %}
+                            {% if role == 'pri' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?tab=pri&role=pri&att=">Private</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?tab=pri&role=pri&att=">Private</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if user.tier.tier > 2 %}
+                    <div class="dropdown" id="pub3">
+                        {% if species %}
+                            {% if role == 'pub' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                            {% endif %}
+                        {% else %}
+                            {% if role == 'pub' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+
+                    <div class="dropdown" id="cur3">
+                        {% if species %}
+                            {% if role == 'cur' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:photos' species.pid %}?role=cur&att=">Curate</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:photos' species.pid %}?role=cur&att=">Curate</a>
+                            {% endif %}
+                        {% else %}
+                            {% if role == 'cur' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked&att=">Curate</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked&att=">Curate</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+
+                    <div class="dropdown" id="pri3">
+                        {% if species %}
+                            {% if role == 'pri' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                            {% else %}
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                            {% endif %}
+                        {% else %}
+                           {% if role == 'pri' %}
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?role=pri&att=">Private</a>
+                           {% else %}
+                               <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?role=pri&att=">Private</a>
+                           {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endif %}
+    {% endif %}
+</div>
+
+
+{%  block body %}
+
+
+{% endblock %}
+
+<script>
+
+    (function($) {
+
+  $('#search-button').on('click', function(e) {
+    if($('#search-input-container').hasClass('hdn')) {
+      e.preventDefault();
+      $('#search-input-container').removeClass('hdn')
+      return false;
+    }
+  });
+
+  $('#hide-search-input-container').on('click', function(e) {
+    e.preventDefault();
+    $('#search-input-container').addClass('hdn')
+    return false;
+  });
+
+})(jQuery);
+
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

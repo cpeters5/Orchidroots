@@ -76,3 +76,8 @@ def termofuse(request):
     context = {'namespace':'documents',}
     return render(request, 'documents/termofuse.html', context)
 
+
+def privacy_policy(request):
+    context = {'namespace':'documents',}
+    return render(request, 'documents/privacy_policy.html', context)
+

@@ -17,6 +17,7 @@ urlpatterns = [
     path('identinstruction/', views.identinstruction, name='identinstruction'),
     path('photosubmissionguideline/', views.photosubmissionguideline, name='photosubmissionguideline'),
     path('photoacquisionguideline/', views.photoacquisionguideline, name='photoacquisionguideline'),
+    path('privacy_policy/', views.privacy_policy, name='privacy_policy'),
     path('instructionupload_curate/', views.instructionupload_curate, name='instructionupload_curate'),
     path('instructionupload_private/', views.instructionupload_private, name='instructionupload_private'),
     path('instructionupload_file/', views.instructionupload_file, name='instructionupload_file'),

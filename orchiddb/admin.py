@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Genus, Subfamily, Species, Hybrid, Accepted, Synonym, Intragen,Infragenspc, InfragenHybrid, Comment, Culture, Similarity, SpcImages, HybImages, UploadFile, Country, Continent, Region, SubRegion, LocalRegion, GeoLocation, GeoLoc, Distribution, Subgenus, Section, Subsection, Series
+from .models import (Genus, Subfamily, Species, Hybrid, Accepted, Synonym, Intragen,Infragenspc, InfragenHybrid,
+                     Comment, Culture, Similarity, SpcImages, HybImages, UploadFile, Country, Continent, Region,
+                     SubRegion, LocalRegion, GeoLocation, GeoLoc, Distribution, Subgenus, Section, Subsection, Series,
+                     Donation )
 
 class SubgenusAdmin(admin.ModelAdmin):
     list_display = ('subgenus','genus','source','year')
@@ -48,4 +51,7 @@ admin.site.register(LocalRegion)
 admin.site.register(GeoLocation)
 admin.site.register(GeoLoc)
 admin.site.register(Distribution)
+
+# Donation
+admin.site.register(Donation)
 

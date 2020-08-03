@@ -23,6 +23,7 @@ from datetime import datetime, timedelta
 from accounts.models import User
 from detail.views import getmyphotos, get_random_img
 from orchidlist.views import mypaginator
+from orchiddb.models import Donation
 
 import stripe # new
 import json
@@ -31,6 +32,7 @@ import pytz
 import django.shortcuts
 import random
 import os, shutil
+from decimal import Decimal
 
 from django.apps import apps
 User = get_user_model()
@@ -94,10 +96,25 @@ class DonateView(TemplateView):
 class PaypalTransactionDoneView(View):
 
     def post(self, request, *args, **kwargs):
-        data = request.body
-        print(data)
+        data = json.loads(request.body)
+        try:
+            payer = data['payer']
+            payload = {
+                'donor_display_name': f"{payer['name']['given_name']} {payer['name']['surname']}",
+                'source': Donation.Sources.PAYPAL,
+                'source_id': data['id'],
+                'status': Donation.Statuses.ACCEPTED if data['status'].lower() == 'completed' else Donation.Statuses.UNVERIFIED,
+                'amount': sum([Decimal(purchase_unit['amount']['value']) for purchase_unit in data['purchase_units']]),
+                'country_code': payer['address']['country_code']
+            }
 
-        return JsonResponse({})
+            Donation.objects.create(**payload)
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status':'error', 'msg': str(e)})
+
+
+
 
 def donate(request,donateamt=None): # new
 

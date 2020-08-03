@@ -1663,7 +1663,6 @@ class Donation(models.Model):
             (UNVERIFIED, "Unverified"),
         ]
 
-    id = models.AutoField(primary_key=True, default=10)
     source = models.CharField(max_length=10, choices=Sources.CHOICES, default=Sources.STRIPE)
     source_id = models.CharField(max_length=255, blank=True, null=True)
     donor_display_name = models.CharField(max_length=255, blank=True, null=True)

@@ -53,5 +53,8 @@ admin.site.register(GeoLoc)
 admin.site.register(Distribution)
 
 # Donation
-admin.site.register(Donation)
+
+@admin.register(Donation)
+class DonationAdmin(admin.ModelAdmin):
+    list_display = ('amount', 'source', 'donor_display_name', 'country_code', 'status', 'created_date')
 

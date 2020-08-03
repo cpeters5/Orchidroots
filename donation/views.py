@@ -64,7 +64,7 @@ def charge(request): # new
         charge = stripe.Charge.create(
             amount=amount,
             currency='usd',
-            description='A Django charge',
+            description='Donation Charge',
             source=request.POST['stripeToken']
         )
         context = {'amount_display':amount_display,'namespace':'donation',}
@@ -113,6 +113,18 @@ class PaypalTransactionDoneView(View):
         except Exception as e:
             return JsonResponse({'status':'error', 'msg': str(e)})
 
+class ThankYouView(TemplateView):
+    template_name = 'donation/donate.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['namespace'] = 'donation'
+
+        donateamt = kwargs['donateamt']
+        if donateamt:
+            context['donateamt_display'] = f'{donateamt / 100:.2f}'
+
+        return context
 
 
 
@@ -121,18 +133,32 @@ def donate(request,donateamt=None): # new
     donateamt_display = ''
     if donateamt:
         donateamt_display = f'{donateamt / 100:.2f}'
-    # if request.GET.get('donateamt'):
-    #     donateamt_display = request.GET['donateamt']
-        # donateamt_display = f'{request.GET["donateamt"] / 100:.2f}'
 
     if request.method == 'POST':
-        charge = stripe.Charge.create(
-            amount=donateamt,
-            currency='usd',
-            description='Donation',
-            source=request.POST['stripeToken']
-        )
-        context = {'donateamt_display':donateamt_display,'namespace':'donation',}
-        return render(request, 'donation/donate.html', context)
+        try:
+            charge = stripe.Charge.create(
+                amount=donateamt,
+                currency='usd',
+                description='Donation',
+                source=request.POST['stripeToken']
+            )
+            donor_display_name = ''
+
+            if charge.get('customer', None):
+                donor_display_name = charge['customer'].get('name', '')
+
+            payload = {
+                'donor_display_name': donor_display_name,
+                'source': Donation.Sources.STRIPE,
+                'source_id': charge['id'],
+                'status': Donation.Statuses.ACCEPTED if charge['paid'] else Donation.Statuses.UNVERIFIED,
+                'amount': Decimal(f'{charge["amount"] / 100:.2f}'),
+                'country_code': charge['billing_details']['address']['country']
+            }
+            Donation.objects.create(**payload)
+            return redirect(reverse_lazy('donation:thankyou', kwargs={'donateamt': int(donateamt)}))
+        except Exception as e:
+            messages.error(request, 'An error occurred while charging your card, Please try again!!')
+            return redirect(reverse_lazy('donation:donate', kwargs={'donateamt': donateamt}))
     return render(request, 'donation/donate.html',{})
 

@@ -9,6 +9,7 @@ urlpatterns = [
     path('donate/', views.donate, name='donate'),
     path('donate/<int:donateamt>/', views.donate, name='donate'),
     path('donate/paypal-done/', views.PaypalTransactionDoneView.as_view(), name='paypal-done'),
+    path('thank-you/<int:donateamt>/', views.ThankYouView.as_view(), name='thankyou'),
     # path('getdonation/', views.getdonation, name='getdonation'),
     # re_path(r'^(?P<member>[A-Za-z]+)/partner_home/', views.partner_home, name='partner_home'),
 

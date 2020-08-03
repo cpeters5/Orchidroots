@@ -44,6 +44,13 @@
 
 <br><br><br>
 <div class="container" style="width:100%; margin:0 auto;">
+    {% if error %}
+        <div class="alert alert-warning">
+            <span>An error occurred while trying to charge your card, please try again {{ error }}</span>
+
+        </div>
+
+    {% endif %}
     {% if donateamt > 0 %}
         <h4 align="center">Thank you for your ${{donateamt_display}} contribution
         </h4>
@@ -131,7 +138,15 @@
                       dataType: 'json',
                       contentType: 'application/json; charset=utf-8',
                       success: function(res){
-                          alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                          if (res.status === 'success'){
+                              var url = "{% url 'donation:thankyou' donateamt=donateamt %}";
+                                window.location.href = url;
+                          }
+                          else{
+                              console.log(res.msg)
+                              alert('An error occurred, please try again');
+                          }
+
                       }
                   })
 

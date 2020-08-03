@@ -12,6 +12,7 @@ import os, shutil
 from django.core.files import File
 from django.db.models.signals import post_save
 from django.conf import settings
+from django.utils import timezone
 
 from utils.utils import rotate_image
 from accounts.models import User, Photographer
@@ -1635,4 +1636,44 @@ class TaxUpdate(models.Model):
     previous_dist       = models.CharField(max_length=500, blank=True)
     created_date        = models.DateTimeField(auto_now_add=True)
     modified_date       = models.DateTimeField(auto_now=True)
+
+
+class Donation(models.Model):
+    class Sources:
+        STRIPE = 'Stripe'
+        PAYPAL = 'Paypal'
+        CHOICES = (
+            (STRIPE, 'Stripe'),
+            (PAYPAL, 'Paypal')
+        )
+
+    class Statuses:
+        ACCEPTED = "Accepted"
+        REJECTED = "Rejected"
+        CANCELLED = "Cancelled"
+        REFUNDED = "Refunded"
+        PENDING = "Pending"
+        UNVERIFIED = "Unverified"
+        CHOICES = [
+            (ACCEPTED, "Accepted"),
+            (REJECTED, "Rejected"),
+            (CANCELLED, "Cancelled"),
+            (REFUNDED, "Refunded"),
+            (PENDING, "Pending"),
+            (UNVERIFIED, "Unverified"),
+        ]
+
+    source = models.CharField(max_length=10, choices=Sources.CHOICES, default=Sources.STRIPE)
+    source_id = models.CharField(max_length=255, blank=True, null=True)
+    donor_display_name = models.CharField(max_length=255, blank=True, null=True)
+    status = models.CharField(max_length=255, choices=Statuses.CHOICES, default=Statuses.UNVERIFIED)
+    amount = models.DecimalField(max_digits=5, decimal_places=2)
+    country_code = models.CharField(max_length=2, null=True, blank=True)
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Donation made by {self.donor_display_name} - ${self.amount}"
+
 

@@ -63,7 +63,7 @@ importlib-resources==3.0.0
 inquirer==2.7.0
 jsonfield==3.1.0
 kombu==4.6.11
-mysqlclient==2.0.1
+#mysqlclient==2.0.1
 numpy==1.19.0
 oauthlib==3.0.1
 opencv-contrib-python==4.3.0.36

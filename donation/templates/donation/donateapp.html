@@ -1,14 +1,14 @@
 {% load static %}
 {% include "base.html" %}
-{% block body %}
 
-<br><br><br>
-<style>
-#donateamt{
-    width:80px;
-    align:center;
-}
-li {
+{% block extra-head %}
+    <script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
+    <style>
+        #donateamt{
+            width:80px;
+            align:center;
+        }
+        li {
         display:inline-block;
         /*display:inline; !*IE7*!*/
         /*zoom:1; !*IE7*!*/
@@ -16,8 +16,41 @@ li {
         color:white;
         margin-right:10px;
 }
-</style>
+        .paypal-buttons{
+            width: 300px;
+            margin: 15px auto;
+        }
+        .paypal-button-container {
+            min-width: 300px!important;
+            max-width: 500px!important;
+            font-size: 14px;
+        }
+        .paypal-button.paypal-button-layout-vertical {
+            margin-bottom: 14px;
+        }
+
+        .paypal-button.paypal-button-shape-rect {
+            border-radius: 4px;
+        }
+        .paypal-button {
+            height: 45px;
+            min-height: 30px;
+            max-height: 55px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<br><br><br>
 <div class="container" style="width:100%; margin:0 auto;">
+    {% if error %}
+        <div class="alert alert-warning">
+            <span>An error occurred while trying to charge your card, please try again {{ error }}</span>
+
+        </div>
+
+    {% endif %}
     {% if donateamt > 0 %}
         <h4 align="center">Thank you for your ${{donateamt_display}} contribution
         </h4>
@@ -27,11 +60,16 @@ li {
 <!--            <input type="hidden" name="donateamt" value="{{donateamt}}" />-->
             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="{{ key }}"
-                data-description="A Django Charge"
+                data-description="Donation Charge"
                 data-amount="{{donateamt}}"
                 data-locale="auto">
             </script>
+
         </form>
+        <div id="paypal-button" class="paypal-buttons">
+
+        </div>
+
 
     {% else %}
         <h4 align="center">Thank you for your support</h4>
@@ -53,5 +91,68 @@ li {
     {% endif %}
             <div style="text-align:center; margin-top:10px;"><a href="/?role={{role}}">Cancel...</a></div>
 </div>
+
+{% endblock %}
+
+{% block extra-scripts %}
+
+    <script>
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+          beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+          }
+        })
+        paypal.Buttons({
+          style: {
+              shape: 'rect',
+              color: 'gold',
+              layout: 'horizontal',
+              label: 'pay',
+
+          },
+          createOrder: function(data, actions) {
+              return actions.order.create({
+                  purchase_units: [{
+                      amount: {
+                          value: '{{ donateamt_display }}'
+                      }
+                  }]
+              });
+          },
+          onApprove: function(data, actions) {
+              return actions.order.capture().then(function(details) {
+
+                  $.ajax({
+                      url: "{%  url 'donation:paypal-done' %}",
+                      type: "POST",
+                      data: JSON.stringify(details),
+                      dataType: 'json',
+                      contentType: 'application/json; charset=utf-8',
+                      success: function(res){
+                          if (res.status === 'success'){
+                              var url = "{% url 'donation:thankyou' donateamt=donateamt %}";
+                                window.location.href = url;
+                          }
+                          else{
+                              console.log(res.msg)
+                              alert('An error occurred, please try again');
+                          }
+
+                      }
+                  })
+
+              });
+          }
+      }).render('#paypal-button');
+  </script>
 
 {% endblock %}

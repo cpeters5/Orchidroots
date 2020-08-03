@@ -45,6 +45,7 @@ ALLOWED_HOSTS = [
     '157.245.210.148',
     '127.0.0.1',
     'localhost',
+    'orchids-roots.beta.com'
 ]
 
 
@@ -274,17 +275,13 @@ SERVER_EMAIL = "admin@mail.orchidroots.org"
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-try:
-    from local_settings import *
-except: # NOQA
-    pass
 
+STRIPE_SECRET_KEY = env.str('STRIPE_SECRET_KEY', default='sk_test_x7KpoFeFineZ8sdqWHsohENv00bBYn9Zs2')
+STRIPE_PUBLISHABLE_KEY = env.str('STRIPE_PUBLISHABLE_KEY', default='pk_test_DhAKY2VJTZq5EO0txR7ylv1i00NJ6o6phd')
 
-
-
-STRIPE_SECRET_KEY = 'sk_test_x7KpoFeFineZ8sdqWHsohENv00bBYn9Zs2'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_DhAKY2VJTZq5EO0txR7ylv1i00NJ6o6phd'
-
+# paypal settings
+PAYPAL_CLIENT_ID = env('PAYPAL_CLIENT_ID', default='')
+PAYPAL_SECRET =  env('PAYPAL_SECRET', default='')
 #  Use Gmail (Works)
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_PORT = 587
@@ -308,3 +305,11 @@ STRIPE_PUBLISHABLE_KEY = 'pk_test_DhAKY2VJTZq5EO0txR7ylv1i00NJ6o6phd'
 # DJANGO_MAILBOX_MAX_MESSAGE_SIZE = False
 # DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = False
 
+
+
+
+
+try:
+    from .local_settings import * # NOQA
+except: # NOQA
+    pass

@@ -237,14 +237,15 @@ class ReidentifySpeciesForm(forms.ModelForm):
     )
     # gen = forms.ChoiceField(required=True,
     #                           choices=Genus.objects.filter(num_hybrid__gt=0).values_list('pid', 'genus'))
-    pid = forms.ChoiceField(required=True,
-                              choices=Accepted.objects.values_list('pid'))
+    pid = forms.ChoiceField(required=True,) # cannot directly add a queryset
     def __init__(self,*args,**kwargs):
         super(ReidentifySpeciesForm, self).__init__(*args, **kwargs)
         # self.fields['gen'].required = True
         # self.fields['pid'].required = True
         # self.fields['pid'].queryset = Accepted.objects.none()
         # self.fields['gen'].queryset = Genus.objects.filter(num_hybrid__gt=0)
+
+        self.fields['pid'].choices = Accepted.objects.filter().values_list('pid') # initiaize choices here
         if 'gen' in self.data:
             try:
                 gen = int(self.data.get('gen'))

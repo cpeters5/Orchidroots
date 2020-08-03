@@ -1,6 +1,6 @@
 # payments/views.py
 from django.conf import settings
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
@@ -76,10 +76,12 @@ class DonateView(TemplateView):
     donateamt = 1000
     donateamt_display = f'{donateamt / 100:.2f}'
 
+
     # def get(self, request, *args, **kwargs):
     #     context['donateamt'] = kwargs['donateamt']
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['paypal_client_id'] = settings.PAYPAL_CLIENT_ID
         context['key'] = settings.STRIPE_PUBLISHABLE_KEY
         context['donateamt'] = 0
         context['donateamt_display'] = 0
@@ -88,7 +90,17 @@ class DonateView(TemplateView):
             context['donateamt_display'] = f'{ context["donateamt"] / 100:.2f}'
         return context
 
+
+class PaypalTransactionDoneView(View):
+
+    def post(self, request, *args, **kwargs):
+        data = request.body
+        print(data)
+
+        return JsonResponse({})
+
 def donate(request,donateamt=None): # new
+
     donateamt_display = ''
     if donateamt:
         donateamt_display = f'{donateamt / 100:.2f}'
@@ -104,6 +116,6 @@ def donate(request,donateamt=None): # new
             source=request.POST['stripeToken']
         )
         context = {'donateamt_display':donateamt_display,'namespace':'donation',}
-        return render(request, 'donation/donate.html',context)
+        return render(request, 'donation/donate.html', context)
     return render(request, 'donation/donate.html',{})
 

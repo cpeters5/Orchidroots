@@ -1,6 +1,11 @@
 import string
 import re
 import pytz
+import django.shortcuts
+import random
+import os, shutil
+import json
+
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash, get_user_model
 # from django.contrib.auth.models import User, Group
@@ -13,7 +18,6 @@ from PIL import Image
 from PIL import ExifTags
 from io import BytesIO
 from django.core.files import File
-import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -31,9 +35,6 @@ from .forms import UploadFileForm, UploadSpcWebForm, UploadHybWebForm, AcceptedI
 from accounts.models import User, Profile
 # from orchidlist.views import mypaginator
 
-import django.shortcuts
-import random
-import os, shutil
 
 from django.apps import apps
 Genus = apps.get_model('orchiddb', 'Genus')
@@ -1065,49 +1066,12 @@ def curate_newupload(request):
     days = 7
     num_show = 5
     page_length = 20
-    page_range = []
-    paginator = ()
-    my_list = []
-    if page_length > 0:
-        paginator = Paginator(file_list, page_length)
-        last_page = paginator.num_pages
-        try:
-            page = int(request.GET.get('page', '1'))
-            if page > last_page:
-                page = last_page
-        except:
-            page = 1
-        try:
-            my_list = paginator.page(page)
-        except(EmptyPage):
-            my_list = paginator.page(1)
-            last_page = 1
-        next_page = page+1
-        if next_page > last_page:
-            next_page = last_page
-        prev_page = page - 1
-        if prev_page < 1:
-            prev_page = 1
-
-        first_item = (page - 1)* page_length + 1
-        last_item = first_item + page_length - 1
-        total = file_list.count()
-        if last_item > total:
-            last_item = total
-
-        # Get the index of the current page
-        index = my_list.number - 1  # edited to something easier without index
-        # This value is maximum index of your pages, so the last page - 1
-        max_index = len(paginator.page_range)
-        # You want a range of 7, so lets calculate where to slice the list
-        start_index = index - num_show if index >= num_show else 0
-        end_index = index + num_show if index <= max_index - num_show else max_index
-        # My new page range
-        page_range = paginator.page_range[start_index:end_index]
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
+            request, file_list, page_length, num_show)
     role = 'cur'
 
     print("detail/curate newupload ",request.user, role)
-    context = {'file_list':my_list,
+    context = {'file_list':page_list,
                # 'type':type,
                'tab':'upl', 'role':role, 'upl':'active', 'days':days,
                'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,'page':page,
@@ -1149,47 +1113,8 @@ def curate_pending(request):
 
     num_show = 5
     page_length = 100
-    page_range = []
-    paginator = ()
-    my_list = []
-    if page_length > 0:
-        paginator = Paginator(file_list, page_length)
-        last_page = paginator.num_pages
-        try:
-            page = int(request.GET.get('page', '1'))
-            if page > last_page:
-                page = last_page
-        except:
-            page = 1
-        try:
-            my_list = paginator.page(page)
-
-        except(EmptyPage):
-            my_list = paginator.page(1)
-            last_page = 1
-        next_page = page + 1
-        if next_page > last_page:
-            next_page = last_page
-        prev_page = page - 1
-        if prev_page < 1:
-            prev_page = 1
-
-        first_item = (page - 1) * page_length + 1
-        last_item = first_item + page_length - 1
-        total = file_list.count()
-        if last_item > total:
-            last_item = total
-
-        # Get the index of the current page
-        index = my_list.number - 1  # edited to something easier without index
-        # This value is maximum index of your pages, so the last page - 1
-        max_index = len(paginator.page_range)
-        # You want a range of 7, so lets calculate where to slice the list
-        start_index = index - num_show if index >= num_show else 0
-        end_index = index + num_show if index <= max_index - num_show else max_index
-        # My new page range
-        page_range = paginator.page_range[start_index:end_index]
-
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
+            request, file_list, page_length, num_show)
     print("1. >>> url = ",request.path)
 
     role = 'cur'
@@ -1197,7 +1122,7 @@ def curate_pending(request):
         role = request.GET['role']
     print("detail/curate_pending: ",request.user, role)
     title = 'curate_pending'
-    context = {'file_list': my_list, 'type': type,
+    context = {'file_list': page_list, 'type': type,
                'tab': 'pen', 'role': role, 'pen': 'active', 'days': days,
                'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,
                'page': page,
@@ -1253,47 +1178,14 @@ def curate_newapproved(request):
 
     num_show = 5
     page_length = 20
-    page_range = []
-    paginator = ()
-    my_list = []
-    if page_length > 0:
-        paginator = Paginator(file_list, page_length)
-        last_page = paginator.num_pages
-        try:
-            page = int(request.GET.get('page', '1'))
-            if page > last_page:
-                page = last_page
-        except:
-            page = 1
-        try:
-            my_list = paginator.page(page)
-
-        except(EmptyPage):
-            my_list = paginator.page(1)
-            last_page = 1
-        next_page = page + 1
-        if next_page > last_page:
-            next_page = last_page
-        prev_page = page - 1
-        if prev_page < 1:
-            prev_page = 1
-
-        first_item = (page - 1) * page_length + 1
-        last_item = first_item + page_length - 1
-        total = file_list.count()
-        if last_item > total:
-            last_item = total
-        index = my_list.number - 1  # edited to something easier without index
-        max_index = len(paginator.page_range)
-        start_index = index - num_show if index >= num_show else 0
-        end_index = index + num_show if index <= max_index - num_show else max_index
-        page_range = paginator.page_range[start_index:end_index]
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
+            request, file_list, page_length, num_show)
 
     role = 'cur'
     if 'role' in request.GET:
         role = request.GET['role']
     print("detail/curate_newapproved: ",request.user, role)
-    context = {'file_list': my_list, 'type': type,
+    context = {'file_list': page_list, 'type': type,
                'tab': 'pen', 'role': role, 'pen': 'active', 'days': days,
                'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,
                'page': page,
@@ -1767,39 +1659,66 @@ def myphoto_browse_spc(request):
 
     num_show = 5
     page_length = 20
-    page_range = []
-    paginator = ()
-    my_list = ''
-    if page_length > 0:
-        paginator = Paginator(my_full_list, page_length)
-        last_page = paginator.num_pages
-        try:
-            page = int(request.GET.get('page', '1'))
-            if page > last_page:
-                page = last_page
-        except:
-            page = 1
-        try:
-            my_list = paginator.page(page)
-        except(EmptyPage):
-            my_list = paginator.page(1)
-            last_page = 1
-        next_page = page+1
-        if next_page > last_page:
-            next_page = last_page
-        prev_page = page - 1
-        if prev_page < 1:
-            prev_page = 1
-        first_item = (page - 1)* page_length + 1
-        last_item = first_item + page_length - 1
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
+            request, my_full_list, page_length, num_show)
 
-        index = my_list.number - 1  # edited to something easier without index
-        max_index = len(paginator.page_range)
-        start_index = index - num_show if index >= num_show else 0
-        end_index = index + num_show if index <= max_index - num_show else max_index
-        page_range = paginator.page_range[start_index:end_index]
+    context = {'my_list':page_list,'species':species,'pid':pid,'type':type,
+               'myspecies_list':myspecies_list,'myhybrid_list':myhybrid_list,
+               'tab':brw, 'role':'pri', 'brwspc':brwspc, 'brwhyb':brwhyb,'author':author,
+               'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,'page':page,
+               'first':first_item,'last':last_item,'next_page':next_page,'prev_page':prev_page,
+               'author_list':author_list,
+               'level':'detail','title':'myphoto_browse','section':'My Collection', 'namespace':'detail',
+               }
+    print("detail/myphoto browse_spc: ",request.user, " - ", species)
+    return render(request, 'detail/myphoto_browse_spc.html', context)
 
-    context = {'my_list':my_list,'species':species,'pid':pid,'type':type,
+
+def public_browse_spc(request,author):
+    species = ''
+    pid = ''
+    author_list = Photographer.objects.exclude(user_id__isnull=True).order_by('fullname')
+
+    if 'pid' in request.GET:
+        pid = request.GET['pid']
+        if pid:
+            pid = int(pid)
+
+    private_list, public_list, upload_list, myspecies_list, myhybrid_list = getmyphotos(request,author,'')
+    if myspecies_list:
+        species = myspecies_list.order_by('?')[0:1][0]
+
+    type = 'species'
+    if 'type' in request.GET:
+        type = request.GET['type']
+
+    my_full_list = []
+    brw = ''
+    brwhyb = ''
+    brwspc = ''
+    if type == 'hybrid':
+        brw = 'brwhyb'
+        brwhyb = 'active'
+        pid_list = HybImages.objects.filter(author=author).values_list('pid',flat=True).distinct()
+    elif type == 'species':
+        brw = 'brwspc'
+        brwspc = 'active'
+        pid_list = SpcImages.objects.filter(author=author).values_list('pid',flat=True).distinct()
+
+    img_list = Species.objects.filter(pid__in=pid_list).order_by('genus', 'species')
+    if img_list:
+        img_list = img_list.order_by('genus','species')
+        for x in img_list:
+            img = x.get_best_img_by_author(author)
+            if img:
+                my_full_list.append(img)
+
+    num_show = 5
+    page_length = 20
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
+            request, my_full_list, page_length, num_show)
+
+    context = {'my_list':page_list,'species':species,'pid':pid,'type':type,
                'myspecies_list':myspecies_list,'myhybrid_list':myhybrid_list,
                'tab':brw, 'role':'pri', 'brwspc':brwspc, 'brwhyb':brwhyb,'author':author,
                'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,'page':page,
@@ -1858,38 +1777,10 @@ def myphoto_browse_hyb(request):
     num_show = 5
     page_length = 20
     page_range = []
-    paginator = ()
-    my_list = ''
-    if page_length > 0:
-        paginator = Paginator(my_full_list, page_length)
-        last_page = paginator.num_pages
-        try:
-            page = int(request.GET.get('page', '1'))
-            if page > last_page:
-                page = last_page
-        except:
-            page = 1
-        try:
-            my_list = paginator.page(page)
-        except(EmptyPage):
-            my_list = paginator.page(1)
-            last_page = 1
-        next_page = page+1
-        if next_page > last_page:
-            next_page = last_page
-        prev_page = page - 1
-        if prev_page < 1:
-            prev_page = 1
-        first_item = (page - 1)* page_length + 1
-        last_item = first_item + page_length - 1
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
+            request, my_full_list, page_length, num_show)
 
-        index = my_list.number - 1  # edited to something easier without index
-        max_index = len(paginator.page_range)
-        start_index = index - num_show if index >= num_show else 0
-        end_index = index + num_show if index <= max_index - num_show else max_index
-        page_range = paginator.page_range[start_index:end_index]
-
-    context = {'my_list':my_list,'species':species,'pid':pid,'type':type,
+    context = {'my_list':page_list,'species':species,'pid':pid,'type':type,
                'myspecies_list':myspecies_list,'myhybrid_list':myhybrid_list,
                'tab':brwhyb, 'role':'pri', 'brwhyb':'active','author':author,
                'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,'page':page,
@@ -2337,3 +2228,56 @@ def uploadweb(request,pid,id=None):
                'role':role,'level':'detail','section':'Public Corner','namespace':'detail','title':'uploadweb'}
     return render(request, 'detail/uploadweb.html', context)
 
+
+def mypaginator(request,full_list,page_length,num_show):
+    paginator = ()
+    page_list = []
+    first_item = 0
+    last_item = 0
+    next_page = 0
+    prev_page = 0
+    last_page = 0
+    # print("2. >>> full_list = ",len(full_list),page_length,num_show)
+
+    total = len(full_list)
+    if page_length > 0:
+        paginator = Paginator(full_list, page_length)
+        try:
+            page = int(request.GET.get('page', '1'))
+        except:
+            page = 1
+        if page == 0:
+            page = 1
+        try:
+            page_list = paginator.page(page)
+            last_page = paginator.num_pages
+        except(EmptyPage):
+            page_list = paginator.page(1)
+            last_page = 1
+        next_page = page+1
+        if next_page > last_page:
+            next_page = last_page
+        prev_page = page - 1
+        if prev_page < 1:
+            prev_page = 1
+
+
+        first_item = (page - 1)* page_length + 1
+        last_item = first_item + page_length - 1
+        if last_item > total:
+            last_item = total
+        # Get the index of the current page
+        index = page_list.number - 1  # edited to something easier without index
+        # This value is maximum index of your pages, so the last page - 1
+        max_index = len(paginator.page_range)
+        # You want a range of 7, so lets calculate where to slice the list
+        start_index = index - num_show if index >= num_show else 0
+        end_index = index + num_show if index <= max_index - num_show else max_index
+        # My new page range
+        page_range = paginator.page_range[start_index:end_index]
+    # print("page_length = ",page_length)
+    # print("page_list = ",len(page_list))
+    # print("page = ",page)
+    # print("page_range = ",page_range)
+    # print("next_page = ",next_page)
+    return(page_range, page_list,last_page,next_page,prev_page, page_length,page,first_item,last_item)

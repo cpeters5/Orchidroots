@@ -1688,4 +1688,3 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"Donation made by {self.donor_display_name} - ${self.amount}"
-

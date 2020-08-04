@@ -161,3 +161,4 @@ def donate(request,donateamt=None): # new
             messages.error(request, 'An error occurred while charging your card, Please try again!!')
             return redirect(reverse_lazy('donation:donate', kwargs={'donateamt': donateamt}))
     return render(request, 'donation/donate.html',{})
+

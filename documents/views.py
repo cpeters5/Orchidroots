@@ -81,3 +81,6 @@ def privacy_policy(request):
     context = {'namespace':'documents',}
     return render(request, 'documents/privacy_policy.html', context)
 
+def contact(request):
+    context = {'namespace':'documents',}
+    return render(request, 'documents/contact.html', context)

@@ -210,6 +210,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_ROOT = '/webapps/static/'
 MEDIA_ROOT  = '/webapps/static/media/'
 FILE_UPLOAD_PERMISSIONS = 0o644
+FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : ('rest_framework.permissions.IsAuthenticated',),

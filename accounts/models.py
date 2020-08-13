@@ -5,7 +5,8 @@ from django.db import models
 from django.conf import settings
 from django.shortcuts import redirect
 from django.db.models.signals import post_save
-from allauth.account.signals import user_signed_up, user_logged_in
+from allauth.account.signals import user_signed_up, user_logged_in, email_confirmed
+from allauth.account.models import EmailAddress
 
 from django.dispatch import receiver
 
@@ -51,6 +52,7 @@ class UserManager(BaseUserManager):
         return user_obj
 
     def create_staffuser(self, username, password=None):
+        email = None
         user_obj = self.create_user(
             username,
             email,
@@ -133,6 +135,22 @@ class User(AbstractBaseUser):
         author = Profile.objects.get(user_id=self.id)
         return author.current_credit_name
 
+    def add_email_address(self, request, new_email):
+        # Add a new email address for the user, and send email confirmation.
+        # Old email will remain the primary until the new one is confirmed.
+        return EmailAddress.objects.add_email(request, self.user, new_email, confirm=True)
+
+    
+@receiver(email_confirmed)
+def update_user_email(sender, request, email_address, **kwargs):
+    # Once the email address is confirmed, make new email_address primary.
+    # This also sets user.email to the new email address.
+    # email_address is an instance of allauth.account.models.EmailAddress
+    email_address.set_as_primary()
+    # Get rid of old email addresses
+    stale_addresses = EmailAddress.objects.filter(
+        user=email_address.user).exclude(primary=True).delete()
+        
 class Country(BaseModel):
     # class Meta:
     #     unique_together = (("dist_code", "dist_num", "region"),)

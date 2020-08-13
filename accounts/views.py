@@ -141,7 +141,11 @@ def register_page(request):
     }
     return render(request, "accounts/register.html", context)
 
-
+def update_user_details(request):
+    user = request.user
+    new_email = request.POST.get('new_email')
+    user.custom_user.add_email_address(request, new_email)
+    
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)

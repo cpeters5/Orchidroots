@@ -8,7 +8,6 @@ from django.urls import reverse, reverse_lazy
 import string
 from itertools import chain
 import random
-from detail.views import attackredirect
 
 # Create your views here.
 from django.apps import apps
@@ -44,7 +43,6 @@ alpha_list = string.ascii_uppercase
 
 # High level lists
 def family(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     # -- List Genuses
     family_list = Family.objects.order_by('family')
     context = {'family_list': family_list, 'alpha_list': alpha_list, 'title': 'families', 'namespace':'orchidlist',}
@@ -52,7 +50,6 @@ def family(request):
 
 
 def subfamily(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     # -- List Genuses
     subfamily_list = Subfamily.objects.order_by('subfamily')
     context = {'subfamily_list': subfamily_list, 'alpha_list': alpha_list, 'title': 'subfamilies', 'namespace':'orchidlist',}
@@ -60,7 +57,6 @@ def subfamily(request):
 
 
 def tribe(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     subfamily = '';
     sf=''
     sf_list = Subfamily.objects.all()
@@ -77,7 +73,6 @@ def tribe(request):
 
 
 def subtribe(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     subtribe_list = Subtribe.objects.all().order_by('subtribe')
     sf = ''
     t = ''
@@ -100,7 +95,6 @@ def subtribe(request):
 
 @login_required
 def genera(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     genus = ''
     min_lengenus_req = 2
     year = ''
@@ -311,7 +305,6 @@ def genera(request):
 
 
 def subgenus(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     # -- List Genuses
     subgenus_list = Subgenus.objects.order_by('subgenus')
     context = {'subgenus_list': subgenus_list, 'title': 'subgenus', 'namespace':'orchidlist',}
@@ -319,7 +312,6 @@ def subgenus(request):
 
 
 def section(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     # -- List Genuses
     section_list = Section.objects.order_by('section')
     context = {'section_list': section_list, 'title': 'section', 'namespace':'orchidlist',}
@@ -327,7 +319,6 @@ def section(request):
 
 
 def subsection(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     # -- List Genuses
     subsection_list = Subsection.objects.order_by('subsection')
     context = {'subsection_list': subsection_list, 'title': 'subsection', 'namespace':'orchidlist',}
@@ -335,7 +326,6 @@ def subsection(request):
 
 
 def series(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     # -- List Genuses
     series_list = Series.objects.order_by('series')
     context = {'series_list': series_list, 'title': 'series', 'namespace':'orchidlist',}
@@ -343,7 +333,6 @@ def series(request):
 
 @login_required
 def species_list(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     species = spc = genus = ''
     # this_species_list = Species.objects.none()
     subgenus = section = subsection = series = ''
@@ -662,7 +651,6 @@ def species_list(request):
 
 @login_required
 def hybrid_list(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     species = ''
     spc = ''
     genus = ''
@@ -894,7 +882,6 @@ def hybrid_list(request):
 
 
 def browsegen(request):
-    if attackredirect(request): return HttpResponseRedirect("/")
     gen = 0
     type = ''
     genus = ''
@@ -971,7 +958,6 @@ def browsegen(request):
 
 
 def browse(request,gen=None):
-    if attackredirect(request): return HttpResponseRedirect("/")
     import collections
     subgenus = ''
     section = ''
@@ -1139,7 +1125,6 @@ def browsedist(request):
 
 # All access - at least role = pub
 def progeny(request, pid):
-    # if attackredirect(request): return HttpResponseRedirect("/")
     alpha = ''
     sort = ''
     prev_sort = ''
@@ -1223,7 +1208,6 @@ def progeny(request, pid):
 
 # All access - at least role = pub
 def progenyimg(request, pid=None):
-    # if attackredirect(request): return HttpResponseRedirect("/")
     num_show = 5
     page_length = 30
     page_range = []

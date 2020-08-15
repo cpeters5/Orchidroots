@@ -38,6 +38,7 @@ SITE_ID = 3
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+PYTHONUNBUFFERED=True
 
 ALLOWED_HOSTS = [
     'orchidroots.org',
@@ -225,6 +226,26 @@ CACHES = {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.FileHandler',
+            'filename': BASE_DIR + "/../log/logfile",
+        },
+    },
+    'root': {
+        'level': 'INFO',
+        'handlers': ['console', 'logfile']
+    },
 }
 
 

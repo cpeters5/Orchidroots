@@ -9,7 +9,7 @@ src/
 *.pyc
 src/
 .coverage
-.env
+.env*
 myproject/.env
 myproject.sock
 

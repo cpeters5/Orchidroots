@@ -358,9 +358,6 @@ label {
                 <!-- Results -->
                 <div style="width:100%;margin: 0 auto; border:0 solid blue;">
                     <div class="title" style="margin:0 auto;padding:10px;text-align: center; border:0 solid blue;">
-<!--                        {% if message %}-->
-<!--                                    <div style="color:red;"><b>{{message}}</b></div>-->
-<!--                        {% endif %}-->
                     {% if cross %}
                         This cross has already been
                         {% if cross.pid.source == 'RHS' %}
@@ -381,12 +378,12 @@ label {
                                     <b>Oops! {{msgnogenus}} : Nothogenus of type {{genus1}} x {{genus2}} does not exist!  Please contact admin to create one.</b>
                                 {% else %}
                                     WARNING: The cross will be removed if no photo uploaded.<br>
-                                    <a class="btn btn-primary btn-xs" href="{% url 'detail:createhybrid' %}?pid1={{species1.pid}}&pid2={{species2.pid}}&tab=sum&role={{role}}">
+                                    <a class="btn btn-primary btn-xs" href="{% url 'detail:createhybrid' %}?pid1={{species1.pid}}&pid2={{species2.pid}}&role={{role}}&tab=sum">
                                         Create {{species1.namecasual|safe}} × {{species2.namecasual|safe}}
                                     </a>
                                 {% endif %}
                             {% else %}
-                                Pleae contact Bluenanta admins to create one.
+                                Please contact Bluenanta admins to create one.
                             {% endif %}
                         {% elif species1 %}
                             Enter Second Species

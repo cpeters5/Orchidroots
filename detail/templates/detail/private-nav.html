@@ -21,7 +21,7 @@
 <div style="font-size: 13px;width:100%;margin:0;padding:0;">
 
     <div class="nav nav-tabs">
-        {% if brwspc == 'active' or not species %}
+        {% if brwspc == 'active' %}
             <li class="nav-item"><div class="nav-link active"><span style="color:#575757;">My Species</span></div></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'detail:myphoto_browse_hyb' %}?role=pri&tab=brwhyb&author={{author.author_id}}&att="><span style="color:#575757;">My Hybrid</span></a></li>
         {% elif brwhyb == 'active' %}

@@ -1,5 +1,6 @@
 import string
 import re
+import logging
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -19,7 +20,7 @@ Synonym = apps.get_model('orchiddb', 'Synonym')
 epoch = 1740
 alpha_list = string.ascii_uppercase
 
-
+logger = logging.getLogger(__name__)
 
 def search_match(request, partner=None):
     # from itertools import chain
@@ -48,7 +49,7 @@ def search_match(request, partner=None):
     else:
         search = ''
     keyword = search
-    print("detail/search_match",request.user, role," - ", keyword)
+    logger.error("seasrch/search_match:  " + str(request.user) + " " + role + " - " + keyword)
     if keyword:
         rest = keyword.split(' ',1)
         if len(rest) > 1:
@@ -129,7 +130,11 @@ def search_match(request, partner=None):
                 score = score1
             if score >= 60:
                 result_list.append([x, score])
-            # if request.user.is_authenticated and request.user.tier.tier > 3: print("6. >>> x = ", short_grex, keyword,keys[0],score,len(result_list))
+            # if request.user.is_authenticated and request.user.tier.tier > 3: logger.error("6. >>> x = " + short_grex)
+            # if request.user.is_authenticated and request.user.tier.tier > 3: logger.error("6. >>> keyword = " + keyword)
+            # if request.user.is_authenticated and request.user.tier.tier > 3: logger.error("6. >>> keys[0] = " + keys[0])
+            # if request.user.is_authenticated and request.user.tier.tier > 3: logger.error("6. >>> score = " + score)
+            # if request.user.is_authenticated and request.user.tier.tier > 3: logger.error("6. >>> result_list = " + len(result_list))
 
     result_list.sort(key=lambda k: (-k[1],k[0].name()))
 
@@ -159,7 +164,7 @@ def search_fuzzy(request, partner=None):
         search = request.GET['search'].strip()
     send_url = '/search/search_match/?search=' + search + "&role=" + role
     keyword = search.lower()
-    print("detail/search_fuzzy",request.user, role," - ", keyword)
+    logger.error("detail/search_fuzzy: " + str(request.user) + " " + role + " - ", keyword)
 
     grexlist = Species.objects.exclude(status='pending')
     # Filter for partner specific list.
@@ -270,14 +275,14 @@ def nomenclature(request, species=None, genus=None):
         type = request.GET['type']
     else:
         type = 'species'
-    if debug and request.user.id == 1: print("3.1 >>> type = ",type)
+    # if debug and request.user.id == 1: logger.error("3.1 >>> type = ",type)
     if genus:
         genus = Genus.objects.get(genus=genus)
 
-        if debug and request.user.id == 1: print("3. >>> genus = ",genus)
+        # if debug and request.user.id == 1: logger.error("3. >>> genus = ",genus)
     elif 'genus' in request.GET:
         genus = request.GET['genus']
-        # if request.user.id == 1: print("3.1 >>> genus = ",genus)
+        # if request.user.id == 1: logger.error("3.1 >>> genus = ",genus)
         # User request genus list
         if genus:
             try:
@@ -286,11 +291,11 @@ def nomenclature(request, species=None, genus=None):
             except Genus.DoesNotExist:
                 genus = 'NOT FOUND!'
                 pass
-        if debug and request.user.id == 1: print("3.2 >>> genus = ", genus, newgen)
+        # if debug and request.user.id == 1: logger.error("3.2 >>> genus = ", genus, newgen)
     else:
         genus = ''
-        if debug and request.user.id == 1: print("3.6 >>> genus = ", genus, newgen)
-    if debug and request.user.id == 1: print("3.7 >>> genus = ",genus)
+        # if debug and request.user.id == 1: logger.error("3.6 >>> genus = ", genus, newgen)
+    # if debug and request.user.id == 1: logger.error("3.7 >>> genus = ",genus)
 
     # If debug and genus is requested, get the list of species and hybrid of the new genus
     if genus and genus != 'NOT FOUND!':
@@ -301,11 +306,12 @@ def nomenclature(request, species=None, genus=None):
         hybrid_list = Species.objects.filter(gen=genus.pid).filter(type='hybrid').order_by('species')
         if 'species' in request.GET:
             species = request.GET['species']
-            if debug and request.user.id == 1: print("3.8 >>> species = ",species)
+            # if debug and request.user.id == 1: logger.error("3.8 >>> species = ",species)
             if species:
                 species_parts = species.split(' (')
+                # logger.error("species_part[0] = " + species_parts[0])
                 species = species_parts[0].strip()
-                if debug and request.user.id == 1: print("3.9 >>> species = ", species)
+                # logger.error("species = " + species)
                 if len(species_parts) > 1:
                     year = species_parts[1].split(' ')[0]
                     if not re.match(r'.*([1-3][0-9]{3})', year):
@@ -314,41 +320,28 @@ def nomenclature(request, species=None, genus=None):
                         year = year.split(')')[0]
                     elif year.find('×'):
                         year = year.split(' ')[1]
-                    if debug and request.user.id == 1: print("3.10 >>>> year = >" + str(year) + "<")
-                if debug and request.user.id == 1: print("3.11 >>> species = ", species)
+                    # logger.error("3.10 >>>> year = >" + str(year) + "<")
+                # logger.error("3.11 >>> species = " + species)
                 if type == 'species':
-                    myspecies = species.split(' ')
-                    if len(myspecies) == 1:
-                        species = Species.objects.filter(species=species).filter(genus=genus)
-                        if year:
-                            species = species.filter(year=year)
-                        if debug and request.user.id == 1: print("3.12 >>> species = ", species)
-                        if len(species) > 0:
-                            species = species[0]
-                            pid = species.pid
-                        else:
-                            species = 'NOT FOUND!'
-                    elif len(myspecies) > 1:
-                        speciesname = myspecies[0]
-                        if debug and request.user.id == 1: print("3.13 >>> species = ", species)
-                        if debug and request.user.id == 1: print("3.14 >>> speciesname = ", speciesname)
-                        # if debug and request.user.id == 1: print("3.15 >>> speciesinfra = ", myspecies[1], myspecies[2])
-                        # Chosen species contains varieties
-                        species = ''
-                        mylist = Species.objects.filter(species=speciesname).filter(genus=genus).filter(type=type)
-                        for x in mylist:
-                            if debug and request.user.id == 1: print("3.16 >>> textspeciesname = ", x.textspeciesname())
-                            if x.textspeciesname() == species:
-                                species = x
-                        if not species:
-                            species = "NOT FOUND!"
-                    else:
-                        species = "NOT FOUND!"
-                        if debug and request.user.id == 1: print("3.17 >>> species = ", species)
+                    # logger.error("3.12 >>> species = " + species)
+                    myspecies = species.split(' ')[0]
+                    # logger.error("3.13 >>> myspecies = " + myspecies)
+                    spc_list = Species.objects.filter(species=myspecies).filter(genus=genus)
+                    found = 0
+                    for x in spc_list:
+                        if x.textspeciesnamefull() == species:
+                            found = 1
+                            pid = x.pid
+                            # logger.error("3.14 >>> species = " + species)
+                            species = x
+                            break
+                    if not found:
+                        species = 'NOT FOUND!'
+
                 elif type == 'hybrid':
                     species = Species.objects.filter(species=species).filter(genus=genus).filter(type=type)
                     if len(species) > 0:
-                        if debug and request.user.id == 1: print("3.18 >>> species = ", species)
+                        # if debug and request.user.id == 1: logger.error("3.18 >>> species = ", species)
                         if year:
                             species = species.filter(year=year)
                         if len(species)>0:
@@ -357,7 +350,7 @@ def nomenclature(request, species=None, genus=None):
                             species = ''
                     else:
                         species = "NOT FOUND!"
-                    if debug and request.user.id == 1: print("3.19 >>> species = ", species, species.type, species.pid)
+                    # if debug and request.user.id == 1: logger.error("3.19 >>> species = ", species, species.type, species.pid)
 
         else:  # species hasn't been selected.
             species = ''
@@ -370,15 +363,15 @@ def nomenclature(request, species=None, genus=None):
                 pass
             if parents:
                 parents = parents.parentlist.split('|')
-                # print("parents = ",parents)
+                # logger.error("parents = " + parents)
                 intragen_list = Genus.objects.filter(pid__in=parents)
-                # print("intragen list = ",len(intragen_list))
+                # logger.error("intragen list = " + len(intragen_list))
         else:
             intragen_list = Genus.objects.filter(description__icontains=genus).filter(type='hybrid').filter(num_hybrid__gt=0)
 
 
-    if request.user.id == 1: print("3.3 >>> genus = ", genus)
-    if request.user.id == 1: print("3.3 >>> species = ", species)
+    # if request.user.id == 1: logger.error("3.3 >>> genus = ", genus)
+    # if request.user.id == 1: logger.error("3.3 >>> species = ", species)
     if species and isinstance(species,Species):
         send_url = "/detail/information/" + str(species.pid) + "/?role=cur"
         return HttpResponseRedirect(send_url)

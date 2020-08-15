@@ -402,7 +402,7 @@ label {
                     <div class="p-2 border" style="width:48%;margin:3px;">
                         <div class="subtitle">
                             {% if species1 %}
-                            <a href="{% url 'detail:information' pid=species1.pid %}?role={{role}}&tab=sum&att=">{{species1.abrevname|safe}}</a> {{species1.author}} {{species1.year}}
+                            <a href="{% url 'detail:information' pid=species1.pid %}?role={{role}}">{{species1.abrevname|safe}}</a> {{species1.author}} {{species1.year}}
                             {% else %}
                                 First Species
                             {% endif %}
@@ -470,7 +470,7 @@ label {
                     <div class="p-2 border" style="width:48%;margin:3px;">
                         <div class="subtitle">
                             {% if species2.pid %}
-                            <a href="{% url 'detail:information' pid=species2.pid %}?role={{role}}&tab=sum&att=">{{species2.abrevname|safe}}</a> {{species2.author}} {{species2.year}}
+                            <a href="{% url 'detail:information' pid=species2.pid %}?role={{role}}">{{species2.abrevname|safe}}</a> {{species2.author}} {{species2.year}}
                             {% else %}
                                 Second Species
                             {% endif %}

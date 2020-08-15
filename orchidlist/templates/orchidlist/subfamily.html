@@ -25,7 +25,7 @@
                 <th>Subfamily </th><th>year</th><th> Description</th>
             {% for subfamily in subfamily_list %}
             <tr>
-                <td><a href="{% url 'orchidlist:genera' %}?sf={{subfamily.subfamily}}&genustype=species&att=">
+                <td><a href="{% url 'orchidlist:genera' %}?sf={{subfamily.subfamily}}&genustype=species">
                             {{ subfamily.subfamily}} {{ subfamily.author }}</td>
                 <td align=center>{{subfamily.year}}</td>
                 <td>{% if subfamily.description %}{{subfamily.description}}{% endif %}</td>

@@ -125,8 +125,8 @@ img{
                                 {% endif %}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="speciesDropdown" style="font-size:13px">
-                                <a class="dropdown-item" href="{% url 'detail:curate_pending' %}?tab=upl&type=species&days={{days}}&att=">Pending Species</a>
-                                <a class="dropdown-item" href="{% url 'detail:curate_pending' %}?tab=upl&type=hybrid&days={{days}}&att=">Pending Hybrid</a>
+                                <a class="dropdown-item" href="{% url 'detail:curate_pending' %}?tab=upl&type=species&days={{days}}">Pending Species</a>
+                                <a class="dropdown-item" href="{% url 'detail:curate_pending' %}?tab=upl&type=hybrid&days={{days}}">Pending Hybrid</a>
                             </div>
                         </div>
                         &nbsp;
@@ -139,11 +139,11 @@ img{
                                 {% endif %}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="hybridDropdown" style="font-size:13px">
-                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=&att="></a>
-                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=3&att=">past 3 days</a>
-                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=7&att=">past 7 days</a>
-                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=20&att=">past 20 days</a>
-                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=30&att=">past 30 days</a>
+                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days="></a>
+                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=3">past 3 days</a>
+                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=7">past 7 days</a>
+                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=20">past 20 days</a>
+                                <a class="dropdown-item" href="?tab=upl&type={{type}}&days=30">past 30 days</a>
                             </div>
                         </div>
                     </div>
@@ -161,11 +161,11 @@ img{
                                         </div>
                                     </a>
                                     <div style="font-size:11px">
-                                        <a href="{% url 'detail:curate' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&action=file&att=">{{image.pid.pid.namecasual|safe}}</a>
+                                        <a href="{% url 'detail:curate' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&action=file">{{image.pid.pid.namecasual|safe}}</a>
                                         <br>{{image.created_date.date}}
                                         <br>
-                                        <a href="{% url 'detail:curate' image.pid_id %}?rank=3&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&att=">Approve</a>
-                                        <a href="{% url 'detail:deletewebphoto' image.pid_id %}?id={{image.id}}&role={{role}}&area=allpending&page={{page}}&days={{days}}&att=" >Delete</a>
+                                        <a href="{% url 'detail:curate' image.pid_id %}?rank=3&id={{image.id}}&tab=sum&gen={{species.gen.pid}}">Approve</a>
+                                        <a href="{% url 'detail:deletewebphoto' image.pid_id %}?id={{image.id}}&role={{role}}&area=allpending&page={{page}}&days={{days}}" >Delete</a>
                                     </div>
                             </div>
                         {% endfor %}

@@ -48,24 +48,24 @@
                 <div style="">
                 {% if species.type == 'species' %}
                     {% if species.accepted.subgenus %}
-                        Subgenus <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.subgenus}}</i></a>
+                        Subgenus <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}"><i>{{species.accepted.subgenus}}</i></a>
                     {% endif %}
                     {% if species.accepted.section %}
                         {% if species.accepted.subgenus %}
-                            Section <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.section}}</i></a>
+                            Section <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}"><i>{{species.accepted.section}}</i></a>
                         {% else %}
-                            Section <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.section}}</i></a>
+                            Section <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}"><i>{{species.accepted.section}}</i></a>
                         {% endif %}
                     {% endif %}
                     {% if species.accepted.subsection %}
                         {% if species.accepted.section %}
-                            Subsection <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.subsection}}</i></a>
+                            Subsection <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}"><i>{{species.accepted.subsection}}</i></a>
                         {% else %}
-                            Subsection <a href="{% url 'orchidlist:browse' %}?subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.subsection}}</i></a>
+                            Subsection <a href="{% url 'orchidlist:browse' %}?subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}"><i>{{species.accepted.subsection}}</i></a>
                         {% endif %}
                     {% endif %}
                     {% if species.accepted.series %}
-                        Series <a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&att="><i>{{species.accepted.series}}</i></a>
+                        Series <a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}"><i>{{species.accepted.series}}</i></a>
                     {% endif %}
                 {% else %}
                     {% if species.hybrid.seed_id.pid %}

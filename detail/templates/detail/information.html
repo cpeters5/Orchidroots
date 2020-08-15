@@ -345,40 +345,40 @@ seedparent, pollparent {
                 <div style="padding-left:10px;">
                     {% if species.gen.subfamily %}
                         <br><b>Subfamily:</b>
-                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:genera' %}?genustype=species&sf={{species.gen.subfamily.subfamily}}&type=species&role={{role}}&att=">{{species.gen.subfamily}}</a>
+                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:genera' %}?genustype=species&sf={{species.gen.subfamily.subfamily}}&type=species&role={{role}}">{{species.gen.subfamily}}</a>
                     {% endif %}
 
                     {% if species.gen.tribe %}
                         <br><b>Tribe:</b>
-                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:genera' %}?genustype=species&t={{species.gen.tribe.tribe}}&type=species&role={{role}}&att=">{{species.gen.tribe}}</a>
+                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:genera' %}?genustype=species&t={{species.gen.tribe.tribe}}&type=species&role={{role}}">{{species.gen.tribe}}</a>
                     {% endif %}
 
                     {% if species.gen.subtribe %}
                         <br><b>Subtribe:</b>
-                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:genera' %}?genustype=species&st={{species.gen.subtribe.subtribe}}&type=species&role={{role}}&att=">{{species.gen.subtribe}}</a>
+                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:genera' %}?genustype=species&st={{species.gen.subtribe.subtribe}}&type=species&role={{role}}">{{species.gen.subtribe}}</a>
                     {% endif %}
 
                         <br><b>Genus:</b>
                         {{species.gen}}:
-                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?type=species&genus={{species.genus}}&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                        &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked&att=">images</a>
+                        <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?type=species&genus={{species.genus}}&role={{role}}">list</a>&nbsp;&nbsp;|
+                        &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
 
                     {% if species.accepted.subgenus %}
                         <br><b>Subgenus:</b>
                         {{species.accepted.subgenus}}:
-                            <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                            &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked&att=">images</a>
+                            <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                            &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                     {% endif %}
 
                     {% if species.accepted.section %}
                         <br><b>Section:</b>
                             {{species.accepted.section}}:
                                 {% if species.accepted.subgenus %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked&att=">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked&att=">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 
@@ -386,11 +386,11 @@ seedparent, pollparent {
                         <br><b>Subsection:</b>
                                 {{species.accepted.subsection}}:
                                 {% if species.accepted.subgenus %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked&att=">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked&att=">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 
@@ -399,11 +399,11 @@ seedparent, pollparent {
                                 {{species.accepted.series}}
                                 {% if species.accepted.section %}
 
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked&att=">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&att=">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked&att=">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 <!--                <hr>-->
@@ -419,9 +419,9 @@ seedparent, pollparent {
                     {% if user.tier.tier > 2 and role == 'cur' %}
                     <div class="card">
                        {% if species.type == 'species' %}
-                           <a type="button" class="btn btn-primary btn-sm info-collapse" href="{% url 'detail:curateinfospc' species.pid %}?&role={{role}}&att=">Update Information</a>
+                           <a type="button" class="btn btn-primary btn-sm info-collapse" href="{% url 'detail:curateinfospc' species.pid %}?&role={{role}}">Update Information</a>
                        {% elif species.type == 'hybrid' %}
-                           <a type="button" class="btn btn-primary btn-sm info-collapse" href="{% url 'detail:curateinfohyb' species.pid %}?&role={{role}}&att=">Update Information</a>
+                           <a type="button" class="btn btn-primary btn-sm info-collapse" href="{% url 'detail:curateinfohyb' species.pid %}?&role={{role}}">Update Information</a>
                        {% endif %}
                     </div>
                     {% endif %}
@@ -548,7 +548,7 @@ seedparent, pollparent {
                                         {% for off in offspring_list %}
                                          <tr >
                                              <td class="border-lb" style="text-align: left">
-                                                 <a href="{% url 'detail:information' off.pid.pid %}?role={{role}}&att=">
+                                                 <a href="{% url 'detail:information' off.pid.pid %}?role={{role}}">
                                                  <span style="font-zize:11px">
                                                      {{off.pid.name |safe}}
                                                      {% if off.pid.num_image > 0 %} *{% endif %}
@@ -620,11 +620,11 @@ seedparent, pollparent {
                             </div>
                         {% endfor %}
                     </div>
-                <span style="text-align:center"><a href="{% url 'detail:photos'  species.pid %}?tab=sum&gen={{species.gen.pid}}&att=">more ... </a></span>
+                <span style="text-align:center"><a href="{% url 'detail:photos'  species.pid %}?tab=sum&gen={{species.gen.pid}}">more ... </a></span>
                 {% else %}
                     <div style="width: 100%; font-size:12px;border:0 solid lightgrey; margin:0 auto; text-align: center; padding:10px">
                         No image available. if you have one please consider uploading it
-                        <a href="{% url 'detail:uploadfile' species.pid %}?tab=sum&att=">here</a>.  You must login to upload a photo.  You could also post it in our facebook group
+                        <a href="{% url 'detail:uploadfile' species.pid %}?tab=sum">here</a>.  You must login to upload a photo.  You could also post it in our facebook group
                             <a href="https://www.facebook.com/groups/BlueNanta/?ref=br_rs">Blue Nanta, OrchidRoots User's Group</a>.
                         Copyright credit and a link to your website will be displayed with every photo.
                     </div>
@@ -658,7 +658,7 @@ seedparent, pollparent {
                         </div>
                         <div class="parent-text " style="text-align:center; margin-bottom:10px;">
                             {% if species.hybrid.seed_id.pid %}
-                                <a href="{% url 'detail:information' species.hybrid.seed_id.pid %}?role={{role}}&att=">{{species.hybrid.registered_seed_name_long|safe}}</a>
+                                <a href="{% url 'detail:information' species.hybrid.seed_id.pid %}?role={{role}}">{{species.hybrid.registered_seed_name_long|safe}}</a>
                             {% else %}
                                 No Data
                             {% endif %}
@@ -691,7 +691,7 @@ seedparent, pollparent {
                         </div>
                         <div class="parent-text" style="text-align:center;">
                             {% if species.hybrid.pollen_id.pid %}
-                                    <a href="{% url 'detail:information' species.hybrid.pollen_id.pid %}?role={{role}}&att=">{{species.hybrid.registered_pollen_name_long|safe}}</a>
+                                    <a href="{% url 'detail:information' species.hybrid.pollen_id.pid %}?role={{role}}">{{species.hybrid.registered_pollen_name_long|safe}}</a>
                             {% else %}
                             No Data
                             {% endif %}
@@ -722,7 +722,7 @@ seedparent, pollparent {
                                 </div>
                                 <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.seed_id.hybrid.seed_id %}
-                                    <a href="{% url 'detail:information' species.hybrid.seed_id.hybrid.seed_id.pid %}?role={{role}}&att=">{{species.hybrid.seed_id.hybrid.seed_id.name|safe}}</a>
+                                    <a href="{% url 'detail:information' species.hybrid.seed_id.hybrid.seed_id.pid %}?role={{role}}">{{species.hybrid.seed_id.hybrid.seed_id.name|safe}}</a>
                                     {% else %}
                                     Unknown
                                     {% endif %}
@@ -744,7 +744,7 @@ seedparent, pollparent {
                                 </div>
                                 <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.seed_id.hybrid.pollen_id %}
-                                    <a href="{% url 'detail:information' species.hybrid.seed_id.hybrid.pollen_id.pid %}?role={{role}}&att=">{{species.hybrid.seed_id.hybrid.pollen_id.name|safe}}</a>
+                                    <a href="{% url 'detail:information' species.hybrid.seed_id.hybrid.pollen_id.pid %}?role={{role}}">{{species.hybrid.seed_id.hybrid.pollen_id.name|safe}}</a>
                                     {% else %}
                                     unknown
                                     {% endif %}
@@ -776,7 +776,7 @@ seedparent, pollparent {
                                 </div>
                                <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.pollen_id.hybrid.seed_id %}
-                                            <a href="{% url 'detail:information' species.hybrid.pollen_id.hybrid.seed_id.pid %}?role={{role}}&att=">{{species.hybrid.pollen_id.hybrid.seed_id.name|safe}}</a>
+                                            <a href="{% url 'detail:information' species.hybrid.pollen_id.hybrid.seed_id.pid %}?role={{role}}">{{species.hybrid.pollen_id.hybrid.seed_id.name|safe}}</a>
                                     {% else %}
                                         Unknown
                                     {% endif %} <!-- if pollenpollen_id -->
@@ -800,7 +800,7 @@ seedparent, pollparent {
 
                                 <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.pollen_id.hybrid.pollen_id %}
-                                            <a href="{% url 'detail:information' species.hybrid.pollen_id.hybrid.pollen_id.pid %}?tab=sum&att=">{{species.hybrid.pollen_id.hybrid.pollen_id.name|safe}}</a>
+                                            <a href="{% url 'detail:information' species.hybrid.pollen_id.hybrid.pollen_id.pid %}?tab=sum">{{species.hybrid.pollen_id.hybrid.pollen_id.name|safe}}</a>
                                     {% else %}
                                         Unknown
                                     {% endif %} <!-- if pollenpollen_id -->
@@ -831,7 +831,7 @@ seedparent, pollparent {
                             {% endif %}
                             <br>
                             <div style="clear:left;font-size:9px;line-height:10px; height:40px"><br>
-                                    <a href="{% url 'detail:information' p.aid.pid %}?role={{role}}&att=">
+                                    <a href="{% url 'detail:information' p.aid.pid %}?role={{role}}">
                                 {% if p.aid.pid > 0 %}{{p.aid.abrevname|safe}}
                                 {% else %}no data
                                 {% endif %}

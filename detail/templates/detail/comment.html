@@ -458,7 +458,7 @@ div.text-bl a {
                         <option value="response">Response to error report</option>
                         <option value="info">Information</option>
                     </select>
-                    <a class="button button1" style="display:block;float:left;margin:0;padding:0;height:25px;width:180px;font-size: 14px" href="{% url 'detail:comments' %}?sort=-latest&prev_sort=latest&att=">Go to full list</a>
+                    <a class="button button1" style="display:block;float:left;margin:0;padding:0;height:25px;width:180px;font-size: 14px" href="{% url 'detail:comments' %}?sort=-latest&prev_sort=latest">Go to full list</a>
                     <textarea style="width: 100%; white-space: normal; poadding:5px; text-align: left; font-size: 13px; -moz-text-align-last: left;text-align-last: left;"  rows="6"  name="memo" form="commentform"></textarea>
                     {% csrf_token %}
                     <input type="hidden" name="type" value="hybrid" />

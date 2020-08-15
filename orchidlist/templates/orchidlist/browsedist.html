@@ -56,8 +56,8 @@ ul {
                     <div id="{{x.concard}}" class="collapse" data-parent="#accordion">
                         <ul>
                             <li>NEW CONTINENT</li>
-                            <li><a href="{% url 'orchidlist:browse' %}?&att=">{{x.continent_name}}</a></li>
-                            <li><a href="{% url 'orchidlist:browse' %}?&att=">{{x.name}}, {{x.region_name}}</a></li>
+                            <li><a href="{% url 'orchidlist:browse' %}">{{x.continent_name}}</a></li>
+                            <li><a href="{% url 'orchidlist:browse' %}">{{x.name}}, {{x.region_name}}</a></li>
             {% else %}
                 {% if x.region_name != x.prevreg %}
                         </ul></div></div>
@@ -71,11 +71,11 @@ ul {
 <!--                        <li style="list-style-type:none;padding: 0 2px; margin-bottom: 10px;">-->
 <!--                            <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" href="#{{x.regcard}}">{{x.region_name}}</button></li>-->
 <!--                            </ul><ul><li><div id="{{x.regcard}}" class="collapse" data-parent="#accordion">-->
-<!--                            <a href="{% url 'orchidlist:browse' %}?&att=">{{x.name}}, {{x.region_name}}</a></li>-->
+<!--                            <a href="{% url 'orchidlist:browse' %}">{{x.name}}, {{x.region_name}}</a></li>-->
 <!--                            <ul>-->
-                                    <li><a href="{% url 'orchidlist:browse' %}?&att=">{{x.name}}, {{x.region_name}}</a></li>
+                                    <li><a href="{% url 'orchidlist:browse' %}">{{x.name}}, {{x.region_name}}</a></li>
                 {% else %}
-                                    <li><a href="{% url 'orchidlist:browse' %}?&att=">{{x.name}}, {{x.region_name}}</a></li>
+                                    <li><a href="{% url 'orchidlist:browse' %}">{{x.name}}, {{x.region_name}}</a></li>
                 {% endif %}
             {% endif %}
         {% endfor %}
@@ -104,10 +104,10 @@ ul {
                         <div id="{{x.concard}}" class="collapse" data-parent="#accordion2">
                         <div class="card-body">
                         <ul style="list-style-type:none;padding: 0 2px; margin-bottom: 10px;">
-                            <li><a href="{% url 'orchidlist:browse' %}?&att=">{{x.continent_name}}</a></li>
-                            <li><a href="{% url 'orchidlist:browse' %}?&att=">{{x.name}}, {{x.region_name}}</a></li>
+                            <li><a href="{% url 'orchidlist:browse' %}">{{x.continent_name}}</a></li>
+                            <li><a href="{% url 'orchidlist:browse' %}">{{x.name}}, {{x.region_name}}</a></li>
             {% else %}
-                            <li><a href="{% url 'orchidlist:browse' %}?&att=">{{x.name}}, {{x.region_name}}</a></li>
+                            <li><a href="{% url 'orchidlist:browse' %}">{{x.name}}, {{x.region_name}}</a></li>
             {% endif %}
 
 

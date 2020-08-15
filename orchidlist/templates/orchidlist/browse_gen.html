@@ -163,9 +163,9 @@ img{
     <!--Main table-->
     {% if type == 'species' %}
         <a type="button" class="btn btn-secondary btn-xs" disabled href="#">Species</a>
-        <a type="button" class="btn btn-outline-secondary btn-xs" href="{% url 'orchidlist:browsegen' %}?type=hybrid&display={{display}}&alpha={{alpha}}&att=">Hybrid</a>
+        <a type="button" class="btn btn-outline-secondary btn-xs" href="{% url 'orchidlist:browsegen' %}?type=hybrid&display={{display}}&alpha={{alpha}}">Hybrid</a>
     {% else %}
-        <a type="button" class="btn btn-outline-secondary btn-xs" href="{% url 'orchidlist:browsegen' %}?type=species&display={{display}}&alpha={{alpha}}&att=">Species</a>
+        <a type="button" class="btn btn-outline-secondary btn-xs" href="{% url 'orchidlist:browsegen' %}?type=species&display={{display}}&alpha={{alpha}}">Species</a>
         <div type="button" class="btn btn-secondary btn-xs" disabled href="#">Hybrid</div>
     {% endif %}
 
@@ -180,7 +180,7 @@ img{
         {% endif %}
         {% for x in page_list %}
             <div class="imageitem m-1" style="display:inline-block; text-align:center;">
-                <a href="{% url 'orchidlist:browse' %}?type={{type}}&gen={{x.gen.pid}}&role={{role}}&display=checked&att=">
+                <a href="{% url 'orchidlist:browse' %}?type={{type}}&gen={{x.gen.pid}}&role={{role}}&display=checked">
                 <div class="imgcaption_top">
                     {{x.genus|safe}}
                 </div>

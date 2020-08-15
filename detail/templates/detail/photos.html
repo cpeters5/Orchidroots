@@ -256,14 +256,14 @@ a:hover {
             {% if user.tier.tier > 2 and role == 'cur' %}
                 {% if user.tier.tier > 3 and role == 'cur' %}
                     <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_newapproved' %}">Recently approved</a>
-                    <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_pending' %}?gen=&type={{species.type}}&att=">All pending photos</a>
+                    <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_pending' %}?gen=&type={{species.type}}">All pending photos</a>
                 {% endif %}
-                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_newupload' %}?gen=&type={{species.type}}&att=">New uploaded photos</a>
-                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web&att=">Upload url</a>
-                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc&att=">upload file</a>
+                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_newupload' %}?gen=&type={{species.type}}">New uploaded photos</a>
+                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web">Upload url</a>
+                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc">upload file</a>
             {% elif role == 'pri' %}
-<!--                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web&att=">Upload url</a>-->
-                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc&att=">upload file</a>
+<!--                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web">Upload url</a>-->
+                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc">upload file</a>
             {% endif %}
 
             <form action="?" id="variety">

@@ -26,11 +26,11 @@
                 <th>Subsection </th><th>year</th><th> Description</th>
             {% for subsec in subsection_list %}
             <tr>
-                <td><a href="{% url 'orchidlist:species' %}?subsection={{subsec}}&type=species&att=">
+                <td><a href="{% url 'orchidlist:species' %}?subsection={{subsec}}&type=species">
                     {{ subsec.subsection}}</a>
                     {% if subsec.author %}<i>{{ subsec.author }}</i>{% endif %}</td>
                 <td align=center>{% if subsec.year %}{{subsec.year}}{% endif %}</td>
-                <td>{% if subsec.section %}<a href="{% url 'orchidlist:species' %}?sec={{section}}&type=species&att=">{{subsec.section}}{% endif %}</td>
+                <td>{% if subsec.section %}<a href="{% url 'orchidlist:species' %}?sec={{section}}&type=species">{{subsec.section}}{% endif %}</td>
                 <td>{% if subsec.description %}{{subsec.description}}{% endif %}</td>
             </tr>
             {% endfor %}

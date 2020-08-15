@@ -163,10 +163,10 @@ input {
                 {% if sf %}{{sf}}{% else %}<dev style="color:blue">{{genustype|title}} type</dev> {% endif %}
             </button>
             <ul class="dropdown-menu scrollable-menu" style="margin:0">
-                <li><a href="?genustype=species&sort={{ sort }}&year={{ year }}&genus={{genus}}&author={{author}}&att=" >&nbsp;&nbsp;<span style="font-size: 12px;">Species&nbsp;</span></a></li>
-                <li><a href="?genustype=hybrid&sort={{ sort }}&year={{ year }}&genus={{genus}}&author={{author}}&att=">&nbsp;&nbsp;<span style="font-size: 12px;">Hybrid &nbsp;&nbsp;</span></a></li>
-                <li><a href="?genustype=synonym&status=synonym&sort={{ sort }}&year={{ year }}&genus={{genus}}&author={{author}}&att=">&nbsp;&nbsp;<span style="font-size: 12px;">Synonym </span></a></li>
-                <li><a href="?genustype=all&sort={{ sort }}&year={{ year }}&genus={{genus}}&att=" >&nbsp;&nbsp;<span style="font-size: 12px;">All Genera</span></a></li>
+                <li><a href="?genustype=species&sort={{ sort }}&year={{ year }}&genus={{genus}}&author={{author}}" >&nbsp;&nbsp;<span style="font-size: 12px;">Species&nbsp;</span></a></li>
+                <li><a href="?genustype=hybrid&sort={{ sort }}&year={{ year }}&genus={{genus}}&author={{author}}">&nbsp;&nbsp;<span style="font-size: 12px;">Hybrid &nbsp;&nbsp;</span></a></li>
+                <li><a href="?genustype=synonym&status=synonym&sort={{ sort }}&year={{ year }}&genus={{genus}}&author={{author}}">&nbsp;&nbsp;<span style="font-size: 12px;">Synonym </span></a></li>
+                <li><a href="?genustype=all&sort={{ sort }}&year={{ year }}&genus={{genus}}" >&nbsp;&nbsp;<span style="font-size: 12px;">All Genera</span></a></li>
             </ul>
         </div>
         {% if genustype == 'hybrid' %}
@@ -175,9 +175,9 @@ input {
                     {% if formula1 %}<span style="color:black">{{formula1}}</span>{% else %} Genus 1{% endif %}
                 </button>
                 <ul class="dropdown-menu scrollable-menu">
-                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2={{formula2}}&formula1=&att=">&nbsp;clear choice</a></li>
+                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2={{formula2}}">&nbsp;clear choice</a></li>
                     {% for g in genus_lookup %}
-                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula1={{g.genus}}&Cattleya&formula2={{formula2}}&att=">&nbsp;{{g.genus}}</a></li>
+                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula1={{g.genus}}&Cattleya&formula2={{formula2}}">&nbsp;{{g.genus}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -186,9 +186,9 @@ input {
                     {% if formula2 %}<span style="color:black">{{formula2}}</span>{% else %} Genus 2{% endif %}
                 </button>
                 <ul class="dropdown-menu scrollable-menu" >
-                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2=&formula1={{formula1}}&att=">&nbsp;clear choice</a></li>
+                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2=&formula1={{formula1}}">&nbsp;clear choice</a></li>
                     {% for g in genus_lookup %}
-                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2={{g.genus}}&formula1={{formula1}}&att=">&nbsp;{{g.genus}}</a></li>
+                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2={{g.genus}}&formula1={{formula1}}">&nbsp;{{g.genus}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -202,12 +202,12 @@ input {
                     {% if sf_obj.subfamily %}<span style="color:black">&nbsp;{{sf_obj.subfamily}}</span>{% else %}Subfamily{% endif %}
                 </button>
                 <ul class="dropdown-menu scrollable-menu">
-                    <li>{% if sf_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf=&t=&st=&genus=&genustype={{genustype}}&att=">&nbsp;</a>
+                    <li>{% if sf_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf=&t=&st=&genus=&genustype={{genustype}}">&nbsp;</a>
                         {% else %}<a href="#">&nbsp;</a>
                         {% endif %}
                     </li>
                     {% for sf in sf_list %}
-                    <li>{% if sf.subfamily != sf_obj.subfamily %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf.subfamily}}&t=&st=&genustype={{genustype}}&att=">{{sf.subfamily}}</a>
+                    <li>{% if sf.subfamily != sf_obj.subfamily %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf.subfamily}}&t=&st=&genustype={{genustype}}">{{sf.subfamily}}</a>
                         {% else %}<a href="#">{{sf_obj.subfamily}}</a>
                         {% endif %}
                     </li>
@@ -224,12 +224,12 @@ input {
                 </button>
 
                 <ul class="dropdown-menu scrollable-menu">
-                    <li>{% if t_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.sf}}&t=&st=&genustype={{genustype}}&author={{author}}&att=">&nbsp;</a>
+                    <li>{% if t_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.sf}}&t=&st=&genustype={{genustype}}&author={{author}}">&nbsp;</a>
                         {% else %}<a href="#">&nbsp;</a>
                         {% endif %}
                     </li>
                     {% for t in t_list %}
-                    <li>{% if t.tribe != t_obj.tribe %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.subfamily}}&t={{t.tribe}}&st=&genustype={{genustype}}&author={{author}}&att=">{{t.tribe}}</a>
+                    <li>{% if t.tribe != t_obj.tribe %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.subfamily}}&t={{t.tribe}}&st=&genustype={{genustype}}&author={{author}}">{{t.tribe}}</a>
                         {% else %}<a href="#">{{t_obj.tribe}}</a>
                         {% endif %}
                     </li>
@@ -246,12 +246,12 @@ input {
                 </button>
 
                 <ul class="dropdown-menu scrollable-menu">
-                    <li>{% if st_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st=&genustype={{genustype}}&author={{author}}&att=">&nbsp;</a>
+                    <li>{% if st_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st=&genustype={{genustype}}&author={{author}}">&nbsp;</a>
                         {% else %}<a href="#">&nbsp;</a>
                         {% endif %}
                     </li>
                     {% for st in st_list %}
-                    <li>{% if st.subtribe != st_obj.subtribe %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.subfamily}}&t={{t_obj.tribe}}&st={{st.subtribe}}&genustype={{genustype}}&author={{author}}&att=">{{st.subtribe}}</a>
+                    <li>{% if st.subtribe != st_obj.subtribe %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.subfamily}}&t={{t_obj.tribe}}&st={{st.subtribe}}&genustype={{genustype}}&author={{author}}">{{st.subtribe}}</a>
                         {% else %}<a href="#">{{st_obj.subfamily}}</a>
                         {% endif %}
                     </li>
@@ -283,47 +283,47 @@ input {
             <table class="table mytable table-condensed table-sm  table-bordered table-hover" style="background-color: white">
                 <thead>
                         {% if sort == 'genus' %}
-                        <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=genus&prev_sort={{sort}}&att=">Genus <i class="material-icons" style="font-size:16px;">arrow_upward</i></a>
+                        <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=genus&prev_sort={{sort}}">Genus <i class="material-icons" style="font-size:16px;">arrow_upward</i></a>
                         {% elif sort == '-genus' %}
-                        <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=genus&prev_sort={{sort}}&att=">Genus <i class="material-icons" style="font-size:16px;">arrow_downward</i></a>
+                        <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=genus&prev_sort={{sort}}">Genus <i class="material-icons" style="font-size:16px;">arrow_downward</i></a>
                         {% else %}
-                        <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=genus&prev_sort={{sort}}&att=">Genus</a>
+                        <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=genus&prev_sort={{sort}}">Genus</a>
                         {% endif %}
 
                         {% if status == 'synonym' %}
                            <th class="text-center">Accepted Name</th>
                         {% elif genustype == 'species' %}
                             {% if sort == 'sf' %}
-                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=sf&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Subfamily <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=sf&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Subfamily <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                             {% elif sort == '-sf' %}
-                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=sf&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Subfamily <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=sf&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Subfamily <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                             {% else %}
-                                <th class="text-center d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=sf&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Subfamily</a></th>
+                                <th class="text-center d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=sf&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Subfamily</a></th>
                             {% endif %}
 
                             {% if sort == 't' %}
-                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=t&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Tribe <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=t&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Tribe <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                             {% elif sort == '-t' %}
-                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=t&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Tribe <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=t&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Tribe <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                             {% else %}
-                                <th class="text-center d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=t&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Tribe</a></th>
+                                <th class="text-center d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=t&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Tribe</a></th>
                             {% endif %}
 
                             {% if sort == 'st' %}
-                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=st&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Subtribe <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=st&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Subtribe <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                             {% elif sort == '-st' %}
-                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=st&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Subtribe <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                                <th class="text-center mysorted d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=st&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Subtribe <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                             {% else %}
-                                <th class="text-center d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=st&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Subtribe</a></th>
+                                <th class="text-center d-none d-sm-table-cell"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=st&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Subtribe</a></th>
                             {% endif %}
 
                         {% elif genustype == 'hybrid' %}
                             {% if sort == 'description' %}
-                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=description&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Hybrid formula <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=description&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Hybrid formula <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                             {% elif sort == '-description' %}
-                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=description&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Hybrid formula <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=description&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Hybrid formula <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                             {% else %}
-                                <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=description&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">Hybrid formula</a></th>
+                                <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=description&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">Hybrid formula</a></th>
                             {% endif %}
                         {% endif %}
 
@@ -332,28 +332,28 @@ input {
                         {% endif %}
                         {% if genustype == 'species' or genustype == 'all' or not genustype %}
                             {% if sort == 'num_species' %}
-                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_species&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Species<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_species&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Species<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                             {% elif sort == '-num_species' %}
-                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_species&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Species<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_species&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Species<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                             {% else %}
-                                <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=-num_species&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Species<br>(%img)</a></th>
+                                <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=-num_species&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Species<br>(%img)</a></th>
                             {% endif %}
                         {% endif %}
 
                             {% if sort == 'num_hybrid' %}
-                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_hybrid&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Hybrid<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_hybrid&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Hybrid<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                             {% elif sort == '-num_hybrid' %}
-                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_hybrid&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Hybrid<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                                <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_hybrid&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Hybrid<br>(%img) <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                             {% else %}
-                                <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=-num_hybrid&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Hybrid<br>(%img)</a></th>
+                                <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=-num_hybrid&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Hybrid<br>(%img)</a></th>
                             {% endif %}
 
                         {% if sort == 'num_synonym' %}
-                            <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_synonym&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Syno<br>nym <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                            <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_synonym&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Syno<br>nym <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                         {% elif sort == '-num_synonym' %}
-                            <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_synonym&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Syno<br>nym <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                            <th class="text-center mysorted"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=num_synonym&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Syno<br>nym <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                         {% else %}
-                            <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=-num_synonym&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}&att=">#Syno<br>nym</a></th>
+                            <th class="text-center"><a href="?genus={{ genus }}&genustype={{genustype}}&status={{status}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&sort=-num_synonym&prev_sort={{sort}}&formula1={{formula1}}&formula2={{formula2}}">#Syno<br>nym</a></th>
                         {% endif %}
                     </tr>
 
@@ -365,11 +365,11 @@ input {
                         {% if genus.status == 'synonym' %}
                             {{genus.genus}} <i>{{genus.author}}</i> {% if genus.year > 0 %}{{genus.year}}{% endif %}
                         {% elif genus.type == 'species' %}
-                            <a href="{% url 'orchidlist:species' %}?genus={{genus.genus}}&genustype={{genus.type}}&att=">{{genus.genus}}</a>  ({{genus.status}} {{genus.type}})
+                            <a href="{% url 'orchidlist:species' %}?genus={{genus.genus}}&genustype={{genus.type}}">{{genus.genus}}</a>  ({{genus.status}} {{genus.type}})
                         {% elif genus.type == 'hybrid' %}
-                            <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.genus}}&genustype={{genus.type}}&att=">{{genus.genus}}</a>
+                            <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.genus}}&genustype={{genus.type}}">{{genus.genus}}</a>
                         {% else %}
-                            <a href="{% url 'orchidlist:species' %}?genus={{genus.genus}}&genustype={{genus.type}}&att=">{{genus.genus}}</a>
+                            <a href="{% url 'orchidlist:species' %}?genus={{genus.genus}}&genustype={{genus.type}}">{{genus.genus}}</a>
                         {% endif %}
                             {% if genus.abrev != genus.genus %}({{genus.abrev}}){% endif %}
                         </td>
@@ -379,9 +379,9 @@ input {
                                 <span  style="font-size: 11px;">
                                 {% if genus.status == 'synonym' %}
                                     {% if genus.type == 'species' %}
-                                        <a href="{% url 'orchidlist:species' %}?genus={{genus.getAcc}}&genustype={{genus.type}}&att=">{{genus.getAccepted|safe}}</a>
+                                        <a href="{% url 'orchidlist:species' %}?genus={{genus.getAcc}}&genustype={{genus.type}}">{{genus.getAccepted|safe}}</a>
                                     {% else %}
-                                        <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.getAcc}}&genustype={{genus.type}}&att=">{{genus.getAccepted|safe}}</a>
+                                        <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.getAcc}}&genustype={{genus.type}}">{{genus.getAccepted|safe}}</a>
                                     {% endif %}
                                 {% elif genus.type == 'species' %}natural genus ({{genus.get_description}})
                                 {% elif genus.type == 'hybrid' %} hybrid ({{genus.get_description}})
@@ -397,35 +397,35 @@ input {
                         {% elif status == 'synonym' %}
                             <td class="align-center">
                                 {% if genus.type == 'species' %}
-                                    <a href="{% url 'orchidlist:species' %}?genus={{genus.getAcc}}&status=synonym&att=">{{genus.getAccepted|safe}}</a>
+                                    <a href="{% url 'orchidlist:species' %}?genus={{genus.getAcc}}&status=synonym">{{genus.getAccepted|safe}}</a>
                                 {% else %}
-                                    <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.getAcc}}&status=synonym&att=">{{genus.getAccepted|safe}}</a>
+                                    <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.getAcc}}&status=synonym">{{genus.getAccepted|safe}}</a>
                                 {% endif %}
                             </td>
                         {% elif genustype == 'species' %}
                         <td class="align-center d-none d-sm-block d-none d-sm-table-cell">{% if genus.subfamily %}<a href="{% url 'orchidlist:subfamily' %}">{{genus.subfamily}}</a>{% endif %}</td>
-                        <td class="align-center d-none d-sm-block d-none d-sm-table-cell">{% if genus.tribe %}<a href="{% url 'orchidlist:tribe' %}?sf={{sf}}&att=">{{genus.tribe}}</a>{% endif %}</td>
-                        <td class="align-center d-none d-sm-block d-none d-sm-table-cell">{% if genus.subtribe %}<a href="{% url 'orchidlist:subtribe' %}?sf={{sf}}&t={{t}}&att=">{{genus.subtribe}}</a>{% endif %}</td>
+                        <td class="align-center d-none d-sm-block d-none d-sm-table-cell">{% if genus.tribe %}<a href="{% url 'orchidlist:tribe' %}?sf={{sf}}">{{genus.tribe}}</a>{% endif %}</td>
+                        <td class="align-center d-none d-sm-block d-none d-sm-table-cell">{% if genus.subtribe %}<a href="{% url 'orchidlist:subtribe' %}?sf={{sf}}&t={{t}}">{{genus.subtribe}}</a>{% endif %}</td>
                         {% endif %}
 
                         {% if genustype == 'species' or genustype == 'all' or not genustype %}
                         <td class="text-center small-font">
                             {% if genus.num_species %}
-                            <a href="{% url 'orchidlist:species' %}?genus={{genus}}&genustype=species&att="><span  style="font-size: 11px;">{{genus.num_species}}</span></a>
-                            {% if genus.pct_spc_with_image %}(<a href="{% url 'orchidlist:browse' %}?type=species&gen={{genus.pid}}&att="><span  style="font-size: 11px;">{{genus.get_roundspcpct}}%</span></a>){% endif %}
+                            <a href="{% url 'orchidlist:species' %}?genus={{genus}}&genustype=species"><span  style="font-size: 11px;">{{genus.num_species}}</span></a>
+                            {% if genus.pct_spc_with_image %}(<a href="{% url 'orchidlist:browse' %}?type=species&gen={{genus.pid}}"><span  style="font-size: 11px;">{{genus.get_roundspcpct}}%</span></a>){% endif %}
                             {% endif %}
                         </td>
                         {% endif %}
 
                         <td class="text-center small-font">
                             {% if genus.num_hybrid %}
-                            <a href="{% url 'orchidlist:hybrid' %}?genustype=hybrid&genus={{genus}}&att="><span  style="font-size: 11px;">{{genus.num_hybrid}}</span></a>
-                                {% if genus.pct_hyb_with_image %}(<a href="{% url 'orchidlist:browse' %}?type=hybrid&gen={{genus.pid}}&att="><span  style="font-size: 11px;">{{genus.get_roundhybpct}}%</span></a>){% endif %}
+                            <a href="{% url 'orchidlist:hybrid' %}?genustype=hybrid&genus={{genus}}"><span  style="font-size: 11px;">{{genus.num_hybrid}}</span></a>
+                                {% if genus.pct_hyb_with_image %}(<a href="{% url 'orchidlist:browse' %}?type=hybrid&gen={{genus.pid}}"><span  style="font-size: 11px;">{{genus.get_roundhybpct}}%</span></a>){% endif %}
                             {% endif %}
                         </td>
                         <td class="text-center small-font">
                             {% if genus.num_synonym and genus.num_synonym > 0%}
-                                <a href="{% url 'orchidlist:species' %}?status=synonym&genus={{genus}}&att="><span  style="font-size: 10px;"> {{genus.num_synonym}}</span></a>
+                                <a href="{% url 'orchidlist:species' %}?status=synonym&genus={{genus}}"><span  style="font-size: 10px;"> {{genus.num_synonym}}</span></a>
                             {% endif %}
                         </td>
                     </tr>

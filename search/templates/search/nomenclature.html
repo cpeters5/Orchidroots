@@ -52,7 +52,7 @@
         <h4>Nomenclature</h4>
     </div>
 
-    <div class="d-flex flex-row flex-wrap p-2 justify-content-left">
+    <div class="d-flex flex-row flex-wrap p-2 border justify-content-center">
         <form action="{% url 'search:nomenclature' %}" autocomplete="off">
             <input type="hidden" name="role" value="{{ role }}" />
             <input list="genus_list" name="genus" onClick="this.setSelectionRange(0, this.value.length)" value="{{genus}}" class="custom-select" placeholder="Select a genus first">
@@ -62,7 +62,11 @@
                 <option value="{{g.genus}}">{{g.genus}}</option>
             {% endfor %}
         </datalist>
+    </div>
 
+
+    <div class="d-flex flex-row flex-wrap p-2 justify-content-center">
+    <div class="d-flex flex-row flex-wrap p-2 justify-content-center">
 <!--            Species-->
         <form action="{% url 'search:nomenclature' %}" autocomplete="off">
             <input list="species_list" name="species" value="{{species}}" class="custom-select" placeholder="{% if not genus %}Then select a species{% else %}Select {{genus}} species {% endif %}"/>
@@ -78,6 +82,15 @@
             {% endfor %}
         </datalist>
 
+        <div class="d-flex p-2 justify-content-left">
+            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
+            <h5>Species</h5>&nbsp;&nbsp;
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:species' %}?role={{role}}">Full Species List</a>
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=species">Species Sample Images</a>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap p-2 justify-content-left">
 <!--            HYBRID LIST        -->
         <form action="{% url 'search:nomenclature' %}" autocomplete="off">
             <input list="hybrid_list" name="species" value="{{species}}" class="custom-select" placeholder="{% if not genus %}Then select a hybrid{% else %}Select {{genus}} hybrid {% endif %}">
@@ -91,8 +104,15 @@
                 <option value="{{s.navbar_name}}"></option>
             {% endfor %}
         </datalist>
+        <div class="d-flex p-2 justify-content-left">
+            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
+            <h5>Hybrid</h5>&nbsp;&nbsp;
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:hybrid' %}?role={{role}}">Full Hybrid List</a>
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=hybrid">Species Sample Images</a>
+            </div>
+        </div>
     </div>
-
+    </div>
 
 
     {% if genus %}
@@ -131,10 +151,25 @@
         </div>
         <div class="d-flex p-2 justify-content-left">
             <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
+            <h5>Genus</h5>&nbsp;&nbsp;
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:genera' %}?role={{role}}&genustype=all">Full Genus List</a>
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browsegen' %}?role={{role}}&type=species">Genus Sample Images</a>
+            </div>
+        </div>
+
+        <div class="d-flex p-2 justify-content-left">
+            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
+            <h5>Species</h5>&nbsp;&nbsp;
                 <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:species' %}?role={{role}}">Full Species List</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=species">Full Species Images</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-s custom-link" href="{% url 'orchidlist:hybrid' %}?role={{role}}">Full Hybrid List</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-s custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=hybrid">Full Hybrid Images</a>
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=species">Species Sample Images</a>
+            </div>
+        </div>
+
+        <div class="d-flex p-2 justify-content-left">
+            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
+            <h5>Hybrid</h5>&nbsp;&nbsp;
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:hybrid' %}?role={{role}}">Full Hybrid List</a>
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=hybrid">Species Sample Images</a>
             </div>
         </div>
     </div>

@@ -67,7 +67,7 @@ table {
             {% csrf_token %}
                 <input type="hidden" name="pid" value="{{ species.pid }}" />
                 <button type="submit" class="btn btn-primary btn-sm"  style="width:80px">Save</button>
-                &nbsp;&nbsp;&nbsp;<a href="{% url 'detail:curate' species.pid %}?tab=sum&att=">Cancel</a>
+                &nbsp;&nbsp;&nbsp;<a href="{% url 'detail:curate' species.pid %}">Cancel</a>
                 {{spcform|crispy}}
 <!--                <hr>-->
                 {{form|crispy}}

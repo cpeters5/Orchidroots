@@ -70,21 +70,21 @@ a:hover {
                     <tr class="center" bgcolor="#e3e3e3">
                         <th class="border-lb">
                             {% if sort == 'name' %}
-                                <a href="?sort=-name&prev_sort={{ sort }}&att=">Species<i class="material-icons" style="font-size:16px;">arrow_upward</i></a>
+                                <a href="?sort=-name&prev_sort={{ sort }}">Species<i class="material-icons" style="font-size:16px;">arrow_upward</i></a>
                             {%  elif sort == '-name' %}
-                                <a href="?sort=name&prev_sort={{ sort }}&att=">Species<i class="material-icons" style="font-size:16px;">arrow_downward</i></a>
+                                <a href="?sort=name&prev_sort={{ sort }}">Species<i class="material-icons" style="font-size:16px;">arrow_downward</i></a>
                             {%  else %}
-                                <a href="?sort=name&prev_sort={{ sort }}&att=">Species</a>
+                                <a href="?sort=name&prev_sort={{ sort }}">Species</a>
                             {% endif %}
                         </th>
                         <th class="border-lb">comments</th>
                         <th class="border-rb">
                             {% if sort == 'latest' %}
-                                <a href="?sort=-latest&prev_sort={{ sort }}&att=">Date<i class="material-icons" style="font-size:16px;">arrow_upward</i></a>
+                                <a href="?sort=-latest&prev_sort={{ sort }}">Date<i class="material-icons" style="font-size:16px;">arrow_upward</i></a>
                             {%  elif sort == '-latest' %}
-                                <a href="?sort=latest&prev_sort={{ sort }}&att=">Date<i class="material-icons" style="font-size:16px;">arrow_downward</i></a>
+                                <a href="?sort=latest&prev_sort={{ sort }}">Date<i class="material-icons" style="font-size:16px;">arrow_downward</i></a>
                             {%  else %}
-                                <a href="?sort=latest&prev_sort={{ sort }}&att=">Date</a>
+                                <a href="?sort=latest&prev_sort={{ sort }}">Date</a>
                             {% endif %}
                         </th>
                     </tr>

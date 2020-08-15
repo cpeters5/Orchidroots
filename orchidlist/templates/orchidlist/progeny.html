@@ -53,60 +53,60 @@
                 <tr class="center" style="background-color: #f2f2f2">
                    {% if sort == 'name' %}
                     <th class="border-lb text-left" >
-                        <a href="?sort=name&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att="><span style="font-size:11px;font-weight:normal;">Descendant ({{first}}-{{last}} of {{total}}) <i class="material-icons" style="font-size:16px;">arrow_upward</i></span> </a>
+                        <a href="?sort=name&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}"><span style="font-size:11px;font-weight:normal;">Descendant ({{first}}-{{last}} of {{total}}) <i class="material-icons" style="font-size:16px;">arrow_upward</i></span> </a>
                     {% elif sort == '-name' %}
                     <th class="border-lb text-left">
-                        <a href="?sort=name&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Descendant ({{first}}-{{last}} of {{total}}) <i class="material-icons" style="font-size:16px;">arrow_downward</i></a> <span style="font-weight:normal"></span>
+                        <a href="?sort=name&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Descendant ({{first}}-{{last}} of {{total}}) <i class="material-icons" style="font-size:16px;">arrow_downward</i></a> <span style="font-weight:normal"></span>
                     {% else %}
                     <th class="border-lb text-left"  data-toggle="tooltip" data-placement="bottom" title="bold-faced names: immediate offspring. *: photos available">
-                        <a href="?sort=name&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Descendant ({{total}}) </a> <span style="font-weight:normal; font-size:14px;float:right;"></span>
+                        <a href="?sort=name&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Descendant ({{total}}) </a> <span style="font-weight:normal; font-size:14px;float:right;"></span>
                     {% endif %}
                     </th>
 
                     {% if sort == 'seed' %}
                     <th class="border-lb text-right">
-                        <a href="?sort=seed&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Seed Parent <i class="material-icons" style="font-size:16px;">arrow_upward</i> ×</a></th>
+                        <a href="?sort=seed&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Seed Parent <i class="material-icons" style="font-size:16px;">arrow_upward</i> ×</a></th>
                     {% elif sort == '-seed' %}
                     <th class="border-lb text-right">
-                        <a href="?sort=seed&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Seed Parent <i class="material-icons" style="font-size:16px;">arrow_downward</i> ×</a></th>
+                        <a href="?sort=seed&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Seed Parent <i class="material-icons" style="font-size:16px;">arrow_downward</i> ×</a></th>
                     {% else %}
                     <th class="border-lb text-right">
-                        <a href="?sort=seed&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Seed Parent </a></th>
+                        <a href="?sort=seed&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Seed Parent </a></th>
                     {% endif %}
 
                     <th width="5px" >×</th>
 
                     {% if sort == 'pollen' %}
                     <th class="text-left">
-                        <a href="?sort=pollen&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Pollen Parent <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                        <a href="?sort=pollen&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Pollen Parent <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                     {% elif sort == '-pollen' %}
                     <th class="text-left">
-                        <a href="?sort=pollen&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Pollen Parent <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                        <a href="?sort=pollen&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Pollen Parent <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                     {% else %}
                     <th class="text-left">
-                        <a href="?sort=pollen&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Pollen Parent </a></th>
+                        <a href="?sort=pollen&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Pollen Parent </a></th>
                     {% endif %}
 
                     {% if sort == 'pct' %}
                     <th class="border-rb text-center d-none d-sm-block" valign="center">
-                        <a href="?sort=pct&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">% <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                        <a href="?sort=pct&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">% <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                     {% elif sort == '-pct' %}
                     <th class="border-rb text-center d-none d-sm-block" valign="center">
-                        <a href="?sort=pct&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">% <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                        <a href="?sort=pct&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">% <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                     {% else %}
                     <th class="border-rb text-center d-none d-sm-block" valign="center">
-                        <a href="?sort=pct&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">% </a></th>
+                        <a href="?sort=pct&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">% </a></th>
                     {% endif %}
 
                      {% if sort == 'img' %}
                     <th class="border-lb text-center d-none d-sm-table-cell" valign="center">
-                        <a href="?sort=img&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Img <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
+                        <a href="?sort=img&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Img <i class="material-icons" style="font-size:16px;">arrow_upward</i></a></th>
                     {% elif sort == '-img' %}
                     <th class="border-lb text-center d-none d-sm-table-cell" valign="center">
-                        <a href="?sort=img&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Img <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
+                        <a href="?sort=img&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Img <i class="material-icons" style="font-size:16px;">arrow_downward</i></a></th>
                     {% else %}
                     <th class="border-rb text-center d-none d-sm-table-cell" valign="center">
-                        <a href="?sort=img&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}&att=">Img </a></th>
+                        <a href="?sort=img&prev_sort={{sort}}&genus={{genus}}&spc={{spc}}&seed={{seed}}&pollen={{pollen}}&type={{type}}">Img </a></th>
                     {% endif %}
 
                 </tr>
@@ -117,19 +117,19 @@
                         {% if image.did.pid_id %}
                             {% if role == 'cur' %}
                                 {% if image.did.seed_id.pid == species.pid %}
-                                    <a href="{% url 'detail:curate' image.did.pid.pid %}?role={{role}}&att="><span style="color:#7e14a3"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
+                                    <a href="{% url 'detail:curate' image.did.pid.pid %}?role={{role}}"><span style="color:#7e14a3"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
                                 {% elif image.did.pollen_id_id == species.pid %}
-                                    <a href="{% url 'detail:curate' image.did.pid.pid %}?role={{role}}&att="><span style="color:#136da8"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
+                                    <a href="{% url 'detail:curate' image.did.pid.pid %}?role={{role}}"><span style="color:#136da8"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
                                 {% else %}
-                                    <a href="{% url 'detail:curate' image.did.pid.pid %}?role={{role}}&att=">{{image.did.pid.namecasual|safe}}</a>
+                                    <a href="{% url 'detail:curate' image.did.pid.pid %}?role={{role}}">{{image.did.pid.namecasual|safe}}</a>
                                 {% endif %}
                             {% else %}
                                 {% if image.did.seed_id.pid == species.pid %}
-                                    <a href="{% url 'detail:information' image.did.pid.pid %}?role={{role}}&att="><span style="color:#7e14a3"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
+                                    <a href="{% url 'detail:information' image.did.pid.pid %}?role={{role}}"><span style="color:#7e14a3"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
                                 {% elif image.did.pollen_id_id == species.pid %}
-                                    <a href="{% url 'detail:information' image.did.pid.pid %}?role={{role}}&att="><span style="color:#136da8"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
+                                    <a href="{% url 'detail:information' image.did.pid.pid %}?role={{role}}"><span style="color:#136da8"><b>{{image.did.pid.namecasual|safe}}</b></span></a>
                                 {% else %}
-                                    <a href="{% url 'detail:information' image.did.pid.pid %}?role={{role}}&att=">{{image.did.pid.namecasual|safe}}</a>
+                                    <a href="{% url 'detail:information' image.did.pid.pid %}?role={{role}}">{{image.did.pid.namecasual|safe}}</a>
                                 {% endif %}
                             {% endif %}
                         {% else %}
@@ -141,9 +141,9 @@
                     <td class="border-lb text-right">
                         {% if image.did.seed_id.pid %}
                             {% if role == 'cur' %}
-                                <a href="{% url 'detail:curate' image.did.seed_id.pid %}?role={{role}}&att=">{{image.did.registered_seed_name_short|safe}}</a>
+                                <a href="{% url 'detail:curate' image.did.seed_id.pid %}?role={{role}}">{{image.did.registered_seed_name_short|safe}}</a>
                             {% else %}
-                                <a href="{% url 'detail:information' image.did.seed_id.pid %}?role={{role}}&att=">{{image.did.registered_seed_name_short|safe}}</a>
+                                <a href="{% url 'detail:information' image.did.seed_id.pid %}?role={{role}}">{{image.did.registered_seed_name_short|safe}}</a>
                             {% endif %}
                         {% else %}
                             na
@@ -154,9 +154,9 @@
 <!--                        Some hybrrid's parent(s) are missing-->
                         {% if image.did.pollen_id.pid %}
                             {% if role == 'cur' %}
-                                <a href="{% url 'detail:curate' image.did.pollen_id.pid %}?role={{role}}&att=">{{image.did.registered_pollen_name_short|safe}}</a>
+                                <a href="{% url 'detail:curate' image.did.pollen_id.pid %}?role={{role}}">{{image.did.registered_pollen_name_short|safe}}</a>
                             {% else %}
-                                    <a href="{% url 'detail:information' image.did.pollen_id.pid %}?role={{role}}&att=">{{image.did.registered_pollen_name_short|safe}}</a>
+                                    <a href="{% url 'detail:information' image.did.pollen_id.pid %}?role={{role}}">{{image.did.registered_pollen_name_short|safe}}</a>
                             {% endif %}
                         {% else %}
                             na

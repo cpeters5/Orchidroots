@@ -26,7 +26,7 @@
                 <th>Subgenus </th><th>year</th><th> Description</th>
             {% for subgen in subgenus_list %}
             <tr>
-                <td><a href="{% url 'orchidlist:species' %}?subgenus={{subgen}}&type=species&att=">
+                <td><a href="{% url 'orchidlist:species' %}?subgenus={{subgen}}&type=species">
                     {{ subgen.subgenus}}</a>
                     {% if subgen.author %}<i>{{ subgen.author }}</i>{% endif %}</td>
                 <td align=center>{% if subgen.year %}{{subgen.year}}{% endif %}</td>

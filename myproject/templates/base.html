@@ -354,26 +354,26 @@ body {
                             <ul class="dropdown-menu">
                                 {% if user.tier.tier == 5 %}
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
-                                    <li><a class="dropdown-item" href="https://analytics.google.com/analytics/web/?utm_source=marketingplatform.google.com&utm_medium=et&utm_campaign=marketingplatform.google.com%2Fabout%2Fanalytics%2F#/realtime/rt-location/a128957305w207417477p200133280/&att=">Google Analytics</a></li>
+                                    <li><a class="dropdown-item" href="https://analytics.google.com/analytics/web/?utm_source=marketingplatform.google.com&utm_medium=et&utm_campaign=marketingplatform.google.com%2Fabout%2Fanalytics%2F#/realtime/rt-location/a128957305w207417477p200133280/">Google Analytics</a></li>
                                 {% endif %}
                                 {% if user.tier.tier >= 3 %}
-                                    <li><a class="dropdown-item" href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked&att=">Curator</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked">Curator</a></li>
                                     <li><a class="dropdown-item" href="{% url 'detail:comments' %}?sort=-latest">Comments</a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public Collection</a></li>
-                                <li><a class="dropdown-item" href="{% url 'detail:myphoto_browse_spc' %}?tab=brg&role=pri&att=">My Collection</a></li>
+                                <li><a class="dropdown-item" href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked">Public Collection</a></li>
+                                <li><a class="dropdown-item" href="{% url 'detail:myphoto_browse_spc' %}?tab=brg&role=pri">My Collection</a></li>
     <!--                            <hr style="margin:0;padding:0;">-->
-                                <li><a class="dropdown-item" href="{% url 'update_profile' %}?next=/&att=">Update profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}?next=/&att=">Logout</a></li>
+                                <li><a class="dropdown-item" href="{% url 'update_profile' %}?next=/">Update profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}?next=/">Logout</a></li>
                             </ul>
                         </div>
                     </li>
                 {% else %}
                     <li class="nav-item" style="margin-top:8px;">
-                            <a class="nav-link" href="{% url 'register' %}?next=/login&att=">Register</a>
+                            <a class="nav-link" href="{% url 'register' %}?next=/login">Register</a>
                     </li>
                     <li class="nav-item" style="margin-top:8px;">
-                            <a class="nav-link" href="{% url 'login' %}?next=/&att=">Login</a>
+                            <a class="nav-link" href="{% url 'login' %}?next=/">Login</a>
                     </li>
                 {% endif %}
             </ul>
@@ -402,15 +402,15 @@ body {
                     <div class="dropdown" id="pub2">
                         {% if species %}
                             {% if role == 'pub' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'pub' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked">Public</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked">Public</a>
                             {% endif %}
 
                         {% endif %}
@@ -418,15 +418,15 @@ body {
                     <div class="dropdown" id="pri2">
                         {% if species %}
                             {% if role == 'pri' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'pri' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?tab=pri&role=pri&att=">Private</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?tab=pri&role=pri">Private</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?tab=pri&role=pri&att=">Private</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?tab=pri&role=pri">Private</a>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -436,15 +436,15 @@ body {
                     <div class="dropdown" id="pub3">
                         {% if species %}
                             {% if role == 'pub' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub&att=">Public</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'pub' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked">Public</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked&att=">Public</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=pub&display=checked">Public</a>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -453,15 +453,15 @@ body {
                     <div class="dropdown" id="cur3">
                         {% if species %}
                             {% if role == 'cur' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:photos' species.pid %}?role=cur&att=">Curate</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:photos' species.pid %}?role=cur">Curate</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:photos' species.pid %}?role=cur&att=">Curate</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:photos' species.pid %}?role=cur">Curate</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'cur' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked&att=">Curate</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked">Curate</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked&att=">Curate</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'orchidlist:browsegen' %}?role=cur&display=checked">Curate</a>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -470,15 +470,15 @@ body {
                     <div class="dropdown" id="pri3">
                         {% if species %}
                             {% if role == 'pri' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri&att=">Private</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
                             {% endif %}
                         {% else %}
                            {% if role == 'pri' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?role=pri&att=">Private</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?role=pri">Private</a>
                            {% else %}
-                               <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?role=pri&att=">Private</a>
+                               <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto_browse_spc' %}?role=pri">Private</a>
                            {% endif %}
                         {% endif %}
                     </div>

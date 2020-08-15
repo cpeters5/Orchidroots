@@ -171,15 +171,15 @@ img{
         <div class="btn-group">
             <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">Species</button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'orchidlist:browse' %}?type=species&gen={{gen}}&role={{role}}&display={{display}}&att=">{{genus}} species images</a>
-                <a class="dropdown-item" href="{% url 'orchidlist:species' %}?type=species&gen={{gen}}&genus={{genus}}&role={{role}}&att=">{{genus}} species list</a>
+                <a class="dropdown-item" href="{% url 'orchidlist:browse' %}?type=species&gen={{gen}}&role={{role}}&display={{display}}">{{genus}} species images</a>
+                <a class="dropdown-item" href="{% url 'orchidlist:species' %}?type=species&gen={{gen}}&genus={{genus}}&role={{role}}">{{genus}} species list</a>
             </div>
         </div>
         <div class="btn-group">
             <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">Hybrid</button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'orchidlist:browse' %}?type=hybrid&gen={{gen}}&role={{role}}&display={{display}}&att=">{{genus}} hybrid images</a>
-                <a class="dropdown-item" href="{% url 'orchidlist:species' %}?type=hybrid&gen={{gen}}&genus={{genus}}&role={{role}}&att=">{{genus}} hybrid list</a>
+                <a class="dropdown-item" href="{% url 'orchidlist:browse' %}?type=hybrid&gen={{gen}}&role={{role}}&display={{display}}">{{genus}} hybrid images</a>
+                <a class="dropdown-item" href="{% url 'orchidlist:species' %}?type=hybrid&gen={{gen}}&genus={{genus}}&role={{role}}">{{genus}} hybrid list</a>
             </div>
         </div>
 
@@ -192,10 +192,10 @@ img{
                 {% if subgenus_obj %}{{subgenus_obj.subgenus}}{% else %}Subgenus{% endif %}
             </button>
             <ul class="dropdown-menu scrollable-menu">
-                <li><a href="?alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&gen={{gen}}&display={{display}}&att=">Clear Subgenus</a>
+                <li><a href="?alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&gen={{gen}}&display={{display}}">Clear Subgenus</a>
                 </li>
                 {% for subgenus in subgenus_list %}
-                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus.subgenus}}&section=&subsection=&series=&type={{type}}&gen={{gen}}&display={{display}}&att=">{{subgenus.subgenus}}</a></li>
+                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus.subgenus}}&section=&subsection=&series=&type={{type}}&gen={{gen}}&display={{display}}">{{subgenus.subgenus}}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -208,9 +208,9 @@ img{
                 {% if section_obj %}{{section_obj.section}}{% else %}Section{% endif %}
             </button>
             <ul class="dropdown-menu scrollable-menu">
-                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section=&subsection=&series=&type=species&gen={{gen}}&display={{display}}&att=">Clear Section</a>
+                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section=&subsection=&series=&type=species&gen={{gen}}&display={{display}}">Clear Section</a>
                 {% for section in section_list %}
-                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section.section}}&subsection=&series=&type={{type}}&gen={{gen}}&display={{display}}&att=">{{section.section}}</a></li>
+                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section.section}}&subsection=&series=&type={{type}}&gen={{gen}}&display={{display}}">{{section.section}}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -223,9 +223,9 @@ img{
                 {% if subsection_obj %}{{subsection_obj.subsection}}{% else %}Subsection{% endif %}
             </button>
             <ul class="dropdown-menu scrollable-menu">
-                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection=&series=&type=species&gen={{gen}}&display={{display}}&att=">Clear Subsection</a>
+                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection=&series=&type=species&gen={{gen}}&display={{display}}">Clear Subsection</a>
                 {% for subsection in subsection_list %}
-                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection.subsection}}&series=&type=species&gen={{gen}}&display={{display}}&att=">{{subsection.subsection}}</a></li>
+                <li><a href="?alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection.subsection}}&series=&type=species&gen={{gen}}&display={{display}}">{{subsection.subsection}}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -238,9 +238,9 @@ img{
                 {% if series_obj %}<span style="color:black">{{series_obj.series}}</span>{% else %}Series{% endif %}
             </button>
             <ul class="dropdown-menu scrollable-menu">
-                <li><a href="?alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&gen={{gen}}&display={{display}}&att=">clear Series</a>
+                <li><a href="?alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&gen={{gen}}&display={{display}}">clear Series</a>
                 {% for series in series_list %}
-                <li><a href="?alpha={{ alpha }}&subgenus=&section=&subsection=&series={{series.series}}&type=species&gen={{gen}}&display={{display}}&att=">{{series.series}}</a></li>
+                <li><a href="?alpha={{ alpha }}&subgenus=&section=&subsection=&series={{series.series}}&type=species&gen={{gen}}&display={{display}}">{{series.series}}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -267,11 +267,11 @@ img{
                 <div class="imageitem m-1 border" style="display:inline-block; text-align:center;">
                     <div class="imgcaption_top">{{x.namecasual|safe}}</div>
                     {% if role == 'cur' %}
-                    <a href="{% url 'detail:curate' x.pid %}?tab=sum&role={{role}}&att=">
+                    <a href="{% url 'detail:curate' x.pid %}?tab=sum&role={{role}}">
                         <img class="thumbnails" alt="" src="{% static x.image_file %}" class="img-fluid fullimg">
                     </a>
                     {% else %}
-                    <a href="{% url 'detail:information' x.pid %}?role={{role}}&att=">
+                    <a href="{% url 'detail:information' x.pid %}?role={{role}}">
                         <img class="thumbnails" alt="" src="{% static x.image_file %}" class="img-fluid fullimg">
                     </a>
                     {% endif %}

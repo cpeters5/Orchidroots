@@ -26,9 +26,8 @@
                 <th>Section </th><th>year</th><th> Description</th>
             {% for sec in section_list %}
             <tr>
-                <td><a href="{% url 'orchidlist:species' %}?section={{sec}}&type=species&att=">
-                    {{ sec.section}}
-                    {% if sec.author %}<i>{{ sec.author }}</i>{% endif %}</td>
+                <td><a href="{% url 'orchidlist:species' %}?section={{sec}}&type=species">
+                    {{ sec.section}} {% if sec.author %}<i>{{ sec.author }}</i>{% endif %}</a></td>
                 <td align=center>{% if sec.year %}{{sec.year}}{% endif %}</td>
                 <td>{% if sec.description %}{{sec.description}}{% endif %}</td>
             </tr>

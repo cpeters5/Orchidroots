@@ -22,16 +22,16 @@
     {% else %}
         <div class="tab-content clearfix" style="width:100%;background-color:white;margin:0 auto;border-left:0 solid lightgrey;border-right:0 solid lightgrey;border-bottom:1px solid lightgrey">
             <div class="container" style="width:90%;font-size:13px;">
-                <form method="post" action="{% url 'detail:uploadfile' species.pid %}?role={{role}}&att=" enctype="multipart/form-data">
+                <form method="post" action="{% url 'detail:uploadfile' species.pid %}?role={{role}}" enctype="multipart/form-data">
                     {% csrf_token %}
                         <br>
                         <button type="submit" class="btn btn-primary btn-sm"  style="width:80px">Save</button>
                         {% if role == 'pri' %}
-                            <a href="{% url 'detail:myphoto' species.pid %}?role={{role}}&variety={{var}}&att="> &nbsp;&nbsp;&nbsp;Cancel</a>
+                            <a href="{% url 'detail:myphoto' species.pid %}?role={{role}}&variety={{var}}"> &nbsp;&nbsp;&nbsp;Cancel</a>
                         {% elif role == 'pub' %}
-                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}&att="> &nbsp;&nbsp;&nbsp;Cancel</a>
+                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}"> &nbsp;&nbsp;&nbsp;Cancel</a>
                         {% else %}
-                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}&att="> &nbsp;&nbsp;&nbsp;Cancel</a>
+                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}"> &nbsp;&nbsp;&nbsp;Cancel</a>
                         {% endif %}
 
                         {{form.author|as_crispy_field}} or
@@ -72,11 +72,11 @@
                         {{form.text_data|as_crispy_field}}
                         <button type="submit" class="btn btn-primary btn-sm"  style="width:80px">Save</button>
                         {% if role == 'pri' %}
-                            <a href="{% url 'detail:myphoto' species.pid %}?role={{role}}&variety={{var}}&att="> &nbsp;&nbsp;&nbsp;Cancel</a>
+                            <a href="{% url 'detail:myphoto' species.pid %}?role={{role}}&variety={{var}}"> &nbsp;&nbsp;&nbsp;Cancel</a>
                         {% elif role == 'pub' %}
-                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}&att="> &nbsp;&nbsp;&nbsp;Cancel</a>
+                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}"> &nbsp;&nbsp;&nbsp;Cancel</a>
                         {% else %}
-                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}&att="> &nbsp;&nbsp;&nbsp;Cancel</a>
+                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}&variety={{var}}"> &nbsp;&nbsp;&nbsp;Cancel</a>
                         {% endif %}
 
                         {% if redirect_field_value %}

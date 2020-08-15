@@ -138,7 +138,7 @@ div.text-br {
                 <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species List</button>
                 <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
                     {% for spc in myspecies_list %}
-                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=species&tab=pri&author={{author.author_id}}&att=">{{spc.textname|safe}}</a>
+                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=species&tab=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -153,7 +153,7 @@ div.text-br {
                 <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Hybrids List</button>
                 <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
                     {% for spc in myhybrid_list %}
-                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=hybrid&tab=pri&author={{author.author_id}}&att=">{{spc.textname|safe}}</a>
+                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=hybrid&tab=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -223,8 +223,8 @@ div.text-br {
                                             </div>
                     {% endif %}
                             <div style="font-size:10px">
-                                <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri&att=">Update</a> |
-                                <a style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto&att=" >delete</a>
+                                <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri">Update</a> |
+                                <a style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto" >delete</a>
                             </div>
                                     </div>
                 {% endfor %}
@@ -253,8 +253,8 @@ div.text-br {
                        {% endif %}
                         <br>
                         <div style="font-size:10px">
-                            <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri&att=">Update</a> |
-                            <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto&att=" >delete</a>
+                            <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri">Update</a> |
+                            <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto" >delete</a>
                         </div>
                     </div>
                 </div>
@@ -272,7 +272,7 @@ div.text-br {
                             <img class="thumbnails" alt="" src="{% static 'media/' %}{{ x.image_file_path }}" data-lightbox="upload">
                         </a>
                         <br>
-                        <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletephoto' x.id %}?origin=myphoto&att=" >delete</a>
+                        <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletephoto' x.id %}?origin=myphoto" >delete</a>
                     </div>
                 {% endfor %}
            {% endif %}

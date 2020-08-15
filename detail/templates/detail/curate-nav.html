@@ -33,9 +33,9 @@
 <div style="font-size: 13px;width:100%;margin:0;padding:0;">
     <ul class="nav nav-tabs">
         {% if species %}
-            <li class="nav-item"><a class="nav-link {{tax}}" href="{% url 'detail:information' species.pid %}?gen={{species.gen.pid}}&type={{type}}&tab=tax&role={{role}}&att=">Summary</a></li>
-            <li class="nav-item"><a class="nav-link {{pho}}" href="{% url 'detail:photos' species.pid %}?tab=sum&gen={{species.gen.pid}}&att=">Photos</a></li>
-            <li class="nav-item"><a class="nav-link {{sbs}}" href="{% url 'detail:compare' %}?pid={{species.pid}}&tab=sbs&role={{role}}&att=">Compare</a></li>
+            <li class="nav-item"><a class="nav-link {{tax}}" href="{% url 'detail:information' species.pid %}?gen={{species.gen.pid}}&type={{type}}&tab=tax&role={{role}}">Summary</a></li>
+            <li class="nav-item"><a class="nav-link {{pho}}" href="{% url 'detail:photos' species.pid %}?tab=sum&gen={{species.gen.pid}}">Photos</a></li>
+            <li class="nav-item"><a class="nav-link {{sbs}}" href="{% url 'detail:compare' %}?pid={{species.pid}}&tab=sbs&role={{role}}">Compare</a></li>
     <!--                If pid in request, can upload and update species info-->
             {% if species.pid %}
                 <li class="nav-item dropdown">
@@ -43,8 +43,8 @@
                        {% if tab == 'loc' %}Upload File{% elif tab == 'web' %}Upload URL{% else %}Upload{% endif %}
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'detail:uploadweb' species.pid %}?role=cur&tab=web&att="><span style="color:#575757;;">upload url</span></a>
-                        <a class="dropdown-item" href="{% url 'detail:uploadfile' species.pid %}?role=cur&tab=loc&att="><span style="color:#575757;">upload file</span></a>
+                        <a class="dropdown-item" href="{% url 'detail:uploadweb' species.pid %}?role=cur&tab=web"><span style="color:#575757;;">upload url</span></a>
+                        <a class="dropdown-item" href="{% url 'detail:uploadfile' species.pid %}?role=cur&tab=loc"><span style="color:#575757;">upload file</span></a>
                     </div>
                 </li>
             {% endif %}

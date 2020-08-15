@@ -27,9 +27,9 @@
                 {% if sf %}{{sf}}{% else %}<span class="txt" style="font-size:12px; color:#bdaec6">Subfamily</span>{% endif %}
         </button>
         <div class="dropdown-menu scrollable-menu" style="font-size: 11px;padding:0;width:80px;">
-            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf=&t={{t}}&att=">&nbsp;</a>
+            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf=&t={{t}}">&nbsp;</a>
             {% for x in sf_list %}
-            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf={{x}}&t={{t}}&att=">{{x}}</a>
+            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf={{x}}&t={{t}}">{{x}}</a>
             {% endfor %}
         </div>
     </div>
@@ -39,9 +39,9 @@
             {% if t %}{{t}}{% else %}<span class="txt" style="font-size:12px; color:#bdaec6">Tribe</span>{% endif %}
         </button>
         <div class="dropdown-menu scrollable-menu" style="font-size: 11px;padding:0;width:80px;">
-            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf={{sf}}&t=&att=">&nbsp;</a>
+            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf={{sf}}">&nbsp;</a>
             {% for x in t_list %}
-            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf={{sf}}&t={{x}}&att=">{{x}}</a>
+            <a class="dropdown-item" href="{%url 'orchidlist:subtribe' %}?sf={{sf}}&t={{x}}">{{x}}</a>
             {% endfor %}
         </div>
     </div>
@@ -56,9 +56,9 @@
 			</tr>
 			{% for subtribe in subtribe_list %}
 			<tr bgcolor="{% cycle '#DFEFEF' '#FFFFFF' '#EFEFEF' '#FFFFFF'%}">
-				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&genustype=species&att=">{{subtribe.subfamily}}</a></td>
-				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&t={{subtribe.tribe}}&genustype=species&att=">{{subtribe.tribe}}</a></td>
-				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&t={{subtribe.tribe}}&st={{subtribe.subtribe}}&genustype=species&att=">{{subtribe.subtribe}}</a></td>
+				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&genustype=species">{{subtribe.subfamily}}</a></td>
+				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&t={{subtribe.tribe}}&genustype=species">{{subtribe.tribe}}</a></td>
+				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&t={{subtribe.tribe}}&st={{subtribe.subtribe}}&genustype=species">{{subtribe.subtribe}}</a></td>
 				<td style="font-size: 11px">{% if subtribe.author %}{{ subtribe.author }}{% endif %}</td>
 				<td align=center>{% if subtribe.year %}{{subtribe.year}}{% endif %}</td>
 				<td align=center>{% if subtribe.description %}{{subtribe.description}}{% endif %}</td>

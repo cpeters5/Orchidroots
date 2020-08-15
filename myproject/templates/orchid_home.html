@@ -125,7 +125,7 @@ img{
         <div class="col-sm-2 center-image hidden-xs; " style="padding:0;">
             <br><br>
             <ul>
-                <li><a type="button" class="btn btn-default" href="{% url 'orchidlist:browsegen' %}?type=species&att=">Browse Images</a></li>
+                <li><a type="button" class="btn btn-default" href="{% url 'orchidlist:browsegen' %}?type=species">Browse Images</a></li>
                 <li><a type="button" class="btn btn-default" href="#">Photo submission guideline</a></li>
                 <li><a type="button" class="btn btn-default" href="{% url 'documents:termsofuse' %}">Terms of use</a></li>
                 <li><a type="button" class="btn btn-default" href="{% url 'documents:disclaimer' %}">License & Disclaimer</a></li>
@@ -154,7 +154,7 @@ img{
                         <div class="imgcaption_top">
                             <a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&gen={{image.pid.pid.gen.pid}}&att"><i>{{image.pid.gen}}</i></a>
                         </div>
-                        <a href="{% url 'detail:information' image.pid.pid_id %}?role={{role}}&att=">
+                        <a href="{% url 'detail:information' image.pid.pid_id %}?role={{role}}">
                             <div class="box">
                                 <img class="thumbnails" alt="" src="/static/utils/images/hybrid/{{image.image_file}}">
                                 <div class="text-c">{{image.pid.pid.speciesname|safe}}</div>
@@ -166,7 +166,7 @@ img{
                         <div class="imgcaption_top">
                             <a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&gen={{image.pid.pid.gen.pid}}&att"><i>{{image.pid.gen}}</i></a>
                         </div>
-                        <a href="{% url 'detail:information' image.pid.pid_id %}?role={{role}}&att=">
+                        <a href="{% url 'detail:information' image.pid.pid_id %}?role={{role}}">
                             <div class="box">
                                 <img class="thumbnails" alt="" src="/static/utils/images/species/{{image.image_file}}">
                                 <div class="text-c">{{image.pid.pid.speciesname|safe}}</div>

@@ -45,7 +45,7 @@ input:checked {
                 {% csrf_token %}
                 <input type="hidden" name="pid" value="{{ species.pid }}" />
                 <button type="submit" class="btn btn-primary btn-sm"  style="width:80px">Save</button>
-                &nbsp;&nbsp;&nbsp;<a href="{% url 'detail:curate' species.pid %}?tab=sum&att=">Cancel</a>
+                &nbsp;&nbsp;&nbsp;<a href="{% url 'detail:curate' species.pid %}?tab=sum">Cancel</a>
                 {{form|crispy}}
                 {% if redirect_field_value %}
                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />

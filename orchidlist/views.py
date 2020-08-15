@@ -8,6 +8,7 @@ from django.urls import reverse, reverse_lazy
 import string
 from itertools import chain
 import random
+import logging
 
 # Create your views here.
 from django.apps import apps
@@ -39,6 +40,7 @@ UploadFile = apps.get_model('orchiddb', 'UploadFile')
 AncestorDescendant = apps.get_model('orchiddb', 'AncestorDescendant')
 User = get_user_model()
 alpha_list = string.ascii_uppercase
+logger = logging.getLogger(__name__)
 
 
 # High level lists
@@ -169,7 +171,9 @@ def genera(request):
 
     if 'genustype' in request.GET:
         genustype = request.GET['genustype']
-
+    if not genustype:
+        genustype = 'all'
+        
     if 'formula1' in request.GET:
         formula1 = request.GET['formula1']
     if 'formula2' in request.GET:
@@ -285,13 +289,6 @@ def genera(request):
     t_list  = t_list.order_by('tribe')
     st_list = st_list.order_by('subtribe')
     genus_lookup = Genus.objects.filter(pid__gt=0).filter(type='species')
-    # if request.user.is_authenticated and request.user.tier.tier > 2:
-    #     message = "4) After get genus lookup"
-    #     print(message)
-    #     return HttpResponse(message)
-
-    # if status == 'synonym':     # For synonym, dont care if species or hybrid
-    #     type = ''
     context = {'my_list': my_list,'total':total,'genus_lookup':genus_lookup,
                'sf_obj':sf_obj,'sf_list':sf_list,
                't_obj':t_obj,'t_list':t_list,
@@ -300,7 +297,7 @@ def genera(request):
                'formula1':formula1, 'formula2':formula2,
                'genactive': 'active', 'sort': sort, 'prev_sort': prev_sort,
                'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length, 'namespace':'orchidlist',}
-    print("orchidlist/genus_list ",request.user)
+    logger.error("orchidlist/genus_list " + str(request.user))
     return render(request, 'orchidlist/genera.html', context)
 
 
@@ -373,7 +370,6 @@ def species_list(request):
             try:
                 region_obj = Region.objects.get(id=region)
             except Region.DoesNotExist:
-                # print("Region = ", region)
                 pass
     if 'subregion' in request.GET:
         subregion = request.GET['subregion']
@@ -381,7 +377,6 @@ def species_list(request):
             try:
                 subregion_obj = Subregion.objects.get(code=subregion)
             except Subregion.DoesNotExist:
-                # print("Subregion = ", subregion)
                 pass
     region_list = Region.objects.exclude(id=0)
     if region_obj:
@@ -402,7 +397,6 @@ def species_list(request):
         if not gen:
             gen = 0
 
-        # print("0. >>> hybrid genus = ", gen)
         try:
             genus = Genus.objects.get(pk=gen)
         except Genus.DoesNotExist:
@@ -414,13 +408,10 @@ def species_list(request):
         newgen = request.GET['newgen']
     if 'genus' in request.GET:
         genus = request.GET['genus']
-        # print("0. >>> hybrid genus = ", genus, len(this_species_list))
         try:
             gen = Genus.objects.get(genus=genus).pid
         except Genus.DoesNotExist:
             gen = ''
-    # print("1, >>>> Gen / newgen = ", gen, newgen)
-    # genus_list = Genus.objects.exclude(status='synonym').filter(Q(num_species__gte=0) | Q(num_hybrid__gte=0))
 
     intragen_list = Intragen.objects.all()
     if gen:
@@ -433,7 +424,6 @@ def species_list(request):
         if genus[0] != '%' and genus[-1] != '%':
             this_species_list = this_species_list.filter(genus__icontains=genus)
             intragen_list = intragen_list.filter(genus__icontains=genus)
-            # print("2. >>> hybrid specieslist = ", gen, len(this_species_list))
 
         elif genus[0] == '%' and genus[-1] != '%':
             mygenus = genus[1:]
@@ -455,7 +445,6 @@ def species_list(request):
             try:
                 subgenus_obj = Subgenus.objects.get(pk=subgenus)
             except Subgenus.DoesNotExist:
-                # print("\t>>>>>>>>>>>>> Subgenus = ", subgenus)
                 pass
             if gen:
                 temp_subgen_list = Accepted.objects.filter(subgenus=subgenus).filter(gen=gen).distinct().values_list('pid',flat=True)
@@ -463,12 +452,10 @@ def species_list(request):
                 temp_subgen_list = Accepted.objects.filter(subgenus=subgenus).distinct().values_list('pid',flat=True)
     if 'section' in request.GET:
         section = request.GET['section']
-        # print("section = ",section)
         if section:
             try:
                 section_obj = Section.objects.get(pk=section)
             except Section.DoesNotExist:
-                # print("\t>>>>>>>>> Section = ", section)
                 section_obj = ''
             if gen:
                 temp_sec_list = Accepted.objects.filter(section=section).filter(gen=gen).distinct().values_list('pid', flat=True)
@@ -476,12 +463,10 @@ def species_list(request):
                 temp_sec_list = Accepted.objects.filter(section=section).distinct().values_list('pid', flat=True)
     if 'subsection' in request.GET:
         subsection = request.GET['subsection']
-        # print(">>subsection = ",subsection,' -- ',request.user)
         if subsection:
             try:
                 subsection_obj = Subsection.objects.get(pk=subsection)
             except Subsection.DoesNotExist:
-                # print("\t>>>>>>>>> Subsection = ", subsection)
                 pass
             if gen:
                 temp_subsec_list = Accepted.objects.filter(subsection=subsection).filter(gen=gen).distinct().values_list('pid', flat=True)
@@ -489,12 +474,10 @@ def species_list(request):
                 temp_subsec_list = Accepted.objects.filter(subsection=subsection).distinct().values_list('pid', flat=True)
     if 'series' in request.GET:
         series = request.GET['series']
-        # print(">>Series = ",series,' -- ',request.user)
         if series:
             try:
                 series_obj = Series.objects.get(pk=series)
             except Series.DoesNotExist:
-                # print("\t>>>>>>>>> Series = ", series)
                 pass
             if gen:
                 temp_ser_list = Accepted.objects.filter(series=series).filter(gen=gen).distinct().values_list('pid', flat=True)
@@ -576,12 +559,10 @@ def species_list(request):
             try:
                 this_species_list = this_species_list.order_by(sort)
             except:
-                # print("\t>>>>>>>>>>>>> Sort by ",sort)
                 pass
     else:
         this_species_list = this_species_list.order_by('genus','species')
     total = this_species_list.count()
-    # print("1. >>> species this_species_list = ",len(this_species_list), page_length,num_show, "gen = ", gen,".")
     page_range, page_list,last_page, next_page,prev_page, page_length,page,first_item,last_item = mypaginator(request,this_species_list,page_length,num_show)
 
     subgenus_list = intragen_list.filter(subgenus__isnull=False).values_list('subgenus','subgenus').distinct().order_by('subgenus')
@@ -591,8 +572,6 @@ def species_list(request):
     section_list = intragen_list.filter(section__isnull=False)
     if gen: section_list = section_list.filter(gen=gen)
     elif genus: section_list = section_list.filter(genus__istartswith=genus)
-    # print("gen = ", gen)
-    # print("section = ", section)
 
     subsection_list = intragen_list.filter(subsection__isnull=False)
     if gen: subsection_list = subsection_list.filter(gen=gen)
@@ -630,9 +609,8 @@ def species_list(request):
     role = 'pub'
     if 'role' in request.GET:
         role = request.GET['role']
-    print("orchidlist/species ",request.user,genus)
+    logger.error("orchidlist/species " + str(request.user) + " " + str(genus))
     genus_list = Genus.objects.all()
-    print("1. >>>>> genus_list = ",len(genus_list))
     context = {'page_list': page_list, 'total':total,'alpha_list': alpha_list, 'alpha': alpha,'spc':spc,
                'gen':gen, 'role':role, 'species':species,
                'subgenus_list':subgenus_list,'subgenus_obj':subgenus_obj,
@@ -701,13 +679,11 @@ def hybrid_list(request):
         this_species_list = this_species_list.filter(status='synonym')
     elif status == 'accepted':
         this_species_list = this_species_list.exclude(status='synonym')
-    # print("0. >>> hybrid specieslist = ",len(this_species_list))
 
     if 'gen' in request.GET:
         gen = request.GET['gen']
         if not gen:
             gen = 0
-        # print("0. >>> hybrid genus = ", gen)
         try:
             genus = Genus.objects.get(pk=gen)
         except Genus.DoesNotExist:
@@ -719,15 +695,12 @@ def hybrid_list(request):
         newgen = request.GET['newgen']
     if 'genus' in request.GET:
         genus = request.GET['genus']
-        # print("0. >>> hybrid genus = ", genus, len(this_species_list))
         try:
             gen = Genus.objects.get(genus=genus).pid
         except Genus.DoesNotExist:
             gen = ''
-    # print("1. >>> hybrid gen = ", gen)
     genus_list = Genus.objects.exclude(status='synonym').filter(Q(num_species__gte=0) | Q(num_hybrid__gte=0))
 
-    # print ("hybrid gen = ",gen)
     if gen:
         this_genus_list = Genus.objects.exclude(status='synonym').filter(Q(num_species__gte=0) | Q(num_hybrid__gte=0))
         this_species_list = this_species_list.filter(gen=gen)
@@ -738,7 +711,6 @@ def hybrid_list(request):
     if genus:
         if genus[0] != '%' and genus[-1] != '%':
             this_species_list = this_species_list.filter(genus__icontains=genus)
-            # print("2. >>> hybrid specieslist = ", gen, len(this_species_list))
 
         elif genus[0] == '%' and genus[-1] != '%':
             mygenus = genus[1:]
@@ -759,7 +731,6 @@ def hybrid_list(request):
 
     if 'author' in request.GET:
         author = request.GET['author']
-    # print("2. >>> hybrid registrant = ",author)
     if 'originator' in request.GET:
         originator = request.GET['originator']
 
@@ -771,11 +742,9 @@ def hybrid_list(request):
 
     if 'seed_genus' in request.GET:
         seed_genus = request.GET['seed_genus']
-    # print('seed_genus = ',seed_genus)
 
     if 'pollen_genus' in request.GET:
         pollen_genus = request.GET['pollen_genus']
-    # print('pollen_genus = ',pollen_genus)
     if alpha != 'ALL':
         alpha = alpha[0:1]
 
@@ -793,9 +762,6 @@ def hybrid_list(request):
         else:
             # sort = '-' + sort
             prev_sort = sort
-    # if len(species) >= min_lenspecies_req:  # if filter by species, force sort to be 'species'
-    #     sort = 'species'
-    #     prev_sort = ''
 
     if species:
         # if species[0] != '%' and species[-1] != '%':
@@ -803,7 +769,6 @@ def hybrid_list(request):
             this_species_list = this_species_list.filter(species__icontains=species)
         else:
             this_species_list = this_species_list.filter(species__istartswith=species)
-        # print("3. >>> hybrid specieslist = ", len(this_species_list))
 
     elif alpha:
         if len(alpha) == 1:
@@ -815,15 +780,11 @@ def hybrid_list(request):
         this_species_list = this_species_list.filter(Q(author__icontains=author) | Q(originator__icontains=originator))
     if originator and not author:
         this_species_list = this_species_list.filter(originator__icontains=originator)
-    # print("0. >>> hybrid specieslist = ",len(this_species_list))
 
-    # print(species_list.count(), seed_genus)
     if seed_genus:
         this_species_list = this_species_list.filter(Q(hybrid__seed_genus=seed_genus) | Q(hybrid__pollen_genus=seed_genus))
-        # print(seed_genus,this_species_list.count())
     if pollen_genus:
         this_species_list = this_species_list.filter(Q(hybrid__seed_genus=pollen_genus) | Q(hybrid__pollen_genus=pollen_genus))
-        # print(pollen_genus, this_species_list.count())
 
     if seed:
         this_species_list = this_species_list.filter(Q(hybrid__seed_species__icontains=seed) | Q(hybrid__pollen_species__icontains=seed))
@@ -846,7 +807,6 @@ def hybrid_list(request):
         this_species_list = this_species_list.order_by('genus','species')
     total = this_species_list.count()
 
-    paginatiopaginator = ()
     my_list = ''
     if page_length > 0:
         paginator = Paginator(this_species_list, page_length)
@@ -870,7 +830,7 @@ def hybrid_list(request):
         # My new page range
         page_range = paginator.page_range[start_index:end_index]
 
-    print("orchidlist/hybrid  ",request.user,genus)
+    logger.error("orchidlist/hybrid  " + str(request.user) + " " + str(genus))
     context = {'my_list': my_list, 'total':total,'alpha_list': alpha_list, 'alpha': alpha,'spc':spc,
                'genus':genus,'gen':gen,'year': year, 'type': type, 'status':status,'type':'hybrid',
                'author':author,'originator':originator,'seed':seed,'pollen':pollen,'seed_genus':seed_genus,'pollen_genus':pollen_genus,
@@ -953,7 +913,7 @@ def browsegen(request):
         'first': first_item, 'last': last_item, 'next_page': next_page, 'prev_page': prev_page,
         'level': 'detail', 'title': 'browsegen', 'section': 'My Collection', 'namespace': 'detail', 'role':role,
                }
-    print("orchidlist/browsegen   ",request.user, genus)
+    logger.error("orchidlist/browsegen   " + str(request.user) + " " + str(genus))
     return render(request, 'orchidlist/browse_gen.html', context)
 
 
@@ -1018,10 +978,9 @@ def browse(request,gen=None):
                 gen = ''
     if not gen and not genus:
         # No genus is given, send it to browsegen
-        print("1. >>>>> No genus given. Return to Browsegen ")
         return HttpResponseRedirect("/orchidlist/browsegen/?display=checked")
 
-    print("orchidlist/browse  ",request.user,genus)
+    logger.error("orchidlist/browse  " + str(request.user) + " " + str(genus))
 
     if 'display' in request.GET:
         display = request.GET['display']
@@ -1120,7 +1079,7 @@ def browsedist(request):
     dist_list = get_distlist()
     context = {'dist_list':dist_list,
                 }
-    print("orchidlist/browsedist  ",request.user,dist_list[0].region_name,dist_list[0].regcard)
+    logger.error("orchidlist/browsedist  " + str(request.user) + " " + dist_list[0].region_name + " " + dist_list[0].regcard)
     return render(request, 'orchidlist/browsedist.html', context)
 
 # All access - at least role = pub
@@ -1196,7 +1155,7 @@ def progeny(request, pid):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, des_list, page_length, num_show)
 
-    print("orchidlist/progeny ",request.user, role, " - ", species)
+    logger.error("orchidlist/progeny " + str(request.user) + " " + role + " - " + str(species))
     context = {'des_list':page_list, 'species':species, 'total':total,'alpha':alpha,'alpha_list':alpha_list,
                 'sort': sort, 'prev_sort': prev_sort,'tab':'pro','pro':'active',
                'genus':genus, 'page':page,
@@ -1240,7 +1199,7 @@ def progenyimg(request, pid=None):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, img_list, page_length, num_show)
 
-    print("orchidlist/progenyimg",request.user, role, " - ", species)
+    logger.error("orchidlist/progenyimg" + str(request.user) + " " + role + " - " + str(species))
     context = {'des_list':page_list, 'species':species,
                 'tab':'proimg','proimg':'active',
                'genus':genus, 'total':total,
@@ -1279,7 +1238,6 @@ def mypaginator(request,full_list,page_length,num_show):
     next_page = 0
     prev_page = 0
     last_page = 0
-    # print("2. >>> full_list = ",len(full_list),page_length,num_show)
 
     total = len(full_list)
     if page_length > 0:
@@ -1317,9 +1275,4 @@ def mypaginator(request,full_list,page_length,num_show):
         end_index = index + num_show if index <= max_index - num_show else max_index
         # My new page range
         page_range = paginator.page_range[start_index:end_index]
-    # print("page_length = ",page_length)
-    # print("page_list = ",len(page_list))
-    # print("page = ",page)
-    # print("page_range = ",page_range)
-    # print("next_page = ",next_page)
     return(page_range, page_list,last_page,next_page,prev_page, page_length,page,first_item,last_item)

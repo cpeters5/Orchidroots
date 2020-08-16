@@ -33,12 +33,11 @@ import django.shortcuts
 import random
 import os, shutil
 from decimal import Decimal
-
+import logging
 from django.apps import apps
+
+logger = logging.getLogger(__name__)
 User = get_user_model()
-
-from django.apps import apps
-
 stripe.api_key = settings.STRIPE_SECRET_KEY # new
 amount = 2000
 amount_display = f'{amount/100:.2f}'
@@ -113,6 +112,7 @@ class PaypalTransactionDoneView(View):
         except Exception as e:
             return JsonResponse({'status':'error', 'msg': str(e)})
 
+
 class ThankYouView(TemplateView):
     template_name = 'donation/donate.html'
 
@@ -127,15 +127,18 @@ class ThankYouView(TemplateView):
         return context
 
 
-
 def donate(request,donateamt=None): # new
-
-    donateamt_display = ''
+    if 'donateamt' in request.GET:
+        donateamt = request.GET['donateamt']
+    logger.error("donateamt = " + str(donateamt))
+    # donateamt_display = ''
     if donateamt:
-        donateamt_display = f'{donateamt / 100:.2f}'
+        # donateamt = donateamt * 100
+        donateamt_display = f'{donateamt:.2f}'
 
     if request.method == 'POST':
         try:
+            logger.error("donateamt = " + str(donateamt))
             charge = stripe.Charge.create(
                 amount=donateamt,
                 currency='usd',
@@ -146,6 +149,7 @@ def donate(request,donateamt=None): # new
 
             if charge.get('customer', None):
                 donor_display_name = charge['customer'].get('name', '')
+                logger.error("donor_display_name = " + donor_display_name)
 
             payload = {
                 'donor_display_name': donor_display_name,

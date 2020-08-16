@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import environ
 import os
+import logging.config
 
 # root = environ.Path(__file__) - 2  # get root of the project
 ROOT_DIR = environ.Path(__file__) - 2  # get root of the project
@@ -228,25 +229,45 @@ CACHES = {
     }
 }
 
-LOGGING = {
+LOGGING_CONFIG = None
+logging.config.dictConfig({
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+        },
+    },
     'handlers': {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
+            'formatter': 'console',
         },
-        'logfile': {
-            'level':'DEBUG',
-            'class':'logging.FileHandler',
-            'filename': BASE_DIR + "/../log/logfile",
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        # 'logfile': {
+        #     'level':'DEBUG',
+        #     'class':'logging.FileHandler',
+        #     'filename': BASE_DIR + "/../log/logfile",
+        # },
+    },
+    'loggers': {
+        '': {
+            'level': 'WARNING',
+            'handlers': ['console', 'sentry']
+        },
+        'myproject': {
+            'level': 'INFO',
+            'handlers': ['console', 'sentry'],
+            # required to avoid double logging with root logger
+            'propagate': False,
         },
     },
-    'root': {
-        'level': 'INFO',
-        'handlers': ['console', 'logfile']
-    },
-}
+})
 
 
 # allauth account settings

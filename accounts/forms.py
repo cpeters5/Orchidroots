@@ -22,12 +22,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         exclude = ('user',)
-        fields = ('confirm_email', 'photo_credit_name', 'specialty','country','current_credit_name',)
+        fields = ('photo_credit_name', 'specialty','country','current_credit_name',)
         labels = {
             'photo_credit_name': 'The name you prefer to use for credit attribution',
             'current_credit_name': 'The name currently used for credit attribution in OrchidRoots. Leave blank if you do not see your name iin the list.<br>WARNING: your account will be removed if you selected name that is not yours.',
             'specialty':'Orchid related Interest. List genera or alliances of your interest',
-            'confirm_email':'Confirm email',
             'country':'Country',
         }
         help_texts = {

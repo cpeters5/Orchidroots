@@ -45,7 +45,7 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def save_user(self, request, sociallogin, form=None):
         user = super().save_user(request, sociallogin, form=None)
-        if getattr(user, 'profile', None):
+        if not getattr(user, 'profile', None):
             Profile.objects.create(user=user)
 
         preferred_avatar_size_pixels = 256

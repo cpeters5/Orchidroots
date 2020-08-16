@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from accounts.views import login_page, register_page, send_email, UpdateProfileView, SetEmailView
+from accounts.views import login_page, register_page, send_email, UpdateProfileView, SetEmailView, ChangeEmailView
 from myproject.views import orchid_home, home, private_home
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
     path('set_email/', SetEmailView.as_view(), name='set_email'),
+    path('change_email/', ChangeEmailView.as_view(), name='change_email'),
     path('update_profile/', UpdateProfileView.as_view(), name='update_profile'),
     path('logout/', LogoutView.as_view(), {'next_page': '//'}, name='logout'),
     path('accounts/', include('allauth.urls')),

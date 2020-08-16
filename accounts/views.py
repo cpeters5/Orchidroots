@@ -187,10 +187,35 @@ class SetEmailView(FormView):
             'account/messages/'
             'email_confirmation_sent.txt',
             {'email': form.cleaned_data["email"]})
-        # signals.email_added(
-        #     request=self.request,
-        #     user=user,
-        #     email_address=email_address)
+        signals.email_added.send(sender=user.__class__,
+                                 request=self.request,
+                                 user=user,
+                                 email_address=email_address)
+        return super().form_valid(form)
+
+class ChangeEmailView(FormView):
+    template_name = 'account/change_email.html'
+    form_class = AddEmailForm
+    success_url = reverse_lazy('account_email_verification_sent')
+
+    def get_user(self):
+        return self.request.user
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        user = self.get_user()
+        kwargs['user'] = user
+        return kwargs
+
+    def form_valid(self, form):
+        user = self.get_user()
+        email_address = form.save(self.request, user)
+        get_adapter(self.request).add_message(
+            self.request,
+            messages.INFO,
+            'account/messages/'
+            'email_confirmation_sent.txt',
+            {'email': form.cleaned_data["email"]})
         signals.email_added.send(sender=user.__class__,
                                  request=self.request,
                                  user=user,

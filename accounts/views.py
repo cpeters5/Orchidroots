@@ -13,6 +13,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
+from allauth.account.views import PasswordChangeView
 from django.conf import settings
 from datetime import datetime
 
@@ -222,7 +223,8 @@ class ChangeEmailView(FormView):
                                  email_address=email_address)
         return super().form_valid(form)
 
-
+class PasswordChangeRedirect(LoginRequiredMixin, PasswordChangeView):
+    success_url = reverse_lazy('login')
 
 
 class UpdateProfileView(LoginRequiredMixin, FormView):

@@ -311,6 +311,8 @@ SOCIALACCOUNT_FORMS = {
 }
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+
 
 # mail settings
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"

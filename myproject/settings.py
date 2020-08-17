@@ -283,6 +283,10 @@ SOCIAL_AUTH_FACEBOOK_SECRET = env.str('SOCIAL_FACEBOOK_SECRET', default='') #app
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 ACCOUNT_ADAPTER = 'accounts.adapters.AccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'accounts.adapters.SocialAccountAdapter'
+SOCIALACCOUNT_FORMS = {
+    'signup': 'accounts.forms.SocialPasswordForm'
+}
+SOCIALACCOUNT_AUTO_SIGNUP = False
 
 
 # mail settings

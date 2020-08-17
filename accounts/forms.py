@@ -6,6 +6,12 @@ from django.conf import settings
 from allauth.account.utils import filter_users_by_email
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
+from allauth.utils import import_attribute
+from allauth.socialaccount.forms import SignupForm, BaseSignupForm
+from allauth.account.forms import SetPasswordField, PasswordField
+from allauth.account import app_settings
+from allauth.account.utils import user_field, user_email, user_username
+from django.utils.translation import ugettext_lazy as _
 
 from .models import User, Profile, Photographer, Country
 
@@ -179,6 +185,61 @@ class UserAdminChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial["password"]
+
+class SocialPasswordForm(BaseSignupForm):
+    password1 = SetPasswordField(label=_("Password"))
+    password2 = SetPasswordField(label=_("Confirm Password"))
+
+    def __init__(self, *args, **kwargs):
+        self.sociallogin = kwargs.pop('sociallogin')
+        user = self.sociallogin.user
+        initial = {'email': user_email(user) or '',
+                   'username': user_username(user) or user_email(user).split('@')[0],
+                   'first_name': user_field(user, 'first_name') or '',
+                   'last_name': user_field(user, 'last_name') or ''}
+        kwargs.update({
+            'initial': initial,
+            'email_required': kwargs.get('email_required',
+                                         app_settings.EMAIL_REQUIRED)})
+
+
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs = {'class':'form-control'}
+        self.fields['password2'].widget.attrs = {'class': 'form-control'}
+        self.fields['email'].widget = forms.HiddenInput()
+        self.fields['username'].widget = forms.HiddenInput()
+
+
+    def save(self, request):
+        adapter = self.get_adapter(request)
+        user = adapter.save_user(request, self.sociallogin, form=self)
+        self.custom_signup(request, user)
+        return user
+
+    def clean(self):
+        super().clean()
+        if "password1" in self.cleaned_data \
+                and "password2" in self.cleaned_data:
+            if self.cleaned_data["password1"] \
+                    != self.cleaned_data["password2"]:
+                raise forms.ValidationError(_("You must type the same password"
+                                              " each time."))
+
+    def raise_duplicate_email_error(self):
+        raise forms.ValidationError(
+            _("An account already exists with this e-mail address."
+              " Please sign in to that account first, then connect"
+              " your %s account.")
+            % self.sociallogin.account.get_provider().name)
+
+    def get_adapter(self, request):
+        return import_attribute(settings.SOCIALACCOUNT_ADAPTER)(request)
+
+    def custom_signup(self, request, user):
+        password = self.cleaned_data['password1']
+        user.set_password(password)
+        user.save()
+
 
 
 # TODO: Couldn't get this to work

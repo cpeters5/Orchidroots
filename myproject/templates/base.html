@@ -487,11 +487,14 @@ body {
     {% endif %}
 </div>
 
+{% block content %}
+    {%  block body %}
 
-{%  block body %}
 
-
+    {% endblock %}
 {% endblock %}
+
+
 
 <script>
 

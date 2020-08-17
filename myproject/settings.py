@@ -118,6 +118,8 @@ INTERNAL_IPS = [
 
 ROOT_URLCONF = 'myproject.urls'
 
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE=True
+
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",

@@ -79,10 +79,13 @@
             <span class="tooltiptext">Choose amount</span>
             <a class="dropdown-toggle filtbtn filtbtn1" type="button" data-toggle="dropdown" style="font-size:12px; width:150px ;border:1px solid #ccc" href="{% url 'donation:donateapp' 1000 %}">$10</a>
             <ul class="dropdown-menu" id="donateamt" style="font-size: 11px;padding:5px;" align="center">
+                <li><a href="{% url 'donation:donateapp' 100 %}">$1</a></li>
                 <li><a href="{% url 'donation:donateapp' 500 %}">$5</a></li>
                 <li><a href="{% url 'donation:donateapp' 1000 %}">$10</a></li>
                 <li><a href="{% url 'donation:donateapp' 1500 %}">$15</a></li>
                 <li><a href="{% url 'donation:donateapp' 2000 %}">$20</a></li>
+                <li><a href="{% url 'donation:donateapp' 5000 %}">$50</a></li>
+                <li><a href="{% url 'donation:donateapp' 10000 %}">$100</a></li>
             </ul>
 
             <br>

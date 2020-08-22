@@ -45,9 +45,7 @@
                                   ({% if species.0.year %}{{species.0.year}} {% endif %} syn.)
                           {% elif species.0.type %}
                               {% if role == "cur" %}
-                                  <a href="{% url 'detail:information' species.0.pid %}?role={{role}}"><i>{{species.0.genus}} {{species.0.species}}</i>{% if species.0.infraspr %} {{species.0.infraspr}} <i>{{species.0.infraspe}}</i>{% endif %}</a>
-                              {% elif role == "pri" %}
-                                  <a href="{% url 'detail:information' species.0.pid %}?role={{role}}"><i>{{species.0.genus}} {{species.0.species}}</i>{% if species.0.infraspr %} {{species.0.infraspr}} <i>{{species.0.infraspe}}</i>{% endif %}</a>
+                                  <a href="{% url 'detail:photos' species.0.pid %}?role={{role}}"><i>{{species.0.genus}} {{species.0.species}}</i>{% if species.0.infraspr %} {{species.0.infraspr}} <i>{{species.0.infraspe}}</i>{% endif %}</a>
                               {% else %}
                                   <a href="{% url 'detail:information' species.0.pid %}?role={{role}}"><i>{{species.0.genus}} {{species.0.species}}</i>{% if species.0.infraspr %} {{species.0.infraspr}} <i>{{species.0.infraspe}}</i>{% endif %}</a>
                               {% endif %}
@@ -59,22 +57,18 @@
                       </td>
                       <td>
                           {% if species.0.status == 'synonym' %}
-                             {% if species.0.getAcc %}
-                                   {% if role == "cur" %}
+                              {% if species.0.getAcc %}
+                                  {% if role == "cur" %}
                                        <a href="{% url 'detail:photos' species.0.pid %}?role={{role}}">{{species.0.getAccepted.abrevname|safe}}</a>
-                                   {% elif role == "pri" %}
-                                       <a href="{% url 'detail:myphoto' species.0.pid %}?role={{role}}">{{species.0.getAccepted.abrevname|safe}}</a>
-                                   {% else %}
+                                  {% else %}
                                        <a href="{% url 'detail:information' species.0.pid %}?role={{role}}">{{species.0.getAccepted.abrevname|safe}}</a>
-                                    {% endif %}
-                             {% else %} na
-                             {% endif %}
+                                  {% endif %}
+                              {% else %} na
+                              {% endif %}
                           {% elif species.0.type == 'hybrid' %}
                               {% if species.0.hybrid.seed_id %}
                                    {% if role == "cur" %}
                                        <a href="{% url 'detail:photos' species.0.hybrid.seed_id.pid %}?role={{role}}">{{species.0.hybrid.seed_id.abrevname|safe}}</a>
-                                   {% elif role == "pri" %}
-                                       <a href="{% url 'detail:information' species.0.hybrid.seed_id.pid %}?role={{role}}">{{species.0.hybrid.seed_id.abrevname|safe}}</a>
                                    {% else %}
                                        <a href="{% url 'detail:information' species.0.hybrid.seed_id.pid %}?role={{role}}">{{species.0.hybrid.seed_id.abrevname|safe}}</a>
                                    {% endif %}
@@ -85,8 +79,6 @@
                               {% if species.0.hybrid.pollen_id %}
                                   {% if role == "cur" %}
                                       <a href="{% url 'detail:photos' species.0.hybrid.pollen_id.pid %}?role={{role}}">{{species.0.hybrid.pollen_id.abrevname|safe}}</a>
-                                  {% elif role == "pri" %}
-                                      <a href="{% url 'detail:information' species.0.hybrid.pollen_id.pid %}?role={{role}}">{{species.0.hybrid.pollen_id.abrevname|safe}}</a>
                                   {% else %}
                                       <a href="{% url 'detail:information' species.0.hybrid.pollen_id.pid %}?role={{role}}">{{species.0.hybrid.pollen_id.abrevname|safe}}</a>
                                   {% endif %}

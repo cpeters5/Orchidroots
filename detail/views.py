@@ -317,24 +317,31 @@ def compare(request):
     genus1 = infraspr1 = infraspe1 = year1 = spc1 = gen1 = ''
     pid2 = species2 = genus2 = infraspr2 = infraspe2 = author2 = year2 = spc2 = gen2 = ''
     role = 'pub'
+
+    # Initial species
     if 'pid' in request.GET:
         pid = request.GET['pid']
+        logging.error("229 pid = " + str(pid))
+        if pid:
+            pid = int(pid)
+            logging.error("229 pid = " + str(pid))
     else:
         return HttpResponse("Bad request!")
-
-    try:
-        species = Species.objects.get(pk=pid)
-        pid = species.pid
-        genus = species.genus
-    except Species.DoesNotExist:
-        species1 = ''
-        pid1 = ''
-    logging.error("229 pid = " + str(pid))
+    if pid > 0:
+        try:
+            species = Species.objects.get(pk=pid)
+            pid = species.pid
+            genus = species.genus
+        except Species.DoesNotExist:
+            species1 = ''
+            pid1 = ''
+        logging.error("229 pid = " + str(pid))
 
     # Handfle request. Should use SpcForm instead.
     if 'species1' in request.GET:
         spc1 = request.GET['species1']
         spc1 = spc1.strip()
+        logging.error("338 spc1 = " + spc1)
     if 'genus1' in request.GET:
         gen1 = request.GET['genus1']
         gen1 = gen1.strip()
@@ -397,134 +404,147 @@ def compare(request):
         # message = "The first species, " + gen1 + " " + spc1
         # if infraspe1:
         #     message += "  " + infraspr1 + " " + infraspe1
-        species1 = Species.objects.filter(species__iexact=spc1).filter(genus__iexact=gen1)
-        if len(species1) == 0:
-            message = "species, <b>" + str(gen1) + ' ' + spc1 + '</b> does not exist'
-            logging.error("299 message species1 = " + message)
-            logging.error("300 genus1 = " + str(species.genus))
-            logging.error("301 species1 = " + str(species))
+        if spc1:
+            species1 = Species.objects.filter(species__iexact=spc1).filter(genus__iexact=gen1)
+            logging.error("403 species1 = " + gen1 + ' ' + spc1 + ' lemgth = ' + str(len(species1)))
+            if len(species1) == 0:
+                message = "species, <b>" + str(gen1) + ' ' + spc1 + '</b> does not exist'
+                logging.error("299 message species1 = " + message)
+                logging.error("300 genus1 = " + str(species.genus))
+                logging.error("301 species1 = " + str(species))
 
-            context = { 'species':species, 'genus':genus,'pid':pid,   #original
-                'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
-                'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
-                'message1': message,
-                'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
-            return render(request, 'detail/compare.html', context)
-        elif len(species1) > 1:
-            if infraspe1 and infraspr1:
-                species1 = species1.filter(infraspe__icontains=infraspe1).filter(infraspr__icontains=infraspr1)
-            else:
-                species1 = species1.filter(infraspe__isnull=True).filter(infraspr__isnull=True)
-            if year1:
-                species1 = species1.filter(year=year1)
-            if len(species1) == 1:  # Found unique species
+                context = { 'species':species, 'genus':genus,'pid':pid,   #original
+                    'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
+                    'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
+                    'message1': message,
+                    'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
+                return render(request, 'detail/compare.html', context)
+            elif len(species1) > 1:
+                if infraspe1 and infraspr1:
+                    species1 = species1.filter(infraspe__icontains=infraspe1).filter(infraspr__icontains=infraspr1)
+                    logging.error("419 species1 = " + str(species1) + 'length = ' + str(len(species1)))
+                else:
+                    species1 = species1.filter(infraspe__isnull=True).filter(infraspr__isnull=True)
+                    logging.error("422 species1 = " + str(species1) + 'length = ' + str(len(species1)))
+                if year1:
+                    species1 = species1.filter(year=year1)
+                    logging.error("425 year1 = " + str(year1) + 'length = ' + str(len(species1)))
+                if len(species1) == 1:  # Found unique species
+                    species1 = species1[0]
+                    species = species1
+                    pid1 = species1.pid
+                    pid = ''
+                    logging.error("if 431 species1 = " + str(species1))
+                elif len(species1) > 1:# MULTIPLE SPECIES RETURNED
+                    logging.error("if 433 species1 = " + str(species1) + 'length = ' + str(len(species1)))
+                    message = "species, <b>" + str(gen1) + ' ' + spc1 + '</b> returns more than one values'
+                    logging.error("435 message species1 = " + message)
+                    logging.error("436 genus1 = " + str(species1[0].genus))
+                    logging.error("437 species1 = " + str(species1[0]) + 'lenght = ' + str(len(species1)))
+                    logging.error("438 species1 = " + str(species1))
+                    context = {'species': species, 'genus': genus, 'pid': pid,  # original
+                               'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
+                               'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
+                               'message1': message,
+                               'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
+                    return render(request, 'detail/compare.html', context)
+                else:  # length = 0  This could be a synonym
+                    message = "species, <b>" + str(gen1) + ' ' + spc1 + '</b> returned none'
+                    logging.error("447 message species1 = " + message)
+                    logging.error("448 lenght = " + str(len(species1)))
+                    context = {'species': species, 'genus': genus, 'pid': pid,  # original
+                               'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
+                               'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
+                               'message1': message,
+                               'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
+                    return render(request, 'detail/compare.html', context)
+            else:  # Unique species found
                 species1 = species1[0]
                 species = species1
                 pid1 = species1.pid
                 pid = ''
-                logging.error("if 322 species1 = " + str(species1))
-
-            # Add author filter
-            elif len(species1) > 1:# MULTIPLE SPECIES RETURNED
-                message = "species, <b>" + str(gen1) + ' ' + spc1 + '</b> returns more than one values'
-                logging.error("430 message species1 = " + message)
-                logging.error("431 genus1 = " + str(species.genus))
-                logging.error("432 species1 = " + str(species))
-                logging.error("433 species1 = " + str(species1))
-                context = {'species': species, 'genus': genus, 'pid': pid,  # original
-                           'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
-                           'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
-                           'message1': message,
-                           'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
-                return render(request, 'detail/compare.html', context)
-            else:  # length = 0  This could be a synonym
-                message = "species, <b>" + str(gen1) + ' ' + spc1 + '</b> returned none'
-                logging.error("442 message species1 = " + message)
-                logging.error("443 genus1 = " + str(species.genus))
-                logging.error("333 species1 = " + str(species))
-
-                context = {'species': species, 'genus': genus, 'pid': pid,  # original
-                           'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
-                           'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
-                           'message1': message,
-                           'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
-                return render(request, 'detail/compare.html', context)
-        else:  # Unique species found
-            species1 = species1[0]
-            species = species1
-            pid1 = species1.pid
-            pid = ''
-            logging.error("356 species1 = " + str(species1))
+                logging.error("356 species1 = " + str(species1))
+        else:
+            pid1 = ''
     else:
-        # species 1 ewas not requested. use initial species
-        genus1 = genus
+        # species 1 was not requested. use initial species
+        genus1 = species.genus
         species1 = species
         pid1 = pid
-
+    if species1:
+        if species1.type == 'species':
+            spcimg1_list = SpcImages.objects.filter(pid=pid1).filter(rank__lt=7).order_by('-rank', 'quality', '?')[0:2]
+        else:
+            spcimg1_list = HybImages.objects.filter(pid=pid1).filter(rank__lt=7).order_by('-rank', 'quality', '?')[0:2]
     if gen2:
         try:
             genus2 = Genus.objects.get(genus__iexact=gen2)
         except Genus.DoesNotExist:
             # Fallback to initial species
             message = "genus <b>" + gen2 + '</b> does not exist'
-            logging.error("368 message2 = " + message)
-            context = { 'species':species, 'genus':genus,'pid':pid,   #original
-                'genus1': species.genus, 'species1': species.species, 'infraspr1': species.infraspr, 'infraspe1': species.infraspe,
+            logging.error("475 message2 = " + message)
+            logging.error("476 species1 = " + species1.genus + ' ' + species1.species)
+
+            context = { 'species1':species1, 'genus1':genus1,
+                'pid1':species1.pid,
+                'spcimg1_list':spcimg1_list,
                 'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
                 'message2': message,
                 'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
             return render(request, 'detail/compare.html', context)
+        if spc2:
+            species2 = Species.objects.filter(species__iexact=spc2).filter(genus__iexact=gen2)
+            if len(species2) == 0:
+                message = "species, <b>" + str(gen2) + ' ' + spc2 + '</b> does not exist'
+                logging.error("379 message species1 = " + message)
+                logging.error("380 genus2 = " + gen2)
+                logging.error("381 species2 = " + spc2)
 
-        species2 = Species.objects.filter(species__iexact=spc2).filter(genus__iexact=gen2)
-        if len(species2) == 0:
-            message = "species, <b>" + str(gen2) + ' ' + spc2 + '</b> does not exist'
-            logging.error("379 message species1 = " + message)
-            logging.error("380 genus2 = " + gen2)
-            logging.error("381 species2 = " + spc2)
-
-            context = { 'species':species, 'genus':genus,'pid':pid,   #original
-                'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
-                'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
-                'message2': message,
-                'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
-            return render(request, 'detail/compare.html', context)
-        elif len(species2) > 1:
-            if infraspe2 and infraspr2:
-                species2 = species2.filter(infraspe__icontains=infraspe2).filter(infraspr__icontains=infraspr2)
-            else:
-                species2 = species2.filter(infraspe__isnull=True).filter(infraspr__isnull=True)
-            if year2:
-                species2 = species2.filter(year=year2)
-            if len(species2) == 1:  # Found unique species
-                species2 = species2[0]
-                pid2 = species2.pid
-                logging.error("if 502 species2 = " + str(species2))
-            elif len(species2) > 1:  # MULTIPLE SPECIES RETURNED
-                message = "species, <b>" + str(gen2) + ' ' + spc2 + '</b> returns more than one value'
-                logging.error("505 message species2 = " + message)
-                logging.error("506 genus2 = " + gen2)
-                logging.error("507 species2 = " + spc2)
                 context = { 'species':species, 'genus':genus,'pid':pid,   #original
-                    'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
-                    'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
+                    'genus1': species1.genus, 'species1': species1, 'spcimg1_list':spcimg1_list,
+                    'genus2': gen2, 'species2': spc2,
                     'message2': message,
                     'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
                 return render(request, 'detail/compare.html', context)
-            else:  # length = 0
-                message = "species, <b>" + str(gen2) + ' ' + spc2 + '</b> returned none'
-                logging.error("516 message species2 = " + message)
-                logging.error("517 genus2 = " + str(species.genus))
-                logging.error("518 species2 = " + str(species))
-                context = {'species': species, 'genus': genus, 'pid': pid,  # original
-                           'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
-                           'genus2': genus, 'species2': species2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
-                           'message1': message,
-                           'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
-                return render(request, 'detail/compare.html', context)
+            elif len(species2) > 1:
+                if infraspe2 and infraspr2:
+                    species2 = species2.filter(infraspe__icontains=infraspe2).filter(infraspr__icontains=infraspr2)
+                else:
+                    species2 = species2.filter(infraspe__isnull=True).filter(infraspr__isnull=True)
+                if year2:
+                    species2 = species2.filter(year=year2)
+                if len(species2) == 1:  # Found unique species
+                    species2 = species2[0]
+                    pid2 = species2.pid
+                    logging.error("if 502 species2 = " + str(species2))
+                elif len(species2) > 1:  # MULTIPLE SPECIES RETURNED
+                    message = "species, <b>" + str(gen2) + ' ' + spc2 + '</b> returns more than one value'
+                    logging.error("505 message species2 = " + message)
+                    logging.error("506 genus2 = " + gen2)
+                    logging.error("507 species2 = " + spc2)
+                    context = { 'species':species, 'genus':genus,'pid':pid,   #original
+                        'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
+                        'genus2': gen2, 'species2': spc2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
+                        'message2': message,
+                        'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
+                    return render(request, 'detail/compare.html', context)
+                else:  # length = 0
+                    message = "species, <b>" + str(gen2) + ' ' + spc2 + '</b> returned none'
+                    logging.error("516 message species2 = " + message)
+                    logging.error("517 genus2 = " + str(species.genus))
+                    logging.error("518 species2 = " + str(species))
+                    context = {'species': species, 'genus': genus, 'pid': pid,  # original
+                               'genus1': species.genus, 'species1': species, 'infraspr1': infraspr1, 'infraspe1': infraspe1,
+                               'genus2': genus, 'species2': species2, 'infraspr2': infraspr2, 'infraspe2': infraspe2,
+                               'message1': message,
+                               'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
+                    return render(request, 'detail/compare.html', context)
+            else:
+                species2 = species2[0]
+                pid2 = species2.pid
+                logging.error("517 species2 = " + str(species2))
         else:
-            species2 = species2[0]
-            pid2 = species2.pid
-            logging.error("517 species2 = " + str(species2))
+            pid2 = ''
     else:
         # The second species was not requested
         pid2 = ''
@@ -577,8 +597,8 @@ def compare(request):
     logger.error("detail/compare     " + str(request.user) + " " + role + " - " + str(species1) + " vs " + str(species2))
     context = {'pid':pid,'genus':genus,'species':species,
                 'pid1':pid1, 'pid2':pid2, 'accepted1':accepted1, 'accepted2':accepted2,  # pid of accepted species
-                'genus1':genus1,'species1':species1, 'infraspr1':infraspr1,'infraspe1':infraspe1,'spcimg1_list':spcimg1_list,
-                'genus2':genus2,'species2':species2, 'infraspr2':infraspr2,'infraspe2':infraspe2,'spcimg2_list':spcimg2_list,
+                'genus1':genus1,'species1':species1, 'spcimg1_list':spcimg1_list,
+                'genus2':genus2,'species2':species2, 'spcimg2_list':spcimg2_list,
                 'cross':cross,
                 'msgnogenus':msgnogenus, 'message1':message1, 'message2':message2,
                 'title':'compare','tab':'sbs', 'sbs':'active','role':role}

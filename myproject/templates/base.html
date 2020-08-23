@@ -418,9 +418,9 @@ body {
                     <div class="dropdown" id="pri2">
                         {% if species %}
                             {% if role == 'pri' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:photo' species.pid %}?role=pri">Private</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:photo' species.pid %}?role=pri">Private</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'pri' %}
@@ -470,9 +470,9 @@ body {
                     <div class="dropdown" id="pri3">
                         {% if species %}
                             {% if role == 'pri' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:photos' species.pid %}?role=pri">Private</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:myphoto' species.pid %}?tab=pri&role=pri">Private</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:photos' species.pid %}?role=pri">Private</a>
                             {% endif %}
                         {% else %}
                            {% if role == 'pri' %}

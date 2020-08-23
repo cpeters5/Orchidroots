@@ -128,9 +128,6 @@ class ThankYouView(TemplateView):
 
 
 def donate(request,donateamt=None): # new
-    if 'donateamt' in request.GET:
-        donateamt = request.GET['donateamt']
-    logger.error("donateamt = " + str(donateamt))
     # donateamt_display = ''
     if donateamt:
         # donateamt = donateamt * 100

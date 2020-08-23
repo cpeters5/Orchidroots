@@ -142,7 +142,7 @@ div.text-bl a {
     font-size:15px;
     border:0 solid green;
     padding:10px;
-    max-height:40px;"
+    height:80px;
 }
 
 .flex-custom {
@@ -343,7 +343,7 @@ label {
             <h6>Warning: This page is still a prototype. Please report any error to <a href="https://m.facebook.com/groups/186576315397600/">OrchidRoots Support Group</a></h6>
             This page provides a mean to compare images of two species and or hybrids.
             <ul>
-                <li>Enter each species in the forms below and click either "Go" buttons. The name entereed must be correct! We may consider genus abreviation or partial matching of species name in a future update if needed.</li>
+                <li>Enter each species in the forms below and click either "Go" buttons. The name entered must be correct! We may consider genus abreviation or partial matching of species name in a future update if needed.</li>
                 <li>If a cross already registered (or temporary created in OrchidRoots) you will see the hybrid name at the top of the screen.  The name serves as the link to the detail page.</li>
                 <li>If the cross has not been registered or creatred in OrchidRoots, a button to create it is provided.
                     <br><b>Please create this hybrid ONLY IF you have photos to upload</b></li>
@@ -354,9 +354,9 @@ label {
 
         <!--Main sections-->
     <div class="d-flex p-2 justify-content-center" style="margin:0 auto;width:95%;">
-        <div class="tab-content clearfix border" style="background:white; width:100%;">
+        <div class="tab-content clearfix" style="background:white; width:100%;">
                 <!-- Results -->
-                <div style="width:100%;margin: 0 auto; border:0 solid blue;">
+                <div style="width:100%;margin: 0px auto; border:0 solid blue;">
                     <div class="title" style="margin:0 auto;padding:10px;text-align: center; border:0 solid blue;">
                     {% if cross %}
                         This cross has already been
@@ -371,7 +371,9 @@ label {
                             <a href="{% url 'detail:information' cross.pid.pid %}?tab=sum&role=pub">{{cross.pid.name|safe}}</a>
                         {% endif %}
                     {% else %}
-                        {% if species1 and species2 %}
+                        {% if pid1 == pid2 %}
+                            THe two orchids are synonymous!
+                        {% elif species1 and species2 %}
                             This cross has not been registered. <br>
                             {% if role == 'cur' %}
                                 {% if msgnogenus %}
@@ -385,10 +387,6 @@ label {
                             {% else %}
                                 Please contact Bluenanta admins to create one.
                             {% endif %}
-                        {% elif species1 %}
-                            Enter Second Species
-                        {% elif species2 %}
-                            Enter First Species
                         {% endif %}
                     {% endif %}
                     </div>
@@ -398,28 +396,31 @@ label {
                 <!-- Compare -->
 
                 <div class="d-flex justify-content-between" >
-
-                    <div class="p-2 border" style="width:48%;margin:3px;">
+                    <div class="p-2" style="width:48%;height:50px;">
                         <div class="subtitle">
-                            {% if species1 %}
-                            <a href="{% url 'detail:information' pid=species1.pid %}?role={{role}}">{{species1.abrevname|safe}}</a> {{species1.author}} {{species1.year}}
+                            {% if message1 %}
+                                <p class="text-danger">{{message1|safe}}</p>
+                            {% elif species or species1 %}
+                                <a href="{% url 'detail:information' %}?role={{role}}&pid={{pid}}">{{species1.abrevname|safe}}</a> {{species1.author}} {{species1.year}}
+                                <br>
+                                {% if accepted1 %} (syn. {{accepted1.name|safe}}) {% endif %}
                             {% else %}
-                                First Species
+                                Enter the correct name of the first orchid
                             {% endif %}
+                            <br><button form="compare" type="submit" class="btn btn-primary btn-sm" style="padding:0 20px; margin:0;">Go</button>
                         </div>
                         <div style="padding:10px;">
                             <form action="?" id="compare">
                                 <input type="hidden" name="role" value="{{role}}" />
+                                <input type="hidden" name="pid" value="{{species.pid}}" />
                                 <input form="compare" type="text" class="form-control form-control-sm"  name="genus1" onfocus="this.select()" value="{{genus1}}" placeholder="Genus" title=""/>
                                 <input form="compare" type="text" class="form-control form-control-sm"  name="species1" onfocus="this.select()" value="{{species1.species}}" placeholder="Species"  title=""/>
                                 <input form="compare" type="text" class="form-control form-control-sm"  name="infraspr1" onfocus="this.select()" value="{{species1.infraspr|default_if_none:' '}}" placeholder="infraspecific rank" title=""/>
                                 <input form="compare" type="text" class="form-control form-control-sm"  name="infraspe1" onfocus="this.select()" value="{{species1.infraspe|default_if_none:' '}}" placeholder="infraspecific value" title=""/>
                                 <input form="compare" type="text" class="form-control form-control-sm"  name="author1" onfocus="this.select()" value="{{species1.author|default_if_none:' '}}" placeholder="Author" title=""/>
                                 <input form="compare" type="text" class="form-control form-control-sm"  name="year1" onfocus="this.select()" value="{{species1.year|default_if_none:' '}}" placeholder="year" title=""/>
-                                <button form="compare" type="submit" class="btn btn-primary btn-sm" style="padding:0 20px; margin:0;">Go</button>
                             </form>
                         </div>
-
                         <div class="d-flex justify-content-center" style="display:inline-block;text-align:center; boundary:0 solid blue;">
                             {% if species1 and not spcimg1_list %}
                                 <div class="subtitle">
@@ -467,22 +468,26 @@ label {
                         </div>
                     </div>
 <!--                            <div class="col-1" style="padding:0; border:3px solid black"></div>-->
-                    <div class="p-2 border" style="width:48%;margin:3px;">
+                    <div class="p-2" style="width:48%;height:50px;margin:3px;">
                         <div class="subtitle">
-                            {% if species2.pid %}
-                            <a href="{% url 'detail:information' pid=species2.pid %}?role={{role}}">{{species2.abrevname|safe}}</a> {{species2.author}} {{species2.year}}
+                            {% if message2 %}
+                                <p class="text-danger">{{message2|safe}}</p>
+                            {% elif species2 %}
+                                <a href="{% url 'detail:information'  %}?role={{role}}&pid={{species2.pid}}">{{species2.abrevname|safe}}</a> {{species2.author}} {{species2.year}}
+                                <br>
+                                {% if accepted2 %} (syn. {{accepted2.name|safe}}) {% endif %}
                             {% else %}
-                                Second Species
+                                Enter the correct name of second orchid.
                             {% endif %}
+                            <br><button form="compare" type="submit" class="btn btn-primary btn-sm" style="padding:0 20px; margin:0;">Go</button>
                         </div>
                         <div style="padding:10px;">
-                                <input form="compare" type="text" class="form-control form-control-sm"  name="genus2" onfocus="this.select()" value="{{genus2}}" placeholder="Genus" title=""/>
-                                <input form="compare" type="text" class="form-control form-control-sm"  name="species2" onfocus="this.select()" value="{{species2.species}}" placeholder="Species"  title=""/>
-                                <input form="compare" type="text" class="form-control form-control-sm"  name="infraspr2" onfocus="this.select()" value="{{species2.infraspr|default_if_none:' '}}" placeholder="infraspecific rank" title=""/>
-                                <input form="compare" type="text" class="form-control form-control-sm"  name="infraspe2" onfocus="this.select()" value="{{species2.infraspe|default_if_none:' '}}" placeholder="infraspecific value" title=""/>
-                                <input form="compare" type="text" class="form-control form-control-sm"  name="author2" onfocus="this.select()" value="{{species2.author|default_if_none:' '}}" placeholder="Author" title=""/>
-                                <input form="compare" type="text" class="form-control form-control-sm"  name="year2" onfocus="this.select()" value="{{species2.year|default_if_none:' '}}" placeholder="year" title=""/>
-                                <button form="compare" type="submit" class="btn btn-primary btn-sm" style="padding:0 20px; margin:0;">Go</button>
+                            <input form="compare" type="text" class="form-control form-control-sm"  name="genus2" onfocus="this.select()" value="{{genus2}}" placeholder="Genus" title=""/>
+                            <input form="compare" type="text" class="form-control form-control-sm"  name="species2" onfocus="this.select()" value="{{species2.species}}" placeholder="Species"  title=""/>
+                            <input form="compare" type="text" class="form-control form-control-sm"  name="infraspr2" onfocus="this.select()" value="{{species2.infraspr|default_if_none:' '}}" placeholder="infraspecific rank" title=""/>
+                            <input form="compare" type="text" class="form-control form-control-sm"  name="infraspe2" onfocus="this.select()" value="{{species2.infraspe|default_if_none:' '}}" placeholder="infraspecific value" title=""/>
+                            <input form="compare" type="text" class="form-control form-control-sm"  name="author2" onfocus="this.select()" value="{{species2.author|default_if_none:' '}}" placeholder="Author" title=""/>
+                            <input form="compare" type="text" class="form-control form-control-sm"  name="year2" onfocus="this.select()" value="{{species2.year|default_if_none:' '}}" placeholder="year" title=""/>
                         </div>
                         <div class="d-flex justify-content-center" style="display:inline-block;text-align:center">
                             {% if species2 and not spcimg2_list %}

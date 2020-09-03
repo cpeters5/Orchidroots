@@ -107,7 +107,11 @@ img{
                                     <a href="{% url 'detail:curate' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&action=file">{{image.pid.namecasual|safe}}</a>
                                     <br>{{image.created_date.date}}
                                     <br>
-                                    <a href="{% url 'detail:approvemediaphoto' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}">Approve</a>
+                                    {% if image.approved %}
+                                        <b>Approved</b>
+                                    {% else %}
+                                        <a href="{% url 'detail:approvemediaphoto' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}">Approve</a>
+                                    {% endif %}
                                     <a href="{% url 'detail:deletephoto' image.id %}?pid={{image.pid_id}}&role={{role}}&tab={{tab}}&page={{page}}&area=curate_newupload" >Delete</a>
                                 </div>
                             </div>

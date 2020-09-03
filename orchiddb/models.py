@@ -1182,6 +1182,7 @@ class UploadFile(models.Model):
     image_file_path = models.ImageField(upload_to='images/', null=True, blank=True)
     image_file  = models.CharField(max_length=100, null=True, blank=True)
     is_private  = models.BooleanField(null=True, default=False)
+    approved    = models.BooleanField(null=True, default=False)
     compressed  = models.BooleanField(null=True, default=False)
     block_id    = models.IntegerField(null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)

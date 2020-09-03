@@ -343,30 +343,25 @@ class UploadFileForm(forms.ModelForm):
         # Making UploadForm required
         # self.fields['image_file_path'].required = True
         self.fields['author'].required = True
-        # self.fields['author'].queryset = Photographer.objects.all().order_by('fullname')
-        # self.fields['is_private'].initial = False
-    # is_private = forms.BooleanField(initial=True)
+        # role = forms.CharField(required=True)
     class Meta:
         model = UploadFile
         fields = ('image_file_path','author','name','awards','variation','forma','originator','description','text_data','location','image_file',)
 
         labels = {
-            'author':"Name that has been used to credit your photos. Warning: Your account will be removed if you select a name that is not yours!",
+            'author':"Your credit attribution name",
             'image_file_path':'Select image file',
-            # 'source_url':'Photo URL',
-            # 'source_file_name':'Alternate name',
             'name':'Clonal name',
             'awards':'Awards',
             'variation':'Varieties',
             'forma':'Form',
-            'originator':'Name to be used for credit attribution',
-            'description':'Tags',
+            'originator':'If author is not in the list, enter a name to be used for credit attribution here',
+            'description':'Tags. Comma separated keywords to help in searching',
             'text_data':'Comment',
             'location':'Location',
         }
         widgets = {
-            # 'source_url':TextInput(attrs={'size': 45}),
-            # 'source_file_name': TextInput(attrs={'size': 45}),
+            # 'role': forms.HiddenInput(),
             'name': TextInput(attrs={'size': 35, 'style': 'font-size: 13px',}),
             'awards': TextInput(attrs={'size': 35, 'style': 'font-size: 13px',}),
             'variation': TextInput(attrs={'size': 35, 'style': 'font-size: 13px',}),
@@ -377,14 +372,12 @@ class UploadFileForm(forms.ModelForm):
             'location': TextInput(attrs={'size': 35, 'style': 'font-size: 13px',}),
         }
         help_texts = {
-        #     # 'source_url': 'The URL where the photo is uploaded from, eg Facebook post',
-        #     # 'source_file_name': 'Identified name if differs from the accepted name for the species, e.g. a synonym or undescribed/unpublished or unregistered name. (Put infra specific if exists in Variety box below.',
         #     'name': 'Clonal name of the plant',
         #     'awards': 'Awards received, comma separated',
         #     'variation': 'Informal variations (unpublished), or infra specific of synonym.',
         #     'forma': 'E.g. color forms, peloric, region...',
         #     'originator': 'e.g. hybridizer, cultivator, vender',
-            'description': 'Comma separated terms used for search',
+        #     'description': 'Comma separated terms used for search',
         #     'text_data': 'Any comment you may have about this photo. When, where or month it was taken, history of this plant, etc.',
         #     'location': 'Geolocation where this plant was originated from',
         #     'image_file_path': _('Only JPG files are accepted, and file name MUST not have a leading undescore.'),

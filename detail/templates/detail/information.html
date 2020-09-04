@@ -450,65 +450,65 @@ seedparent, pollparent {
                     </div>
                     {% endif %}
 
-                    {% if accepted.description %}
+                    {% if species.accepted.description %}
                     <div class="card">
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Description">Description</button>
                         <div id="Description" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                            {{accepted.description|safe}}
+                            {{species.accepted.description|safe}}
                             </div>
                         </div>
                     </div>
                     {% endif %}
 
-                    {% if accepted.comment %}
+                    {% if species.accepted.comment %}
                     <div class="card">
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Comments">Comments</button>
                         <div id="Comments" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                            {{accepted.comment|safe}}
+                            {{species.accepted.comment|safe}}
                             </div>
                         </div>
                     </div>
                     {% endif %}
 
-                    {% if accepted.culture %}
+                    {% if species..culture %}
                     <div class="card">
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Culture">Culture</button>
                         <div id="Culture" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                            {{accepted.culture|safe}}
+                            {{species.accepted.culture|safe}}
                             </div>
                         </div>
                     </div>
                     {% endif %}
 
-                    {% if accepted.common_name or accepted.local_name or accepted.altitude or accepted.bloom_month or accepted.history or accepted.etymology %}
+                    {% if species.accepted.common_name or species.accepted.local_name or species.accepted.altitude or species.accepted.bloom_month or species.accepted.history or species.accepted.etymology %}
                     <div class="card">
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Information">Misc. Information</button>
                         <div id="Information" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                                {% if accepted.common_name or accepted.local_name or accepted.altitude or accepted.bloom_month or accepted.history or accepted.etymology %}
-                                    {% if accepted.common_name or accepted.local_name %}
+                                {% if species.accepted.common_name or species.accepted.local_name or species.accepted.altitude or species.accepted.bloom_month or species.accepted.history or species.accepted.etymology %}
+                                    {% if species.accepted.common_name or species.accepted.local_name %}
                                        Common Name:
-                                        {% if accepted.common_name %}{{accepted.common_name}},{% endif %}
-                                        {% if accepted.local_name %}{{accepted.local_name}}{% endif %}
+                                        {% if species.accepted.common_name %}{{species.accepted.common_name}},{% endif %}
+                                        {% if species.accepted.local_name %}{{species.accepted.local_name}}{% endif %}
                                     {% endif %}
-                                    {% if accepted.altitude %}
+                                    {% if species.accepted.altitude %}
                                         <b>Altitude:</b>
-                                        {{accepted.altitude|safe}}
+                                        {{species.accepted.altitude|safe}}
                                     {% endif %}
-                                    {% if accepted.bloom_month %}
+                                    {% if species.accepted.bloom_month %}
                                         <b>bloom_month:</b>
-                                        {{accepted.bloom_month|safe}}
+                                        {{species.accepted.bloom_month|safe}}
                                     {% endif %}
-                                    {% if accepted.history %}
+                                    {% if species.accepted.history %}
                                         <b>History</b>
-                                        {{accepted.history|safe}}
+                                        {{species.accepted.history|safe}}
                                     {% endif %}
-                                    {% if accepted.etymology %}
+                                    {% if species.accepted.etymology %}
                                         <b>Etymology</b>
-                                        {{accepted.etymology|safe}}
+                                        {{species.accepted.etymology|safe}}
                                     {% endif %}
                                 {% else %}
                                     None

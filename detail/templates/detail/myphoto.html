@@ -133,155 +133,150 @@ div.text-br {
 
 <div style="width:95%;margin:0 auto;">
     <div class="d-flex flex-row flex-wrap justify-content-center">
-        {% if myspecies_list %}
-            <div class="p-2 dropdown" >
-                <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species List</button>
+        <div class="p-2 dropdown" >
+            <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species List</button>
+            {% if myspecies_list %}
                 <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
                     {% for spc in myspecies_list %}
-                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=species&tab=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
+                        <a class="dropdown-item" href="{% url 'detail:photos' spc.pid %}?role=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
                     {% endfor %}
                 </div>
-            </div>
-        {% else %}
-            <div class="dropdown" >
-                <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species List (empty)</button>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
 
-        {% if myhybrid_list %}
-            <div class="p-2 dropdown">
-                <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Hybrids List</button>
+        <div class="p-2 dropdown">
+            <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Hybrids List</button>
+            {% if myhybrid_list %}
                 <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
                     {% for spc in myhybrid_list %}
-                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=hybrid&tab=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
+                        <a class="dropdown-item" href="{% url 'detail:photos' spc.pid %}?role=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
                     {% endfor %}
                 </div>
-            </div>
-        {% else %}
-            <div class="dropdown" >
-                <button class="btn btn-default mybtn dropdown-toggle" type="button" data-toggle="dropdown">My Hybrids List (empty)</button>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
 
-        {% if user.is_authenticated and user.tier.tier > 2 %}
-            <form class="form-inline justify-content-center" action="?" id="filter">
-            <input type="hidden" name="author" value="{{author.author_id}}" />
-            <input type="hidden" name="genus" value="{{genus}}" />
-            <input type="hidden" name="role" value="cur" />
-            <select form='filter' name="author" class="" tabindex="-1" aria-hidden="true" style="width:150px;height:27px;margin:0;border:1px solid lightgrey;padding:0;"  data-toggle="tooltip"  data-placement="bottom"  title="genus parent #1" style="margin:0 auto">
-                {% if author %}
-                    <option selected disabled>{{author}}</option>
-                {% else %}
-                    <option selected disabled>Select an author</option>
-               {% endif %}
-                <option></option>
-                {% for author in author_list %}
-                    {% if author == author.author_id %}
-                        <option selected="selected" disabled>{{author.displayname}}</option>
-                    {% else %}
-                        <option value="{{author.author_id}}">{{author.displayname}}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <button form="filter" style="height:27px;margin:0;background-color: #1d6c6c; color:white">Submit</button>
-            </form>
-        {% endif %}
+        <div class="p-2 dropdown" >
+            <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species Photos</button>
+            {% if myspecies_list %}
+                <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                    {% for spc in myspecies_list %}
+                        <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:myphoto_browse_spc' %}?role={{role}}">My Species Photos</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
 
-    </div>
+        <div class="p-2 dropdown" >
+            <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Hybrid Photos</button>
+            {% if myspecies_list %}
+                <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                    {% for spc in myspecies_list %}
+                    <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:myphoto_browse_hyb' %}?role={{role}}">My Hybrid Photos</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
 
-    <br>
-    {% if author.author_id == 'anonymous' %}
+        {% if author.author_id == 'anonymous' %}
         <div style="text-align:center; width:100%;padding:0 20%; font-size:14px;">
+            <br>
             <b>Alert!</b>
-            {{user}}, your profile is not synchronized with the current credit attribution name.  Please update your profile form the dropdown menu under your user name and select the name we use to attribute your photos from the drop down menu in the update profile form"
+            {{user}}, your profile is not synchronized with the current credit attribution name.
+            If this is the first time you upload your photo, please contact 'admion@orchidroots.org' to create an author id for you.
+            Otherwise, if your credit attribution author name already exists, please click on the link "update profile" in the dropdown menu under your user name and select your attribute the name we use to attribute your photos from the drop down menu in the update profile form"
             to <a href="https://www.facebook.com/Orchidrootscom-306266603228487/inbox/?mailbox_id=306266603228487&selected_item_id=631912977">OrchidRoots In-Box</a>
         </div>
+        {% else %}
+            <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc">upload file</a>
+        {% endif %}
+
+
+        <!--                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web">Upload url</a>-->
+        </div>
+    <br>
+    <br>
+    {% if user.is_authenticated and user.tier.tier > 2 %}
+        <form class="form-inline justify-content-center" action="{% url 'detail:photos' species.pid %}" id="filter">
+        <input type="hidden" name="genus" value="{{genus}}" />
+        <input type="hidden" name="role" value="pri" />
+        <select form='filter' name="author" class="" tabindex="-1" aria-hidden="true" style="width:150px;height:27px;margin:0;border:1px solid lightgrey;padding:0;"  data-toggle="tooltip"  data-placement="bottom"  title="genus parent #1" style="margin:0 auto">
+            {% if author %}
+                <option selected disabled>{{author}}</option>
+            {% else %}
+                <option selected disabled>Select an author</option>
+           {% endif %}
+            <option></option>
+            {% for author in author_list %}
+                {% if author == author.author_id %}
+                    <option selected="selected" disabled>{{author.displayname}}</option>
+                {% else %}
+                    <option value="{{author.author_id}}">{{author.displayname}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <button form="filter" style="height:27px;margin:0;background-color: #1d6c6c; color:white">Submit</button>
+        </form>
     {% endif %}
 
-    {% include "detail/private-nav.html" %}
+</div>
 
-    <!--main section-->
-    {% if species.pid %}
-    <div class="tab-content clearfix" style="background-color: white; margin:0;border-left:1px solid lightgrey;border-right:1px solid lightgrey;border-bottom:1px solid lightgrey">
-        <div style="margin:0 10px; text-align: center;min-height:100px;">
-            <h6><small>My {{genus.genus}} public photos <small></h6>
-            {% if public_list %}
-                {% for x in public_list %}
-                                    <div class="imageitem">
-                    {% if x.image_file %}
-                        <div style="display:inline-block;">
-                            <a href="{% static x.image_dir %}{{x.image_file}}" data-lightbox="public" data-title="{{x.pid}}">
-                                <img class="thumbnails" alt="" src="{% static x.image_dir %}{{ x.image_file }}" class="img-fluid fullimg">
-                            </a>
-                        </div>
-                    {% else %}
-                                            <div class="box">
-                                                <img  class="thumbnails" alt="" src="{{x.image_url}}" style="padding:0; border:1px solid darkgrey;">
-                                                <div class="text text-br" >
-                                                    <span style="color:darkgrey">{{image.pid}}</span>
-                                                </div>
-                                            </div>
-                    {% endif %}
-                            <div style="font-size:10px">
-                                <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri">Update</a> |
-                                <a style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto" >delete</a>
-                            </div>
-                                    </div>
-                {% endfor %}
-            {% else %}
-                <span style="font-size:12px;">
-                None
-                </span>
-            {% endif %}
-        </div>
-        <hr>
-
-<!--        My private photos            -->
-        <div style="text-align: center"><h6><small>My Private Photos</small></h6></div>
-        <div style="margin:0 10px; text-align: center;min-height:100px;">
-            <br>
-            {% if private_list %}
-                {% for x in private_list %}
+       <div class="d-flex flex-wrap justify-content-center align-items-center p-2">
+            {% for image in public_list %}
                 <div class="imageitem">
-                    <div style="display: inline-block"id>
-                        {% if x.image_file %}
-                        <a href="{% static x.image_dir %}{{x.image_file}}" data-lightbox="private" data-title="{{x.pid}}">
-                            <img class="thumbnails" alt="" src="{% static x.image_dir %}{{ x.image_file }}"  data-lightbox="private">
+                    {% if image.image_file %}
+                        <a href="{% static image.image_dir %}{{image.image_file}}" data-lightbox="public" data-title="
+                                <h6><small>
+                                {{image.id}}:  Uploaded since {{image.created_date}}<br>
+                                {{image.get_displayname}}
+                                {% if image.text_data %}<br>{{image.text_data|safe}}{% endif %} </small></h6>">
+                            <div class="box">
+                                    <img class="thumbnails" alt="" src="{% static image.image_dir %}{{image.image_file}}">
+                                    <div class="text text-br">{{image.id}}</div>
+                            </div>
                         </a>
-                        {% else %}
-                             <img class="thumbnails" alt="" src="{{x.image_url}}" style="padding:0; border:1px solid darkgrey;">
-                       {% endif %}
                         <br>
-                        <div style="font-size:10px">
-                            <a href="{% url 'detail:uploadweb' pid=x.pid_id id=x.id %}?role=pri&tab=pri">Update</a> |
-                            <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletewebphoto' x.pid_id %}?id={{x.id}}&origin=myphoto" >delete</a>
+                    {% else %}
+                        <a href="#">
+                        <dev class="box">
+                            <img class="thumbnails" alt="" src="{{image.image_url}}">
+                            <div class="text text-br">{{image.id}}</div>
+                        </dev>
+                        </a>
+                    {% endif %}
+                    <div class="imgcaption">
+                        <div style="width:100%;word-wrap: break-word;">
+                            {% if role == 'cur' %}
+                                {% include 'detail/curate_links.html' %}
+                            {% else %}
+                                {% if image.source_url %}
+                                    <a href="{{image.source_url}}" target="_blank">{{image.imgname|safe}}</a>
+                                {% else %}
+                                    {{image.imgname|safe}}
+                                {% endif %}
+                                {% if image.source_url %}
+                                    <br>Photo: <a href="{{image.source_url}}" target="_blank">{{image.author.displayname }}</a>
+                                {% else %}
+                                    {{image.author.displayname }}
+                                {% endif %}
+                            {% endif %}
+
                         </div>
+
                     </div>
                 </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-            <hr>
-        <div style="text-align: center"><h6>My Upload Files</h6></div>
-        <div style="margin:0 10px; text-align: center;min-height:100px;">
-
-            {% if upload_list %}
-                {% for x in upload_list %}
-                    <div style="display: inline-block">
-                        <a href="{% static 'media/' %}{{ x.image_file_path }}" data-lightbox="upload" data-title="{{x.pid}}">
-                            <img class="thumbnails" alt="" src="{% static 'media/' %}{{ x.image_file_path }}" data-lightbox="upload">
-                        </a>
-                        <br>
-                        <a type="button" class="button" style="width:60px;font-size: 12px" href="{% url 'detail:deletephoto' x.id %}?origin=myphoto" >delete</a>
-                    </div>
-                {% endfor %}
-           {% endif %}
+            {% endfor %}
+       </div>
 
 
-        </div>
-    </div>
-    {% endif %}
-</div>
+
+
+
+
+
+
+
+
+
 
 <script type="text/javascript">
 

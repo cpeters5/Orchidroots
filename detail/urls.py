@@ -10,7 +10,7 @@ app_name = 'detail'
 urlpatterns = [
     # detail
     # path('selectspecies/<int:pid>/', views.selectspecies, name='selectspecies'),
-    path('nav/', views.nav, name='nav'),
+    # path('nav/', views.nav, name='nav'),
     path('species/', views.information, name='information'),
     path('species/<int:pid>/', views.information, name='information'),
     path('hybrid/', views.information, name='information'),

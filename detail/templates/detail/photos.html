@@ -67,6 +67,22 @@ div.text-bl a {
     color: #2fffff;
 }
 
+
+.custom-select{
+    margin-right:5px;
+    background-color: #f9f9f9;
+    color: #292929;
+    width:180px;
+    /*height:50px;*/
+    font-size:13px;
+}
+
+.custom-select:hover {
+    text-decoration: none;
+    background-color: #8887bd;
+    color: white;
+}
+
 @media only screen and (max-width: 800px){
    .imageitem {
         width: 30vw;
@@ -253,7 +269,7 @@ a:hover {
     <div class="tab-content clearfix p-2" style="background:white; padding:10px 0;border-left:1px solid lightgrey;border-right:1px solid lightgrey;border-bottom:1px solid lightgrey;min-height:1000px">
         <!--Author list-->
         <div  class="row p-2 justify-content-center align-items-center">
-            {% if user.tier.tier > 2 and role == 'cur' %}
+            {% if role == 'cur' %}
                 {% if user.tier.tier > 3 and role == 'cur' %}
                     <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_newapproved' %}">Recently approved</a>
                     <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_pending' %}?gen=&type={{species.type}}">All pending photos</a>
@@ -261,20 +277,97 @@ a:hover {
                 <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:curate_newupload' %}?gen=&type={{species.type}}">New uploaded photos</a>
                 <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web">Upload url</a>
                 <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc">upload file</a>
+                <form class="form-inline justify-content-center" action="{% url 'detail:photos' species.pid %}" id="author">
+                <input type="hidden" name="genus" value="{{genus}}" />
+                <input type="hidden" name="role" value="{{role}}" />
+                <select form='author' name="author" class="" tabindex="-1" aria-hidden="true" style="width:150px;height:27px;margin:0;border:1px solid lightgrey;padding:0;"  data-toggle="tooltip"  data-placement="bottom"  title="genus parent #1" style="margin:0 auto">
+                    {% if author %}
+                        <option selected disabled>{{author}}</option>
+                    {% else %}
+                        <option selected disabled>Select an author</option>
+                   {% endif %}
+                    <option></option>
+                    {% for author in author_list %}
+                        {% if author == author.author_id %}
+                            <option selected="selected" disabled value="{{author.author_id}}">{{author.displayname}}</option>
+                        {% else %}
+                            <option value="{{author.author_id}}">{{author.displayname}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <button form="author" style="height:27px;margin:0;background-color: #1d6c6c; color:white">Submit</button>
+                </form>
             {% elif role == 'pri' %}
-<!--                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web">Upload url</a>-->
+                <div class="p-2 dropdown" >
+                    <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species List</button>
+                    {% if myspecies_list %}
+                        <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                            {% for spc in myspecies_list %}
+                                <a class="dropdown-item" href="{% url 'detail:photos' spc.pid %}?role=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="p-2 dropdown">
+                    <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Hybrids List</button>
+                    {% if myhybrid_list %}
+                        <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                            {% for spc in myhybrid_list %}
+                                <a class="dropdown-item" href="{% url 'detail:photos' spc.pid %}?role=pri&author={{author.author_id}}">{{spc.textname|safe}}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="p-2 dropdown" >
+                    <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:myphoto_browse_spc' %}?role={{role}}">My Species Photos</a>
+                </div>
+
+                <div class="p-2 dropdown" >
+                    <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:myphoto_browse_hyb' %}?role={{role}}">My Hybrid Photos</a>
+                </div>
+                <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadweb' species.pid %}?role={{role}}&tab=web">Upload url</a>
                 <a class="btn btn-xs btn-outline-primary btn-color" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc">upload file</a>
             {% endif %}
 
+
+
+<!--            Anyone may filter by variety, form name, etc-->
             <form action="?" id="variety">
                 <!--Variety-->
                 <input type="hidden" name="tab" value="sum" />
                 <input type="hidden" name="gen" value="{{species.gen.pid}}" />
                 <input type="hidden" name="pid" value="{{species.pid}}" />
             </form>
-            <input form="variety" class="text-box" name="variety" onfocus="this.select()" value="{{variety}}" placeholder="Enter variety, form, name or synonym"/>
-        </div>
+<!--            <input form="variety" class="text-box" name="variety" onfocus="this.select()" value="{{variety}}" placeholder="Enter variety, form, name or synonym"/>-->
 
+
+        <!--        Curator may select any author id-->
+<!--        {% if user.is_authenticated and user.tier.tier > 2 %}-->
+<!--            <form class="form-inline justify-content-center" action="{% url 'detail:photos' species.pid %}" id="author">-->
+<!--            <input type="hidden" name="genus" value="{{genus}}" />-->
+<!--            <input type="hidden" name="role" value="{{role}}" />-->
+<!--            <select form='author' name="author" class="" tabindex="-1" aria-hidden="true" style="width:150px;height:27px;margin:0;border:1px solid lightgrey;padding:0;"  data-toggle="tooltip"  data-placement="bottom"  title="genus parent #1" style="margin:0 auto">-->
+<!--                {% if author %}-->
+<!--                    <option selected disabled>{{author}}</option>-->
+<!--                {% else %}-->
+<!--                    <option selected disabled>Select an author</option>-->
+<!--               {% endif %}-->
+<!--                <option></option>-->
+<!--                {% for author in author_list %}-->
+<!--                    {% if author == author.author_id %}-->
+<!--                        <option selected="selected" disabled value="{{author.author_id}}">{{author.displayname}}</option>-->
+<!--                    {% else %}-->
+<!--                        <option value="{{author.author_id}}">{{author.displayname}}</option>-->
+<!--                    {% endif %}-->
+<!--                {% endfor %}-->
+<!--            </select>-->
+<!--            <button form="author" style="height:27px;margin:0;background-color: #1d6c6c; color:white">Submit</button>-->
+<!--            </form>-->
+<!--        {% endif %}-->
+
+        </div>
        <div class="d-flex flex-wrap justify-content-center align-items-center p-2">
             {% for image in public_list %}
                 <div class="imageitem">
@@ -322,8 +415,7 @@ a:hover {
             {% endfor %}
        </div>
     </div>
-
-    {% if private_list %}
+    {% if private_list and role == 'cur' %}
     <div class="p-2 border" style="margin-top:10px;background:white;">
         <div class="p-2 justify-content-center align-items-center" style="margin:0 auto;width:100%">
             <div class="font-weight-bold text-center text-info" ><h4>Private Photos</h4></div>
@@ -383,15 +475,20 @@ a:hover {
 <!--                                    </div>-->
                         Requested file does not exist
                      {% endif %}
-                        <div style="font-size:10px">
-                            <a href="{{image.source_url}}">{{image.author}}</a>
-                            {% if user.tier.tier > 2 and role == "cur" %}
-                                <br>
+                     <div style="font-size:10px">
+                        <a href="{{image.source_url}}">{{image.author}}</a>
+<!--                            Private and curate role may delete photos-->
+                        {% if role == "cur" or role == "pri" %}
+                            <br>
+                            {% if image.approved %}
+                                <b>Approved</b>
+                            {% else %}
                                 <a href="{% url 'detail:approvemediaphoto' image.pid_id %}?&id={{image.id}}&tab={{tab}}&gen={{species.gen.pid}}&action=file">Approve</a> |
-                                -
-                                <a href="{% url 'detail:deletephoto' image.id %}?id={{image.id}}&role={{role}}&tab={{tab}}" >Delete</a>
                             {% endif %}
-                        </div>
+                            -
+                            <a href="{% url 'detail:deletephoto' image.id %}?id={{image.id}}&role={{role}}" >Delete</a>
+                        {% endif %}
+                     </div>
 
                  </div>
             {% endfor %}

@@ -26,8 +26,8 @@ from myproject.views import orchid_home, home, private_home
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', orchid_home, name='orchid_home'),
-    path('home/', orchid_home, name='orchid_home'),
+    path('', home, name='home'),
+    path('orchid_home/', orchid_home, name='orchid_home'),
     # path('index/', index, name='index'),
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
@@ -35,7 +35,7 @@ urlpatterns = [
     path('change_email/', ChangeEmailView.as_view(), name='change_email'),
     path('update_profile/', UpdateProfileView.as_view(), name='update_profile'),
     path('logout/', LogoutView.as_view(), {'next_page': '//'}, name='logout'),
-    path('accounts/password/change/', PasswordChangeRedirect.as_view(), name="account_password_change" ),
+    path('accounts/password/change/', PasswordChangeRedirect.as_view(), name="account_password_change"),
     path('accounts/', include('allauth.urls')),
     # path('password_reset/', include(password_reset.urls)),
 

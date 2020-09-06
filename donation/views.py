@@ -77,9 +77,6 @@ class DonateView(TemplateView):
     donateamt = 1000
     donateamt_display = f'{donateamt / 100:.2f}'
 
-
-    # def get(self, request, *args, **kwargs):
-    #     context['donateamt'] = kwargs['donateamt']
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['paypal_client_id'] = settings.PAYPAL_CLIENT_ID

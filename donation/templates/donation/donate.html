@@ -1,12 +1,58 @@
 {% load static %}
 {% include "base.html" %}
-{% block body %}
+<style>
 
-<br><br>
-<dev class="container" style="width:100%; margin:0 auto;">
-  <h6 align="center">Thank you for your ${{donateamt_display}} contribution to OrchidRoots!</h6>
-    <div style="text-align:center; margin-top:10px;">Back to <a href="/?role={{role}}">OrchidRoots</a></div>
+@media only screen and (max-width: 800px) {
+}
 
-</dev>
+@media only screen and (max-width: 580px) {
+}
 
-{% endblock %}
+.btn {
+    margin:2px 0;
+    width: 95%;
+    font-size:13px;
+    color: #272ba3;
+    padding:5px 0;
+    background-color: white;
+    border:1px solid #c6c0c0;
+    border-radius: .15rem;
+}
+.btn:hover {
+    background-color: #cad4f7;
+}
+
+    ul{
+        padding-left:15px;
+        font-size: 13px;
+        line-height: 30px;
+    }
+    .partner {
+        /*height:50px;*/
+        width:120px;
+        margin:5px;
+        padding: 5px;
+        line-height: 15px;
+        text-align:center;
+        padding:5px;
+    }
+
+</style>
+<div style="clear:both"></div>
+
+<div class="container-fluid" style="min-height:200px;border:0 solid grey">
+    <br><br>
+    <div class="row">
+        <div class="col-sm-2 hidden-xs p-1 m-2" style="padding:0; border:1px solid lightgrey">
+            {% include "side_home.html" %}
+        </div>
+
+        <div class="col-xs-12 col-sm-10">
+          <dev class="container" style="width:100%; margin:0 auto;">
+            <h6 align="center">Thank you for your ${{donateamt_display}} contribution to OrchidRoots!</h6>
+              <div style="text-align:center; margin-top:10px;">Back to <a href="/?role={{role}}">OrchidRoots</a></div>
+
+          </dev>
+		</div>
+	</div>
+</div>

@@ -4,18 +4,19 @@
 {% block extra-head %}
     <script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
     <style>
-        #donateamt{
+       #donateamt{
             width:80px;
             align:center;
+           border: 0;
         }
-        li {
-        display:inline-block;
-        /*display:inline; !*IE7*!*/
-        /*zoom:1; !*IE7*!*/
-        /*background:white;*/
-        color:white;
-        margin-right:10px;
-}
+        .li {
+            display:inline-block;
+            /*display:inline; !*IE7*!*/
+            /*zoom:1; !*IE7*!*/
+            /*background:white;*/
+            color:white;
+            margin-right:10px;
+        }
         .paypal-buttons{
             width: 300px;
             margin: 15px auto;
@@ -37,62 +38,136 @@
             min-height: 30px;
             max-height: 55px;
         }
+
+    @media only screen and (max-width: 800px) {
+    }
+
+    @media only screen and (max-width: 580px) {
+    }
+
+    .btn {
+        margin:2px 0;
+        width: 95%;
+        font-size:13px;
+        color: #272ba3;
+        padding:5px 0;
+        background-color: white;
+        border:1px solid #c6c0c0;
+        border-radius: .15rem;
+    }
+    .btn:hover {
+        background-color: #cad4f7;
+    }
+
+        ul{
+            padding-left:15px;
+            font-size: 13px;
+            line-height: 30px;
+        }
+        .partner {
+            /*height:50px;*/
+            width:120px;
+            margin:5px;
+            padding: 5px;
+            line-height: 15px;
+            text-align:center;
+            padding:5px;
+        }
+        li {
+            list-style: none;
+        }
+        .amt {
+            margin: 2px;
+            width: 30px;
+            height:30px;
+            border: 1px solid #c9c9ff;
+            text-align:center;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
+<div style="clear:both"></div>
 
-<br><br><br>
-<div class="container" style="width:100%; margin:0 auto;">
-    {% if error %}
-        <div class="alert alert-warning">
-            <span>An error occurred while trying to charge your card, please try again {{ error }}</span>
-
+<div class="container-fluid" style="min-height:200px;border:0 solid grey">
+    <br><br>
+    <div class="row">
+        <div class="col-sm-2 hidden-xs m-2 p-1" style="padding-top:2px; min-height:800px; border:1px solid lightgrey">
+            {% include "side_home.html" %}
         </div>
 
-    {% endif %}
-    {% if donateamt > 0 %}
-        <h4 align="center">Thank you for your ${{donateamt_display}} contribution
-        </h4>
-
-       <form align="middle" action="{% url 'donation:donate' donateamt %}" method="post">
-            {% csrf_token %}
-<!--            <input type="hidden" name="donateamt" value="{{donateamt}}" />-->
-            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="{{ key }}"
-                data-description="Donation Charge"
-                data-amount="{{donateamt}}"
-                data-locale="auto">
-            </script>
-
-        </form>
-        <div id="paypal-button" class="paypal-buttons">
-
+        <div class="col-xs-7 col-sm-6 border p-4 m-2">
+            <p>
+            OrchidRoots is a 501-(c)(3) non-profit organization.  We do not accept government funds in order to focus
+            our time and energy in making OrchidRoots the best platform for any level of orchid reserch instead of forever
+            keeping up with the exhaustive paper work required.
+            Therefore your support is vital for our progress.
+            </p>
+            <p>
+            We are committed to constantly improving the website to make our information more complete,
+            correct and available in formats that are more acceptable to our users.
+            </p>
+            <p>
+            We are currently raising $20,000 for a number of exciting future plans, one of which is the long awaited OrchidRoots mobile app.
         </div>
 
+        <div class="col-xs-4 col-sm-3 border p-4 m-2">
 
-    {% else %}
-        <h4 align="center">Thank you for your support</h4>
-        <br>
-        <div class="container" align="center">
 
-            <span class="tooltiptext">Choose amount</span>
-            <a class="dropdown-toggle filtbtn filtbtn1" type="button" data-toggle="dropdown" style="font-size:12px; width:150px ;border:1px solid #ccc" href="{% url 'donation:donateapp' 1000 %}">$10</a>
-            <ul class="dropdown-menu" id="donateamt" style="font-size: 11px;padding:5px;" align="center">
-                <li><a href="{% url 'donation:donateapp' 100 %}">$1</a></li>
-                <li><a href="{% url 'donation:donateapp' 500 %}">$5</a></li>
-                <li><a href="{% url 'donation:donateapp' 1000 %}">$10</a></li>
-                <li><a href="{% url 'donation:donateapp' 1500 %}">$15</a></li>
-                <li><a href="{% url 'donation:donateapp' 2000 %}">$20</a></li>
-                <li><a href="{% url 'donation:donateapp' 5000 %}">$50</a></li>
-                <li><a href="{% url 'donation:donateapp' 10000 %}">$100</a></li>
-            </ul>
 
-            <br>
-       </div>
 
-    {% endif %}
-            <div style="text-align:center; margin-top:10px;"><a href="/?role={{role}}">Cancel...</a></div>
+            <div class="container" style="width:100%; margin:0 auto;">
+                {% if error %}
+                    <div class="alert alert-warning">
+                        <span>An error occurred while trying to charge your card, please try again {{ error }}</span>
+
+                    </div>
+                {% endif %}
+
+                {% if donateamt > 0 %}
+                    <h4 align="center">Thank you for your ${{donateamt_display}} contribution
+                    </h4>
+
+                   <form align="middle" action="{% url 'donation:donate' donateamt %}" method="post">
+                        {% csrf_token %}
+            <!--            <input type="hidden" name="donateamt" value="{{donateamt}}" />-->
+                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            data-key="{{ key }}"
+                            data-description="Donation Charge"
+                            data-amount="{{donateamt}}"
+                            data-locale="auto">
+                        </script>
+
+                    </form>
+                    <div id="paypal-button" class="paypal-buttons">
+
+                    </div>
+
+
+                {% else %}
+                    <div class="container" align="center">
+                        Your dopnation, even a small amount, will make a difference.
+                        <br>
+                        <br>
+                        <h5>Choose amount</h5>
+                        <ul style="font-size: 11px;padding:2px;" align="center">
+                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 100 %}">$1</a></li>
+                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 500 %}">$5</a></li>
+                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 1000 %}">$10</a></li>
+                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 1500 %}">$15</a></li>
+                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 2000 %}">$20</a></li>
+                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 5000 %}">$50</a></li>
+                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 10000 %}">$100</a></li>
+                        </ul>
+
+                        <br>
+                   </div>
+
+                {% endif %}
+<!--                        <div style="text-align:center; margin-top:10px;"><a href="/?role={{role}}">Cancel...</a></div>-->
+            </div>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

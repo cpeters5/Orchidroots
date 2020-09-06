@@ -27,7 +27,7 @@ def orchid_home(request):
             randimages.append(SpcImages.objects.filter(gen=e).filter(rank__gt=0).filter(rank__lt=9).order_by('?')[0:1][0])
 
     random.shuffle(randimages)
-    role = ''
+    role = 'pub'
     if 'role' in request.GET:
         role = request.GET['role']
 
@@ -80,6 +80,6 @@ def home(request):
     context = {'title': 'orchid_home', 'num_visits':num_visits,
                'randimagesspc':randimagesspc,'randimageshyb':randimageshyb,'genus_list':genus_list,
                'level':'detail','tab':'sum','namespace':'myproject',}
-    return render(request, 'orchid_home.html', context)
+    return render(request, 'home.html', context)
 
 

@@ -1679,6 +1679,7 @@ class Donation(models.Model):
 
     source = models.CharField(max_length=10, choices=Sources.CHOICES, default=Sources.STRIPE)
     source_id = models.CharField(max_length=255, blank=True, null=True)
+    donor_name = models.CharField(max_length=255, blank=True, null=True)
     donor_display_name = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=255, choices=Statuses.CHOICES, default=Statuses.UNVERIFIED)
     amount = models.DecimalField(max_digits=5, decimal_places=2)

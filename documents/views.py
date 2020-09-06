@@ -5,6 +5,10 @@ def list(request):
     context = {'namespace':'documents',}
     return render(request, 'documents/list.html', context)
 
+def help(request):
+    context = {'namespace':'documents',}
+    return render(request, 'documents/help.html', context)
+
 def bylaws(request):
     context = {'namespace':'documents',}
     return render(request, 'documents/bylaws.html', context)
@@ -28,6 +32,17 @@ def termsofuse(request):
 def greetings(request):
     context = {'namespace':'greetings',}
     return render(request, 'documents/greetings.html', context)
+
+
+def faq(request):
+    context = {'namespace':'faq',}
+    return render(request, 'documents/faq.html', context)
+
+
+def navigation(request):
+    context = {'namespace':'navigation',}
+    return render(request, 'documents/navigation.html', context)
+
 
 def identinstruction(request):
     context = {'namespace':'documents',}

@@ -20,6 +20,7 @@
     {% if species %}
     <title>{{species.genus}} {{species.species}}</title>
 
+
     {% else %}
     <title>Bluenanta OrchidsRoots</title>
     {% endif %}
@@ -334,7 +335,7 @@ body {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
-            <a class="navbar-brand mb-0 bannerfont" href="/?role={{role}}" style="color: #ffff07;line-height: 11px;"><b>Orchid<br>R<span style="font-size:18px;">oots</span></b><span style="font-size:12px;color:darkgrey;font-family:Lucida;"> ©2019-{% now 'Y' %}</span></a>
+            <a class="navbar-brand mb-0 bannerfont" href="/?role={{role}}" style="color: #ffff07;line-height: 11px;"><b>Orchid<br>R<span style="font-size:18px;">oots</span></b><span style="font-size:12px;color:darkgrey;font-family:Lucida;"> ©2017-{% now 'Y' %}</span></a>
         </div>
 <!-- Links -->
 
@@ -418,9 +419,9 @@ body {
                     <div class="dropdown" id="pri2">
                         {% if species %}
                             {% if role == 'pri' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:photo' species.pid %}?role=pri">Private</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:photos' species.pid %}?role=pri">Private</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:photo' species.pid %}?role=pri">Private</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:photos' species.pid %}?role=pri">Private</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'pri' %}
@@ -430,9 +431,7 @@ body {
                             {% endif %}
                         {% endif %}
                     </div>
-                {% endif %}
-
-                {% if user.tier.tier > 2 %}
+                {% else %}
                     <div class="dropdown" id="pub3">
                         {% if species %}
                             {% if role == 'pub' %}

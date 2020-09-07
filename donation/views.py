@@ -133,7 +133,7 @@ def donate(request,donateamt=None): # new
 
     if request.method == 'POST':
         try:
-            donor_display_name = request.POST.get('donor_name', '')
+            donor_display_name = request.POST.get('donor_display_name', '')
             logger.error("donateamt = " + str(donateamt))
             charge = stripe.Charge.create(
                 amount=donateamt,
@@ -159,6 +159,7 @@ def donate(request,donateamt=None): # new
             Donation.objects.create(**payload)
             return redirect(reverse_lazy('donation:thankyou', kwargs={'donateamt': int(donateamt)}))
         except Exception as e:
+            print(e)
             messages.error(request, 'An error occurred while charging your card, Please try again!!')
             return redirect(reverse_lazy('donation:donate', kwargs={'donateamt': donateamt}))
     return render(request, 'donation/donate.html',{})

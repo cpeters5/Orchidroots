@@ -232,44 +232,47 @@ CACHES = {
 }
 
 LOGGING_CONFIG = None
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'console': {
-            # exact format is not important, this is the minimum information
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+try:
+    logging.config.dictConfig({
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'console': {
+                # exact format is not important, this is the minimum information
+                'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+            },
         },
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'console',
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'console',
+            },
+            'sentry': {
+                'level': 'WARNING',
+                'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            },
+            # 'logfile': {
+            #     'level':'DEBUG',
+            #     'class':'logging.FileHandler',
+            #     'filename': BASE_DIR + "/../log/logfile",
+            # },
         },
-        'sentry': {
-            'level': 'WARNING',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        'loggers': {
+            '': {
+                'level': 'WARNING',
+                'handlers': ['console', 'sentry']
+            },
+            'myproject': {
+                'level': 'INFO',
+                'handlers': ['console', 'sentry'],
+                # required to avoid double logging with root logger
+                'propagate': False,
+            },
         },
-        # 'logfile': {
-        #     'level':'DEBUG',
-        #     'class':'logging.FileHandler',
-        #     'filename': BASE_DIR + "/../log/logfile",
-        # },
-    },
-    'loggers': {
-        '': {
-            'level': 'WARNING',
-            'handlers': ['console', 'sentry']
-        },
-        'myproject': {
-            'level': 'INFO',
-            'handlers': ['console', 'sentry'],
-            # required to avoid double logging with root logger
-            'propagate': False,
-        },
-    },
-})
+    })
+except: # noqa
+    pass
 
 
 # allauth account settings

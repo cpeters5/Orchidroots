@@ -96,7 +96,8 @@ class PaypalTransactionDoneView(View):
         try:
             payer = data['payer']
             payload = {
-                'donor_display_name': f"{payer['name']['given_name']} {payer['name']['surname']}",
+                'donor_name': f"{payer['name']['given_name']} {payer['name']['surname']}",
+                'donor_display_name': data['added-donor-name'],
                 'source': Donation.Sources.PAYPAL,
                 'source_id': data['id'],
                 'status': Donation.Statuses.ACCEPTED if data['status'].lower() == 'completed' else Donation.Statuses.UNVERIFIED,
@@ -132,6 +133,7 @@ def donate(request,donateamt=None): # new
 
     if request.method == 'POST':
         try:
+            donor_display_name = request.POST.get('donor_name', '')
             logger.error("donateamt = " + str(donateamt))
             charge = stripe.Charge.create(
                 amount=donateamt,
@@ -142,11 +144,12 @@ def donate(request,donateamt=None): # new
             donor_display_name = ''
 
             if charge.get('customer', None):
-                donor_display_name = charge['customer'].get('name', '')
-                logger.error("donor_display_name = " + donor_display_name)
+                donor_name = charge['customer'].get('name', '')
+                logger.error("donor_display_name = " + donor_name)
 
             payload = {
                 'donor_display_name': donor_display_name,
+                'donor_name': donor_name,
                 'source': Donation.Sources.STRIPE,
                 'source_id': charge['id'],
                 'status': Donation.Statuses.ACCEPTED if charge['paid'] else Donation.Statuses.UNVERIFIED,

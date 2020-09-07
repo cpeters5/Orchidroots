@@ -56,4 +56,4 @@ admin.site.register(Distribution)
 
 @admin.register(Donation)
 class DonationAdmin(admin.ModelAdmin):
-    list_display = ('amount', 'source', 'donor_display_name', 'country_code', 'status', 'created_date')
+    list_display = ('amount', 'source', 'donor_name', 'donor_display_name', 'country_code', 'status', 'created_date')

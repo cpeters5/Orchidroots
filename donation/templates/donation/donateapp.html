@@ -78,11 +78,15 @@
         }
         .amt {
             margin: 2px;
-            width: 30px;
+            width: 40px;
             height:30px;
             border: 1px solid #c9c9ff;
             text-align:center;
         }
+        .amt.active {
+    color: #fff!important;
+    background-color: #007bff!important;
+}
     </style>
 {% endblock %}
 
@@ -124,13 +128,54 @@
                     </div>
                 {% endif %}
 
-                {% if donateamt > 0 %}
-                    <h4 align="center">Thank you for your ${{donateamt_display}} contribution
+                <div class="container" align="center">
+                    Your donation, even a small amount, will make a difference.
+                    <br>
+                    <br>
+                    <h5>Full Name (Optional)</h5>
+                    <div class="form-group">
+                        <input type="text" name="donor-name" id="donor-name" class="form-control" placeholder="Full Name or Organisation" >
+                    </div>
+
+                    <h5>Choose amount</h5>
+
+                    <div class="btn-toolbar" role="toolbar" aria-label="toolbar" style="font-size: 11px;padding:2px; justify-content: center">
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn amt btn-outline-primary" data-amt="100">$1</button>
+                      </div>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn amt btn-outline-primary" data-amt="500">$5</button>
+                      </div>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn amt btn-outline-primary" data-amt="1000">$10</button>
+                      </div>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn amt btn-outline-primary" data-amt="1500">$15</button>
+                      </div>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn amt btn-outline-primary" data-amt="2000">$20</button>
+                      </div>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn amt btn-outline-primary" data-amt="5000">$50</button>
+                      </div>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn amt btn-outline-primary" data-amt="10000">$100</button>
+                      </div>
+                    </div>
+
+
+
+                    <br>
+               </div>
+
+                <div id="complete-donation" class="d-none">
+                    <h4 align="center">Thank you for your $<span id="selected-amount">0</span> contribution
                     </h4>
 
-                   <form align="middle" action="{% url 'donation:donate' donateamt %}" method="post">
+                   <form align="middle" action="{% url 'donation:donate' donateamt %}" method="post" id="stripe-form">
                         {% csrf_token %}
             <!--            <input type="hidden" name="donateamt" value="{{donateamt}}" />-->
+                       <input type="hidden" name="donor_name" id="added-donor-name">
                         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                             data-key="{{ key }}"
                             data-description="Donation Charge"
@@ -142,28 +187,11 @@
                     <div id="paypal-button" class="paypal-buttons">
 
                     </div>
+                </div>
 
 
-                {% else %}
-                    <div class="container" align="center">
-                        Your donation, even a small amount, will make a difference.
-                        <br>
-                        <br>
-                        <h5>Choose amount</h5>
-                        <ul style="font-size: 11px;padding:2px;" align="center">
-                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 100 %}">$1</a></li>
-                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 500 %}">$5</a></li>
-                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 1000 %}">$10</a></li>
-                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 1500 %}">$15</a></li>
-                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 2000 %}">$20</a></li>
-                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 5000 %}">$50</a></li>
-                            <li class="li amt btn-outline-primary"><a href="{% url 'donation:donateapp' 10000 %}">$100</a></li>
-                        </ul>
 
-                        <br>
-                   </div>
 
-                {% endif %}
 <!--                        <div style="text-align:center; margin-top:10px;"><a href="/?role={{role}}">Cancel...</a></div>-->
             </div>
 		</div>
@@ -181,6 +209,8 @@
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
 
+
+
         $.ajaxSetup({
           beforeSend: function (xhr, settings) {
             // if not safe, set csrftoken
@@ -189,48 +219,69 @@
             }
           }
         })
-        paypal.Buttons({
-          style: {
-              shape: 'rect',
-              color: 'gold',
-              layout: 'horizontal',
-              label: 'pay',
 
-          },
-          createOrder: function(data, actions) {
-              return actions.order.create({
-                  purchase_units: [{
-                      amount: {
-                          value: '{{ donateamt_display }}'
-                      }
-                  }]
-              });
-          },
-          onApprove: function(data, actions) {
-              return actions.order.capture().then(function(details) {
+        $('.amt').click(function(e){
+            $('.amt').removeClass('active');
+            $(this).addClass('active');
+            $('.amt').prop('disabled', true);
 
-                  $.ajax({
-                      url: "{%  url 'donation:paypal-done' %}",
-                      type: "POST",
-                      data: JSON.stringify(details),
-                      dataType: 'json',
-                      contentType: 'application/json; charset=utf-8',
-                      success: function(res){
-                          if (res.status === 'success'){
-                              var url = "{% url 'donation:thankyou' donateamt=donateamt %}";
-                                window.location.href = url;
+            var amount = $(this).attr('data-amt');
+            var actual_amount = parseInt(amount) / 100;
+            $('#selected-amount').text(actual_amount)
+            $('.stripe-button').attr({'data-amount': amount});
+            var stripe_url = `/donation/donate/${amount}/`;
+            $('#stripe-form').attr('action', stripe_url);
+            var donor_name = $('#donor-name').val();
+            $('#added-donor-name').val(donor_name);
+
+
+            paypal.Buttons({
+              style: {
+                  shape: 'rect',
+                  color: 'gold',
+                  layout: 'horizontal',
+                  label: 'pay',
+
+              },
+              createOrder: function(data, actions) {
+                  return actions.order.create({
+                      purchase_units: [{
+                          amount: {
+                              value: actual_amount
                           }
-                          else{
-                              console.log(res.msg)
-                              alert('An error occurred, please try again');
+                      }]
+                  });
+              },
+              onApprove: function(data, actions) {
+                  return actions.order.capture().then(function(details) {
+                      details['added-donor-name'] = donor_name;
+
+                      $.ajax({
+                          url: "{%  url 'donation:paypal-done' %}",
+                          type: "POST",
+                          data: JSON.stringify(details),
+                          dataType: 'json',
+                          contentType: 'application/json; charset=utf-8',
+                          success: function(res){
+                              if (res.status === 'success'){
+                                  var url = `/donation/thank-you/${amount}`;
+                                    window.location.href = url;
+                              }
+                              else{
+                                  console.log(res.msg)
+                                  alert('An error occurred, please try again');
+                              }
+
                           }
+                      })
 
-                      }
-                  })
+                  });
+              }
+          }).render('#paypal-button');
 
-              });
-          }
-      }).render('#paypal-button');
+          $('#complete-donation').removeClass('d-none')
+        })
+
   </script>
 
 {% endblock %}

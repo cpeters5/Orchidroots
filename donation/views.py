@@ -134,6 +134,8 @@ def donate(request,donateamt=None): # new
     if request.method == 'POST':
         try:
             donor_display_name = request.POST.get('donor_display_name', '')
+            donor_name = ''
+
             logger.error("donateamt = " + str(donateamt))
             charge = stripe.Charge.create(
                 amount=donateamt,
@@ -141,7 +143,6 @@ def donate(request,donateamt=None): # new
                 description='Donation',
                 source=request.POST['stripeToken']
             )
-            donor_display_name = ''
 
             if charge.get('customer', None):
                 donor_name = charge['customer'].get('name', '')

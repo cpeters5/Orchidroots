@@ -1093,7 +1093,7 @@ class InfragenHybrid(models.Model):
     pid = models.OneToOneField(
         Species,
         db_column='pid',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         primary_key=True)
     genus = models.CharField(max_length=50, null=True, blank=True)
     species = models.CharField(max_length=50, null=True, blank=True)
@@ -1123,7 +1123,7 @@ class AncestorDescendant(models.Model):
         unique_together = (("did", "aid"),)
 
     did = models.ForeignKey(Hybrid, null=False, db_column='did',on_delete=models.CASCADE)
-    aid = models.ForeignKey(Species, null=False, db_column='aid',on_delete=models.DO_NOTHING)
+    aid = models.ForeignKey(Species, null=False, db_column='aid',on_delete=models.CASCADE)
     anctype = models.CharField(max_length=10, default='hybrid')
     pct = models.FloatField(blank=True, null=True)
     # file = models.CharField(max_length=10, blank=True)

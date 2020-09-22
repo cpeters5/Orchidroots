@@ -411,16 +411,18 @@ input {
                         {% if genustype == 'species' or genustype == 'all' or not genustype %}
                         <td class="text-center small-font">
                             {% if genus.num_species %}
-                            <a href="{% url 'orchidlist:species' %}?genus={{genus}}&genustype=species"><span  style="font-size: 11px;">{{genus.num_species}}</span></a>
-                            {% if genus.pct_spc_with_image %}(<a href="{% url 'orchidlist:browse' %}?type=species&gen={{genus.pid}}"><span  style="font-size: 11px;">{{genus.get_roundspcpct}}%</span></a>){% endif %}
+                            <a href="{% url 'orchidlist:browse' %}?type=species&genus={{genus}}"><span  style="font-size: 11px;">{{genus.num_species}}
+                            {% if genus.pct_spc_with_image %}({{genus.get_roundspcpct}}%){% endif %}
+                            </span></a>
                             {% endif %}
                         </td>
                         {% endif %}
 
                         <td class="text-center small-font">
                             {% if genus.num_hybrid %}
-                            <a href="{% url 'orchidlist:hybrid' %}?genustype=hybrid&genus={{genus}}"><span  style="font-size: 11px;">{{genus.num_hybrid}}</span></a>
-                                {% if genus.pct_hyb_with_image %}(<a href="{% url 'orchidlist:browse' %}?type=hybrid&gen={{genus.pid}}"><span  style="font-size: 11px;">{{genus.get_roundhybpct}}%</span></a>){% endif %}
+                            <a href="{% url 'orchidlist:browse' %}?type=hybrid&genus={{genus}}"><span  style="font-size: 11px;">{{genus.num_hybrid}}
+                                {% if genus.pct_hyb_with_image %}({{genus.get_roundhybpct}}%){% endif %}
+                            </span></a>
                             {% endif %}
                         </td>
                         <td class="text-center small-font">

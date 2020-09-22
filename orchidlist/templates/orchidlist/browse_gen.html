@@ -180,7 +180,7 @@ img{
         {% endif %}
         {% for x in page_list %}
             <div class="imageitem m-1" style="display:inline-block; text-align:center;">
-                <a href="{% url 'orchidlist:browse' %}?type={{type}}&gen={{x.gen.pid}}&role={{role}}&display=checked">
+                <a href="{% url 'orchidlist:browse' %}?type={{type}}&genus={{x.genus}}&role={{role}}&display=checked">
                 <div class="imgcaption_top">
                     {{x.genus|safe}}
                 </div>

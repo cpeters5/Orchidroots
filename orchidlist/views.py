@@ -295,7 +295,7 @@ def genera(request):
                'st_obj':st_obj,'st_list':st_list,
                'title': 'genera', 'genus': genus, 'year': year, 'genustype': genustype,'status':status,
                'formula1':formula1, 'formula2':formula2,
-               'genactive': 'active', 'sort': sort, 'prev_sort': prev_sort,
+               'sort': sort, 'prev_sort': prev_sort,
                'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length, 'namespace':'orchidlist',}
     logger.error("orchidlist/genus_list " + str(request.user))
     return render(request, 'orchidlist/genera.html', context)
@@ -360,8 +360,6 @@ def species_list(request):
             year_valid = 1
     if 'status' in request.GET:
         status = request.GET['status']
-    if 'genustype' in request.GET:
-        genustype = request.GET['genustype']
 
     # Get regions
     if 'region' in request.GET:
@@ -385,27 +383,15 @@ def species_list(request):
         subregion_list = Subregion.objects.all()
 
     # Get list for display
+    if 'status' in request.GET:
+        status = request.GET['status']
     this_species_list = Species.objects.exclude(status='pending').filter(type='species')
-    if status != 'synonym':
+    if status == 'synonym':
+        this_species_list = this_species_list.filter(status='synonym')
+    elif status == 'accepted':
         this_species_list = this_species_list.exclude(status='synonym')
-    # elif status == 'accepted':
-    #     this_species_list = this_species_list.exclude(status='synonym')
 
 
-    if 'gen' in request.GET:
-        gen = request.GET['gen']
-        if not gen:
-            gen = 0
-
-        try:
-            genus = Genus.objects.get(pk=gen)
-        except Genus.DoesNotExist:
-            genus = ''
-    else:
-        gen = ''
-
-    if 'newgen' in request.GET:
-        newgen = request.GET['newgen']
     if 'genus' in request.GET:
         genus = request.GET['genus']
         try:
@@ -414,9 +400,6 @@ def species_list(request):
             gen = ''
 
     intragen_list = Intragen.objects.all()
-    if gen:
-        this_species_list = this_species_list.filter(gen=gen)
-        intragen_list = intragen_list.filter(gen=gen)
 
     species_list = []
     hybrid_list = []
@@ -610,9 +593,8 @@ def species_list(request):
     if 'role' in request.GET:
         role = request.GET['role']
     logger.error("orchidlist/species " + str(request.user) + " " + str(genus))
-    genus_list = Genus.objects.all()
     context = {'page_list': page_list, 'total':total,'alpha_list': alpha_list, 'alpha': alpha,'spc':spc,
-               'gen':gen, 'role':role, 'species':species,
+               'role':role, 'species':species,
                'subgenus_list':subgenus_list,'subgenus_obj':subgenus_obj,
                'section_list': section_list, 'section_obj': section_obj,'genus':genus,
                'subsection_list': subsection_list, 'subsection_obj': subsection_obj,
@@ -621,7 +603,7 @@ def species_list(request):
                'year': year, 'status':status,
                'author':author,'dist':dist,
                'region_obj':region_obj,'region_list':region_list,'subregion_obj':subregion_obj, 'subregion_list':subregion_list,
-               'genactive': 'active', 'sort': sort, 'prev_sort': prev_sort,
+               'sort': sort, 'prev_sort': prev_sort,
                'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length,
                'level':'list', 'title': 'species_list','namespace':'orchidlist','type':'species'
                }
@@ -635,7 +617,6 @@ def hybrid_list(request):
     # min_lenspecies_req = 2
     year = ''
     year_valid = 0
-    type = ''
     status = ''
     author = ''
     originator = ''
@@ -650,7 +631,7 @@ def hybrid_list(request):
     prev_sort = ''
 
     num_show = 5
-    page_length = 500
+    page_length = 200
     # max_page_length = 1000
     page_range = []
     last_page = 1
@@ -680,33 +661,12 @@ def hybrid_list(request):
     elif status == 'accepted':
         this_species_list = this_species_list.exclude(status='synonym')
 
-    if 'gen' in request.GET:
-        gen = request.GET['gen']
-        if not gen:
-            gen = 0
-        try:
-            genus = Genus.objects.get(pk=gen)
-        except Genus.DoesNotExist:
-            genus = ''
-    else:
-        gen = ''
 
-    if 'newgen' in request.GET:
-        newgen = request.GET['newgen']
     if 'genus' in request.GET:
         genus = request.GET['genus']
-        try:
-            gen = Genus.objects.get(genus=genus).pid
-        except Genus.DoesNotExist:
-            gen = ''
+
     genus_list = Genus.objects.exclude(status='synonym').filter(Q(num_species__gte=0) | Q(num_hybrid__gte=0))
 
-    if gen:
-        this_genus_list = Genus.objects.exclude(status='synonym').filter(Q(num_species__gte=0) | Q(num_hybrid__gte=0))
-        this_species_list = this_species_list.filter(gen=gen)
-
-    # If newgen is given, select species and hybrid list for top navbar
-    hybrid_list = []
     species_list = []
     if genus:
         if genus[0] != '%' and genus[-1] != '%':
@@ -831,10 +791,10 @@ def hybrid_list(request):
         page_range = paginator.page_range[start_index:end_index]
 
     logger.error("orchidlist/hybrid  " + str(request.user) + " " + str(genus))
-    context = {'my_list': my_list, 'total':total,'alpha_list': alpha_list, 'alpha': alpha,'spc':spc,
-               'genus':genus,'gen':gen,'year': year, 'type': type, 'status':status,'type':'hybrid',
+    context = {'my_list': my_list, 'genus_list':genus_list, 'total':total,'alpha_list': alpha_list, 'alpha': alpha,'spc':spc,
+               'genus':genus,'year': year,'status':status,
                'author':author,'originator':originator,'seed':seed,'pollen':pollen,'seed_genus':seed_genus,'pollen_genus':pollen_genus,
-               'genactive': 'active', 'sort': sort, 'prev_sort': prev_sort,
+               'sort': sort, 'prev_sort': prev_sort,
                'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length,
                'level': 'list','title': 'hybrid_list', 'namespace':'orchidlist',
                }
@@ -917,7 +877,7 @@ def browsegen(request):
     return render(request, 'orchidlist/browse_gen.html', context)
 
 
-def browse(request,gen=None):
+def browse(request):
     import collections
     subgenus = ''
     section = ''
@@ -955,31 +915,14 @@ def browse(request,gen=None):
         if series:
             series_obj = Series.objects.get(pk=series)
 
-    if gen:
-        try:
-            genus = Genus.objects.get(pk=gen)
-        except Genus.DoesNotExist:
-            pass
-    if not gen and not genus and 'genus' in request.GET:
+    if 'genus' in request.GET:
         genus = request.GET['genus']
         try:
             genus = Genus.objects.get(genus=genus)
-            gen = genus.pid
         except Genus.DoesNotExist:
-            pass
-    if not gen and not genus and 'gen' in request.GET:
-        gen = request.GET['gen']
-        genus = ''
-        if gen:
-            try:
-                genus = Genus.objects.get(pk=gen)
-            except Genus.DoesNotExist:
-                genus = ''
-                gen = ''
-    if not gen and not genus:
-        # No genus is given, send it to browsegen
+            return HttpResponseRedirect("/orchidlist/browsegen/?display=checked")
+    else:
         return HttpResponseRedirect("/orchidlist/browsegen/?display=checked")
-
     logger.error("orchidlist/browse  " + str(request.user) + " " + str(genus))
 
     if 'display' in request.GET:
@@ -991,15 +934,15 @@ def browse(request,gen=None):
         type = request.GET['type']
 
     intragen_list = subgenus_list = section_list = subsection_list = series_list = []
-    intragen_list = Intragen.objects.filter(gen=gen)
+    intragen_list = Intragen.objects.filter(gen=genus.pid)
     subgenus_list = intragen_list.exclude(subgenus__isnull=True).exclude(subgenus__exact='').filter(
-        gen=gen).distinct().values('subgenus').order_by('subgenus')
+        gen=genus.pid).distinct().values('subgenus').order_by('subgenus')
     section_list = intragen_list.exclude(section__isnull=True).exclude(section__exact='').filter(
-        gen=gen).distinct().values('section').order_by('section')
+        gen=genus.pid).distinct().values('section').order_by('section')
     subsection_list = intragen_list.exclude(subsection__isnull=True).exclude(subsection__exact='').filter(
-        gen=gen).distinct().values('subsection').order_by('subsection')
+        gen=genus.pid).distinct().values('subsection').order_by('subsection')
     series_list = intragen_list.exclude(series__isnull=True).exclude(series__exact='').filter(
-        gen=gen).distinct().values('series').order_by('series')
+        gen=genus.pid).distinct().values('series').order_by('series')
     if subgenus:
         section_list = section_list.filter(subgenus=subgenus)
         subsection_list = subsection_list.filter(subgenus=subgenus)
@@ -1009,7 +952,7 @@ def browse(request,gen=None):
         series_list = series_list.filter(section=section)
     pid_list = ()
     if type == 'species':
-        pid_list = Accepted.objects.filter(gen=gen)
+        pid_list = Accepted.objects.filter(gen=genus.pid)
         if pid_list:
             if subgenus:
                 pid_list = pid_list.filter(subgenus=subgenus)
@@ -1020,7 +963,7 @@ def browse(request,gen=None):
             if series:
                 pid_list = pid_list.filter(series=series)
 
-    img_list = Species.objects.filter(gen=gen).exclude(status='synonym')
+    img_list = Species.objects.filter(genus=genus).exclude(status='synonym')
 
     if pid_list:
         img_list = img_list.filter(pid__in=pid_list)
@@ -1062,7 +1005,7 @@ def browse(request,gen=None):
     page_range, page_list,last_page, next_page,prev_page, page_length,page,first_item,last_item = mypaginator(request,my_full_list,page_length,num_show)
     genus_list = Genus.objects.all()
     context = {
-        'page_list': page_list,'type': type, 'gen': gen, 'genus':genus,'alpha':alpha,'display':display,
+        'page_list': page_list,'type': type, 'genus':genus,'alpha':alpha,'display':display,
         'genus_list':genus_list,'subgenus_list': subgenus_list, 'subgenus_obj': subgenus_obj,
         'section_list': section_list, 'section_obj': section_obj, 'genus': genus,
         'subsection_list': subsection_list, 'subsection_obj': subsection_obj,

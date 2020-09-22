@@ -361,13 +361,13 @@ seedparent, pollparent {
                         <br><b>Genus:</b>
                         {{species.gen}}:
                         <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?type=species&genus={{species.genus}}&role={{role}}">list</a>&nbsp;&nbsp;|
-                        &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                        &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
 
                     {% if species.accepted.subgenus %}
                         <br><b>Subgenus:</b>
                         {{species.accepted.subgenus}}:
                             <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                            &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                            &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                     {% endif %}
 
                     {% if species.accepted.section %}
@@ -375,10 +375,10 @@ seedparent, pollparent {
                             {{species.accepted.section}}:
                                 {% if species.accepted.subgenus %}
                                     <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
                                     <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&gen={{species.gen.pid}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 
@@ -387,10 +387,10 @@ seedparent, pollparent {
                                 {{species.accepted.subsection}}:
                                 {% if species.accepted.subgenus %}
                                     <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
                                     <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 
@@ -400,10 +400,10 @@ seedparent, pollparent {
                                 {% if species.accepted.section %}
 
                                     <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
                                     <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&gen={{species.gen.pid}}&type=species&role={{role}}&display=checked">images</a>
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 <!--                <hr>-->
@@ -620,7 +620,7 @@ seedparent, pollparent {
                             </div>
                         {% endfor %}
                     </div>
-                <span style="text-align:center"><a href="{% url 'detail:photos'  species.pid %}?tab=sum&gen={{species.gen.pid}}">more ... </a></span>
+                <span style="text-align:center"><a href="{% url 'detail:photos'  species.pid %}">more ... </a></span>
                 {% else %}
                     <div style="width: 100%; font-size:12px;border:0 solid lightgrey; margin:0 auto; text-align: center; padding:10px">
                         No image available. if you have one please consider uploading it

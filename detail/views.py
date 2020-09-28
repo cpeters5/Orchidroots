@@ -101,112 +101,6 @@ redirect_message = "<br><br>Species does not exist! <br>You may try <a href='/or
 
 @login_required
 # Curator only - role = cur
-def xcreatehybrid(request):
-    role = ""
-    if 'role' in request.GET:
-        role = request.GET['role']
-    # if role != 'cur':
-    #     logger.error("createhybrid: role = " + role)
-    #     send_url = '/detail/compare/?pid=' + str(pid1)
-    #     return HttpResponseRedirect(send_url)
-
-    if 'pid1' in request.GET:
-        pid1 = request.GET['pid1']
-        logger.error("createhybrid: pid1 = " + pid1)
-        try:
-            species1 = Species.objects.get(pk=pid1)
-            gen1 = species1.gen.pid
-            spc1 = species1.species
-            if species1.infraspe:
-                spc1 += ' ' + species1.infraspe
-        except Species.DoesNotExist:
-            return HttpResponse(redirect_message)
-        if 'pid2' in request.GET:
-            pid2 = request.GET['pid2']
-            try:
-                species2 = Species.objects.get(pk=pid2)
-                gen2 = species2.gen.pid
-                spc2 = species2.species
-                if species2.infraspe:
-                    spc2 += ' ' + species2.infraspe
-            except Species.DoesNotExist:
-                return HttpResponse(redirect_message)
-        else:  # How did you get here??
-            return HttpResponse(redirect_message)
-    else:   # How did you get here??
-        return HttpResponse(redirect_message)
-    # Now create the new species objects
-    # Same genus
-    # # Get nothogenus
-    # # First, find all genus ancestors of both
-    if gen1 and gen2:
-        parent1 = GenusRelation.objects.get(gen=gen1)
-        parentlist1 = parent1.get_parentlist()
-        parent2 = GenusRelation.objects.get(gen=gen2)
-        parentlist2 = parent2.get_parentlist()
-    else:  # somethings wrong
-        return HttpResponse(redirect_message)
-    parentlist = parentlist1 + parentlist2
-    parentlist = list(dict.fromkeys(parentlist))
-    parentlist.sort()
-    parentstr = '|'.join(parentlist)
-    genus = GenusRelation.objects.filter(parentlist=parentstr)
-    # Look for genus with this parent list
-    if not genus:
-        # Nothogenus has not been defined.  Contact admin to crate one
-        msgnogenus = "404"
-        genus1 = species1.genus
-        genus2 = species2.genus
-        logger.error("createhybrid: genus1 = " + genus1)
-        logger.error("createhybrid: genus2 = " + genus2)
-        send_url = '/detail/compare/?pid=' + str(pid1) + "&role=" + role
-        infraspr1 = infraspe1 = infraspr2 = infraspe2 = ''
-        if species1.infraspr:
-            infraspr1 = species1.infraspr
-            infraspe1 = species1.infraspe
-        if species2.infraspr:
-            infraspr2 = species2.infraspr
-            infraspe2 = species2.infraspe
-        species1 = species1.species
-        species2 = species2.species
-        send_url = send_url + '&msgnogenus=' + msgnogenus + '&genus1=' + genus1 + '&genus2=' + genus2 + '&species1=' + \
-            species1 + '&species2=' + species2 + '&infraspr1=' + infraspr1 + '&infraspr2=' + \
-            infraspr2 + '&infraspe1=' + infraspe1 + '&infraspe2=' + infraspe2
-        return HttpResponseRedirect(send_url)
-    # Create Species instance
-    spcobj = Species()
-    spcobj.genus = genus
-    spcobj.species = spc1 + '-' + spc2
-    spcobj.pid = Hybrid.objects.filter(pid__gt=900000000).filter(pid__lt=999999999).order_by('-pid')[0].pid_id + 1
-    spcobj.source = 'INT'
-    spcobj.type = 'hybrid'
-    spcobj.status = 'nonregistered'
-    datetime_obj = datetime.now()
-    spcobj.year = datetime_obj.year
-    spcobj.save()
-    spcobj = Species.objects.get(pk=spcobj.pid)
-
-    # Now create Hybrid instance
-    hybobj = Hybrid()
-    hybobj.pid = spcobj
-    hybobj.seed_genus = species1.genus
-    hybobj.pollen_genus = species2.genus
-    hybobj.seed_species = spc1
-    hybobj.pollen_species = spc2
-    if species1.status == 'synonym':
-        hybobj.seed_id = species1.getAccepted()
-    else:
-        hybobj.seed_id = species1
-    if species2.status == 'synonym':
-        hybobj.pollen_id = species2.getAccepted()
-    else:
-        hybobj.pollen_id = species2
-
-    hybobj.save()
-
-    logger.error("detail/createhybrid " + str(request.user) + " " + role + " - " + str(species1) + '-' + str(species2))
-    return HttpResponseRedirect("/detail/" + str(spcobj.pid) + "/photos/?role=" + role + "&genus2=" + species2.genus)
-
 def createhybrid (request):
     if 'role' in request.GET:
         role = request.GET['role']
@@ -222,12 +116,18 @@ def createhybrid (request):
             species1 = Species.objects.get(pk=pid1)
         except Species.DoesNotExist:
             return HttpResponse(redirect_message)
+        if species1.status == 'synonym':
+            species1 = species1.getAccepted()
+
         if 'pid2' in request.GET:
             pid2 = request.GET['pid2']
             try:
                 species2 = Species.objects.get(pk=pid2)
             except Species.DoesNotExist:
                 return HttpResponse(redirect_message)
+        if species2.status == 'synonym':
+            species2 = species2.getAccepted()
+
         spc1 = species1.species
         if species1.infraspe:
             spc1 += ' ' + species1.infraspe
@@ -308,7 +208,7 @@ def createhybrid (request):
 
     hybobj.save()
 
-    logger.error("detail/createhybrid " + str(request.user) + " " + role + " - " + species1 + "-" + species2)
+    logger.error("detail/createhybrid " + str(request.user) + " " + role + " - " + str(species1) + "-" + str(species2))
     return HttpResponseRedirect("/detail/" + str(spcobj.pid) + "/photos/?role=" + role + "&genus2=" + species2.genus)
 
 # All access - at least role = pub
@@ -545,16 +445,18 @@ def compare(request):
         pid2 = species2.getAcc()
         accepted2 = species2.getAccepted()
 
-    if species1 and species2:
-        try:
-            cross = Hybrid.objects.filter(seed_id=pid1).filter(pollen_id=pid2)
-        except Hybrid.DoesNotExist:
-            try:
-                cross = Hybrid.objects.filter(seed_id=pid2).filter(pollen_id=pid1)
-            except Hybrid.DoesNotExist:
-                cross = ''
+    if pid1 and pid2:
+        cross = Hybrid.objects.filter(seed_id=pid1).filter(pollen_id=pid2)
+        print("1 >>> cross = ", len(cross))
+        if not cross:
+            cross = Hybrid.objects.filter(seed_id=pid2).filter(pollen_id=pid1)
+            print("2 >>> cross = ", len(cross))
         if cross:
             cross = cross[0]
+            print("3 >>> cross = ", cross)
+        else:
+            cross = ''
+            print("4 >>> cross = ", cross)
 
     if species1:
         if species1.type == 'species':
@@ -1505,9 +1407,9 @@ def curate_newapproved(request):
     if 'days' in request.GET:
         days = int(request.GET['days'])
     if type == 'species':
-        file_list = SpcImages.objects.filter(rank__gt=0).exclude(user_id=request.user)
+        file_list = SpcImages.objects.filter(rank__gt=0).exclude(approved_by=request.user)
     else:
-        file_list = HybImages.objects.filter(rank__gt=0).exclude(user_id=request.user)
+        file_list = HybImages.objects.filter(rank__gt=0).exclude(approved_by=request.user)
 
     if days:
         file_list = file_list.filter(created_date__gte=timezone.now() - timedelta(days=days))
@@ -1554,7 +1456,7 @@ def photos(request,pid=None):
     role = ''
     debug = 0
     author, author_list = get_author(request)
-    logger.error("1557 - Author = " + str(author.author_id))
+    # logger.error("1557 - Author = " + str(author.author_id))
     if not pid and 'pid' in request.GET:
         pid = request.GET['pid']
         if pid:
@@ -1597,17 +1499,21 @@ def photos(request,pid=None):
         all_list = HybImages.objects.filter(pid=species.pid)
         # Loggedin user in public mode can see both public and owned photos
     myspecies_list = myhybrid_list = []
-    if author and role == 'pub':
-        public_list = all_list.filter(Q(rank__gt=0) | Q(author=request.user.profile.current_credit_name_id))
-    # Loggedin user in private mode can see owned photos only
-    elif role == 'cur':
-        public_list = all_list.filter(rank__gt=0)
-        private_list = all_list.filter(rank=0)
-    else:
-        public_list = all_list.filter(author=request.user.profile.current_credit_name_id)
-        private_list, public_list, upload_list, myspecies_list, myhybrid_list = getmyphotos(request,author,species)
 
-    # Loggedin user in curate mode can see all public photos and private photos in different section
+    if author:
+        if role == 'pri':
+            public_list = all_list.filter(Q(rank__gt=0) | Q(author=request.user.profile.current_credit_name_id))
+            # Loggedin user in private mode can see owned photos only
+        elif role == 'cur':
+            # Loggedin user in curate mode can see all public photos and private photos in different section
+            public_list = all_list.filter(rank__gt=0)
+            private_list = all_list.filter(rank=0)
+        else:   # Anonymous or pub role
+            public_list = all_list.filter(rank__gt=0)
+
+    else:  # anonymous
+        public_list = all_list.filter(rank__gt=0)
+
 
     logger.error("role = " + role)
     logger.error("all_list = " + str(len(all_list)))
@@ -2188,17 +2094,14 @@ def deletephoto(request, id):
     if 'role' in request.GET:
         role = request.GET['role']
 
-    if role == 'pri':
-        # Requested from private view
-        url = "%s?role=%s" % (reverse('detail:photos', args=(species.pid,)), 'pri')
-    elif area == 'allpending':
+    if area == 'allpending':
         # bulk delete by curators from all_pending tab
-        url = "%s?tab=%s&page=%s&type=%s&days=%d" % (reverse('detail:curate_pending'), 'pen', page, type,days)
+        url = "%s&page=%s&type=%s&days=%d" % (reverse('detail:curate_pending'), page, type,days)
     elif area == 'curate_newupload':  # from curate_newupload (all rank 0)
         # Requested from all upload photos
-        url = "%s?tab=%s&page=%s&type=%s" % (reverse('detail:curate_newupload'), 'upl', page, type)
+        url = "%s?page=%s" % (reverse('detail:curate_newupload'), page)
     else:
-        # Requested from curate view
+        # Requested from private view
         url = "%s?role=%s" % (reverse('detail:photos', args=(species.pid,)), role)
 
     # Finally remove file if exist
@@ -2259,14 +2162,15 @@ def deletewebphoto(request, pid):
     role = 'cur'
     if 'role' in request.GET:
         role = request.GET['role']
-    if role == 'pri':
-        url = "%s?tab=%s" % (reverse('detail:myphoto', args=(species.pid,)), 'pri')
-    elif area == 'allpending':      #from curate_pending (all rank 0)
-        url = "%s?tab=%s&page=%s&type=%s&days=%s" % (reverse('detail:curate_pending'), 'pen', page, type,days)
+
+    if area == 'allpending':      #from curate_pending (all rank 0)
+        url = "%s?role=%s&page=%s&type=%s&days=%s" % (reverse('detail:curate_pending'), role, page, type,days)
+    elif role == 'pri' or role == 'cur':
+        url = "%s?role=%s" % (reverse('detail:myphoto', args=(species.pid,)), role)
     elif tab == 'und':
         url = "%s?tab=%s&pid=999999999&page=%s" % (reverse('detail:curate'), 'und', page)
     else:          # from curate/pending (specific rank 0)
-        url = "%s?tab=%s" % (reverse('detail:curate', args=(species.pid,)), 'sum')
+        url = "%s?role=%s" % (reverse('detail:curate', args=(species.pid,)), role)
 
     return HttpResponseRedirect(url)
 
@@ -2303,11 +2207,13 @@ def approvemediaphoto(request, pid):
     imgdir, filename = os.path.split(filename)
     if species.type == 'species':
         spc = SpcImages(pid=species.accepted,author=upl.author,user_id=upl.user_id,name=upl.name,awards=upl.awards,source_file_name=upl.source_file_name,variation=upl.variation,form=upl.forma,rank=0,description=upl.description,location=upl.location,created_date=upl.created_date)
+        spc.approved_by = request.user
         hist = SpcImgHistory(pid=Accepted.objects.get(pk=pid), user_id=request.user, img_id=spc.id,action='approve file')
         newdir = os.path.join(settings.STATIC_ROOT,"utils/images/species")
         image_file = "spc_"
     else:
         spc = HybImages(pid=species.hybrid,author=upl.author,user_id=upl.user_id,name=upl.name,awards=upl.awards,source_file_name=upl.source_file_name,variation=upl.variation,form=upl.forma,rank=0,description=upl.description,location=upl.location,created_date=upl.created_date)
+        spc.approved_by = request.user
         hist = HybImgHistory(pid=Hybrid.objects.get(pk=pid), user_id=request.user, img_id=spc.id,action='approve file')
         newdir = os.path.join(settings.STATIC_ROOT,"utils/images/hybrid")
         image_file = "hyb_"
@@ -2316,7 +2222,7 @@ def approvemediaphoto(request, pid):
     new_name = os.path.join(newdir,image_file )
     if not os.path.exists(new_name + ext):
         try:
-            shutil.copy(old_name, new_name + ext)
+            shutil.move(old_name, new_name + ext)
         except:
             # upl.delete()
             url = "%s?role=%s" % (reverse('detail:photos', args=(species.pid,)),'cur')
@@ -2343,7 +2249,7 @@ def approvemediaphoto(request, pid):
     hist.save()
     try:
         upl.approved = True
-        upl.save(0)
+        upl.delete(0)
         logger.error("Status changed to approved")
     except:
         logger.error("Status UNchanged")

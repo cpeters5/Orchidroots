@@ -377,6 +377,23 @@ body {
                             <a class="nav-link" href="{% url 'login' %}?next=/">Login</a>
                     </li>
                 {% endif %}
+                    <li class="nav-item">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">About us</a>
+                            <ul class="dropdown-menu">
+<!--                                <li><a type="button" class="btn btn-outline-primary bannerfont" href="{% url 'orchid_home' %}" style="font-size:16px;"><b>Enter OrchidRoots</b></a></li>-->
+                                <li><a type="button" class="btn btn-default" href="{% url 'documents:termsofuse' %}">Terms of use</a></li>
+                                <li><a type="button" class="btn btn-default" href="{% url 'documents:disclaimer' %}">License & Disclaimer</a></li>
+                                <li><a type="button" class="btn btn-default" href="{% url 'documents:contact' %}">Contact us</a></li>
+                                <li><a type="button" class="btn btn-outline-primary" href="{% url 'donation:donateapp' %}">Donate</a></li>
+                                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:help' %}">Help</a></li>
+                                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:list' %}">Organization</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
+
             </ul>
         </div>
 <!-- Search -->

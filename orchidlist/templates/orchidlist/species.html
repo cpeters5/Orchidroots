@@ -380,9 +380,6 @@ input {
                             <a data-toggle="tooltip" title="Click to sort by year" class="small" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=year&prev_sort={{sort}}">Year</a>
                         {% endif %}
                         </th>
-                        {% if not subgenus_obj and not section_obj and not subsection_obj and not series_obj %}
-                            <th class="text-center">Intragenus</th>
-                        {% endif %}
 
                         <th class="text-center">Distribution</th>
 
@@ -406,26 +403,26 @@ input {
                     <tr>
                         <td align="left">
                             {% if species.status == 'synonym' %}
-                                {{species.genus}} {{species.get_species}}
+                                <i>{{species.genus}} {{species.get_species}}</i>
+                                {% if species.author %} {{species.author}}{% endif %}
+                                {% if species.year > 0 %}<span  style="font-size: 11px;"> {{species.year}}</span>{% endif %}
                                 {% if role == 'cur' %}
-                                    (syn. <a href="{% url 'detail:photos' species.getAccepted.pid %}?role={{role}}">{{species.getAccepted.name|safe}}</a>)
+                                    (syn. <a href="{% url 'detail:photos' species.getAccepted.pid %}?role={{role}}"><i>{{species.genus}}</i> {{species.getAccepted.speciesname|safe}}</a>)
                                 {% else %}
-                                    (syn. <a href="{ url 'detail:information' species.getAccepted.pid %}?role={{role}}">{{species.getAccepted.name|safe}}</a>)
+                                    (syn. <a href="{% url 'detail:information' species.getAccepted.pid %}?role={{role}}"><i>{{species.genus}}</i> {{species.getAccepted.speciesname|safe}}</a>)
                                 {% endif %}
                             {% else %}
                                 {% if role == 'cur' %}
-                                    <a href="{% url 'detail:photos' species.pid %}?role={{role}}">{{species.genus}} {{species.get_species}}</a>
+                            <a href="{% url 'detail:photos' species.pid %}?role={{role}}"><i>{{species.genus}}</i> {{species.fullspeciesname|safe}} </a>
                                 {% else %}
-                                    <a href="{% url 'detail:information' species.pid %}?role={{role}}">{{species.genus}} {{species.get_species}}</a>
+                                    <a href="{% url 'detail:information' species.pid %}?role={{role}}"><i>{{species.genus}}</i> {{species.fullspeciesname|safe}}</a>
                                 {% endif %}
-<!--                            <i>{{species.author}}</i>-->
+                                {% if species.author %} {{species.author}}{% endif %}
+                                {% if species.year > 0 %}<span  style="font-size: 11px;"> {{species.year}}</span>{% endif %}
                             {% endif %}
-                            {% if species.year > 0 %}<span  style="font-size: 11px;">{{species.year}}</span>{% endif %}
-                        </td>
 
 
                         {% if not subgenus_obj and not section_obj and not subsection_obj and not series_obj %}
-                        <td class="small  d-none d-sm-table-cell ">
                             {% if species.status == 'synonym' %}
                                 {% if species.subgenus %}{{species.subgenus.subgenus}}{% endif %}
                             {% else %}

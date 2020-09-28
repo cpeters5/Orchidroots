@@ -206,7 +206,7 @@ class Genus(models.Model):
 
 
 class GenusRelation(models.Model):
-    gen = models.OneToOneField(Genus, db_column='gen',primary_key=True,on_delete=models.DO_NOTHING)
+    gen = models.OneToOneField(Genus, db_column='gen',primary_key=True,on_delete=models.CASCADE)
     genus = models.CharField(max_length=50, default='')
     parentlist = models.CharField(max_length=500, null=True)
     formula = models.CharField(max_length=500, null=True)
@@ -315,7 +315,7 @@ class Genusacc(models.Model):
 
 class Genussyn(models.Model):
     pid = models.IntegerField(primary_key=True)
-    acc = models.ForeignKey(Genus, verbose_name='genus', related_name='gen_syn', null=True,on_delete=models.DO_NOTHING)
+    acc = models.ForeignKey(Genus, verbose_name='genus', related_name='gen_syn', null=True,on_delete=models.CASCADE)
     is_hybrid = models.CharField(max_length=1, null=True)
     genus = models.CharField(max_length=50, default='')
     author = models.CharField(max_length=200, default='')
@@ -337,7 +337,7 @@ class Gensyn(models.Model):
     pid = models.OneToOneField(
         Genus,
         db_column='pid',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         primary_key=True)
     accepted = models.CharField(max_length=50, default='')
     acc_author = models.CharField(max_length=50, default='')
@@ -347,7 +347,7 @@ class Gensyn(models.Model):
     description = models.CharField(max_length=255, default='')
     source = models.CharField(max_length=50, default='')
     abrev = models.CharField(max_length=50, default='')
-    acc = models.ForeignKey(Genus, verbose_name='genus', related_name='gen_id', null=True,on_delete=models.DO_NOTHING)
+    acc = models.ForeignKey(Genus, verbose_name='genus', related_name='gen_id', null=True,on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -368,7 +368,7 @@ class Subgenus(models.Model):
     year        = models.IntegerField(null=True)
     description = models.TextField(null=True)
     distribution = models.TextField(null=True)
-    gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.DO_NOTHING)
+    gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.CASCADE)
     genus = models.CharField(max_length=50, null=True)
     source = models.CharField(max_length=50, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -390,7 +390,7 @@ class Section(models.Model):
     year    = models.IntegerField(null=True)
     description = models.TextField(null=True)
     distribution = models.TextField(blank=True)
-    gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.DO_NOTHING)
+    gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.CASCADE)
     genus = models.CharField(max_length=50, null=True)
     source = models.CharField(max_length=50, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -406,7 +406,7 @@ class Subsection(models.Model):
     pid         = models.IntegerField(null=True)
     subsec      = models.IntegerField(default=None, db_column='subsec')
     subgenus = models.ForeignKey(Subgenus, null=True, db_column='subgenus',on_delete=models.DO_NOTHING)
-    section     = models.ForeignKey(Section, null=True, db_column='section',on_delete=models.DO_NOTHING)
+    section     = models.ForeignKey(Section, null=True, db_column='section',on_delete=models.CASCADE)
     subsection  = models.CharField(primary_key=True, max_length=50, unique=True)
     author      = models.CharField(max_length=200, null=True)
     citation    = models.CharField(max_length=200, null=True)
@@ -452,7 +452,7 @@ class Series(models.Model):
 
 class GenusTree(MPTTModel):
     genus    = models.CharField(max_length=50, unique=True)
-    parent      = TreeForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True, related_name='children')
+    parent      = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     class MPTTMeta:
         order_insertion_by = ['pid_pair']
@@ -467,8 +467,8 @@ class Alliance(models.Model):
         unique_together = (("alid", "gen"),)
         ordering = ['alliance']
 
-    alid = models.ForeignKey(Genus, db_column='alid', related_name='alid', null=True, blank=True,on_delete=models.DO_NOTHING)
-    gen = models.ForeignKey(Genus, db_column='gen', related_name='algen', null=True, blank=True,on_delete=models.DO_NOTHING)
+    alid = models.ForeignKey(Genus, db_column='alid', related_name='alid', null=True, blank=True,on_delete=models.CASCADE)
+    gen = models.ForeignKey(Genus, db_column='gen', related_name='algen', null=True, blank=True,on_delete=models.CASCADE)
     alliance = models.CharField(max_length=50)
     type = models.CharField(max_length=10)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -483,7 +483,7 @@ class Infragen (models.Model):
     #     unique_together = (("genus", "infragen","rank","author"),)
     source_pid = models.IntegerField(default=0)
     version  = models.IntegerField(default=1)
-    gen      = models.ForeignKey(Genus,db_column='gen',null=True,on_delete=models.DO_NOTHING)
+    gen      = models.ForeignKey(Genus,db_column='gen',null=True,on_delete=models.CASCADE)
     genus    = models.CharField(max_length=50, null=True)
     infragen = models.CharField(max_length=50)
     rank     = models.CharField(max_length=10)
@@ -497,10 +497,10 @@ class Infragen (models.Model):
 
 
 class Infragenrelation (models.Model):
-    gen      = models.ForeignKey(Genus,db_column='gen',on_delete=models.DO_NOTHING)
+    gen      = models.ForeignKey(Genus,db_column='gen',on_delete=models.CASCADE)
     genus    = models.CharField(max_length=50, null=True)
     infragen = models.CharField(max_length=50)
-    parent   = models.ForeignKey(Infragen,null=True, db_column='parent_pid',on_delete=models.DO_NOTHING)
+    parent   = models.ForeignKey(Infragen,null=True, db_column='parent_pid',on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -515,13 +515,13 @@ class Intragen (models.Model):
     ser     = models.IntegerField(db_column='ser',null=True, blank=True)
     type_status = models.CharField(max_length=20, blank=True)
     genus   = models.CharField(max_length=50, blank=True)
-    subfamily = models.ForeignKey(Subfamily, null=True, default='', db_column='subfamily',on_delete=models.DO_NOTHING)
-    tribe  = models.ForeignKey(Tribe, null=True, default='', db_column='tribe',on_delete=models.DO_NOTHING)
-    subtribe  = models.ForeignKey(Subtribe, null=True, default='', db_column='subtribe',on_delete=models.DO_NOTHING)
-    subgenus  = models.ForeignKey(Subgenus, null=True,db_column='subgenus',on_delete=models.DO_NOTHING)
-    section   = models.ForeignKey(Section, null=True,db_column='section',on_delete=models.DO_NOTHING)
-    subsection= models.ForeignKey(Subsection, null=True,db_column='subsection',on_delete=models.DO_NOTHING)
-    series   = models.ForeignKey(Series, null=True,db_column='series',on_delete=models.DO_NOTHING)
+    subfamily = models.ForeignKey(Subfamily, null=True, default='', db_column='subfamily',on_delete=models.CASCADE)
+    tribe  = models.ForeignKey(Tribe, null=True, default='', db_column='tribe',on_delete=models.CASCADE)
+    subtribe  = models.ForeignKey(Subtribe, null=True, default='', db_column='subtribe',on_delete=models.CASCADE)
+    subgenus  = models.ForeignKey(Subgenus, null=True,db_column='subgenus',on_delete=models.CASCADE)
+    section   = models.ForeignKey(Section, null=True,db_column='section',on_delete=models.CASCADE)
+    subsection= models.ForeignKey(Subsection, null=True,db_column='subsection',on_delete=models.CASCADE)
+    series   = models.ForeignKey(Series, null=True,db_column='series',on_delete=models.CASCADE)
     # subgenus  = models.CharField(max_length=50, blank=True)
     # section   = models.CharField(max_length=50, blank=True)
     # subsection= models.CharField(max_length=50, blank=True)
@@ -760,7 +760,7 @@ class SpeciesDetail (models.Model):
     pid = models.OneToOneField(
         Species,
         db_column='pid',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         primary_key=True)
     url = models.CharField(max_length=200, blank=True)
     url_name = models.CharField(max_length=100, blank=True)
@@ -792,7 +792,7 @@ class Culture (models.Model):
     pid = models.OneToOneField(
         Species,
         db_column='pid',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         primary_key=True)
     temperature     = models.CharField(max_length=100, blank=True)
     light           = models.CharField(max_length=100, blank=True)
@@ -810,8 +810,8 @@ class Culture (models.Model):
 class Similarity (models.Model):
     class Meta:
         unique_together = (("pid1", "pid2"),)
-    pid1            = models.ForeignKey(Species,db_column='pid1', related_name='pid1',on_delete=models.DO_NOTHING)
-    pid2            = models.ForeignKey(Species,db_column='pid2', related_name='pid2',on_delete=models.DO_NOTHING)
+    pid1            = models.ForeignKey(Species,db_column='pid1', related_name='pid1',on_delete=models.CASCADE)
+    pid2            = models.ForeignKey(Species,db_column='pid2', related_name='pid2',on_delete=models.CASCADE)
     differences     = models.TextField(blank=True)
     similar         = models.TextField(blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -874,7 +874,7 @@ class Accepted(models.Model):
 class Infragenspc (models.Model):
     class Meta:
         unique_together = (("pid", "subgenus","section","subsection","series"),)
-    pid     = models.ForeignKey(Species,db_column='pid',on_delete=models.DO_NOTHING)
+    pid     = models.ForeignKey(Species,db_column='pid',on_delete=models.CASCADE)
     author = models.CharField(max_length=200)
     citation = models.CharField(max_length=200)
     source = models.CharField(max_length=10)
@@ -903,8 +903,8 @@ class Synonym(models.Model):
         db_column='spid',
         on_delete=models.CASCADE,
         primary_key=True)
-    acc = models.ForeignKey(Species, verbose_name='accepted genus',related_name='accid',on_delete=models.DO_NOTHING)
-    gen = models.ForeignKey(Genus, db_column='gen', related_name='gen', null=True, blank=True,on_delete=models.DO_NOTHING)
+    acc = models.ForeignKey(Species, verbose_name='accepted genus',related_name='accid',on_delete=models.CASCADE)
+    gen = models.ForeignKey(Genus, db_column='gen', related_name='gen', null=True, blank=True,on_delete=models.CASCADE)
     year = models.IntegerField(null=True, blank=True)
     genus = models.CharField(max_length=50, null=True, blank=True)
     is_hybrid = models.CharField(max_length=5, null=True, blank=True)
@@ -1154,7 +1154,7 @@ class AncestorDescendant(models.Model):
 
 class TestUploadFile(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
-    user_id    = models.ForeignKey(User, db_column='user_id', null=True, blank=True,on_delete=models.DO_NOTHING)
+    user_id    = models.ForeignKey(User, db_column='user_id', null=True, blank=True,on_delete=models.CASCADE)
     image_file_path = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
@@ -1568,7 +1568,7 @@ class LocalRegion(models.Model):
 
 class GeoLocation(MPTTModel):
     name = models.CharField(max_length=50, unique=True,null=True, blank=True)
-    parent = TreeForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True,related_name='children')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,related_name='children')
 
     class MPTTMeta:
         level_attr = 'mptt_level'

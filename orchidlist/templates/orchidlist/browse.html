@@ -14,6 +14,11 @@
     width:180px;
     font-size:13px;
 }
+.genus-select:hover {
+    text-decoration: none;
+    background-color: #e0eef8;
+    /*color: white;*/
+}
 
 .infra-filter{
     width:120px;
@@ -48,8 +53,8 @@ label {
 .thumbnails {
    object-fit: cover;
    overflow: hidden;
-   height: 16vw;
-   width : 16vw;
+   height: 15vw;
+   width : 15vw;
    /*padding:2px;*/
    padding:2px 1px 2px 1px;
     margin-bottom:4px;
@@ -59,7 +64,7 @@ label {
     display:inline-block;
     border:1px solid grey;
     margin: 2px;
-    width : 18vw;
+    width : 16vw;
     /*height : 22vw;*/
     background-color: #eaeaea;
     border:1px solid lightgrey;
@@ -68,6 +73,21 @@ label {
 
 img{
     width:100%;
+}
+
+.selected {
+    background-color: #bac4e8;
+    border: 1px solid #808080;
+    color: black;
+}
+
+
+.btn {
+    padding  : 8px 10px;
+    /*padding  : .5rem .5rem;*/
+    font-size  : .8rem;
+    line-height  : .65;
+    border-radius : .2rem;
 }
 
 @media only screen and (max-width: 830px) {
@@ -86,12 +106,15 @@ img{
     .imageitem {
         width : 22vw;
     }
-
+    .btn {
+        font-size:11px;
+    }
 }
 
 @media only screen and (max-width: 600px) {
     .text-n {
         font-size:11px;
+        padding: 0;
     }
 
     .thumbnails {
@@ -106,14 +129,10 @@ img{
         width : 34vw;
        /*height: 28px;*/
     }
-}
-
-.btn-group-xs > .btn, .btn-xs {
-    padding  : 8px 30px;
-    /*padding  : .5rem .5rem;*/
-    font-size  : .8rem;
-    line-height  : .65;
-    border-radius : .2rem;
+    .btn {
+        font-size:11px;
+        padding:2px;
+    }
 }
 
     .dropdown-item {
@@ -128,136 +147,132 @@ img{
 
 </style>
 
-<div class="form-check-inline text-n check">
-<form action="?" id="display">
-    <input type="hidden" name="type" value="{{type}}" />
-    <input type="hidden" name="role" value="{{role}}" />
-    <input type="hidden" name="alpha" value="{{alpha}}" />
-    <input type="hidden" name="page" value="{{page}}" />
-    <input type="hidden" name="subgenus" value="{{subgenus}}" />
-    <input type="hidden" name="section" value="{{section}}" />
-    <input type="hidden" name="subsection" value="{{subsection}}" />
-    <input type="hidden" name="series" value="{{series}}" />
-    &nbsp;&nbsp;
-    {% if display %}
-        <input type="checkbox" class="form-check-input" name="display" value="checked" checked onchange="this.form.submit()">
-    {% else %}
-        <input form="display" type="checkbox" class="form-check-input" name="display" value="checked" onchange="this.form.submit()">
-    {% endif %}
-    Show images only?
-</form>
-</div>
-<div class="container justify-content-center align-items-center" style="display:block; clear:left; margin: 0 auto; width: 98%">
+<div class="container justify-content-left align-items-center" style="display:block; clear:left; margin: 0 auto; width: 98%; text-align:left">
     <!--Title-->
-    <div class="d-flex justify-content-center align-items-center" style="font-size:11px;">
-            <form action="{% url 'orchidlist:browse' %}" autocomplete="off">
-                <input type="hidden" name="role" value="{{ role }}" />
-                <input type="hidden" name="type" value="species" />
-                <input type="hidden" name="display" value="checked" />
-                <input list="genus_list" name="genus" onClick="this.setSelectionRange(0, this.value.length)" value="{{genus}} {{type|title}}" class="custom-select genus-select" placeholder="Genus"/>
-            </form>
-            <datalist id="genus_list">
-                {% for g in genus_list %}
-                    <option value="{{g.genus}}">{{g.genus}}</option>
-                {% endfor %}
-            </datalist>
-        <a class="btn btn-xs btn-primary" type="button" data-toggle="collapse" href="#Instruction" style="width:100px;margin:20px 10px;padding:8px;">Instruction</a>
-        <div id="Instruction" class="collapse" style="padding:0 20px;">
-            This page provides sample images of species or hybrids of a given genus. There are two entry points.
-            <ul>
-                <li>From browse genus page</li>
-                <li>From genus links in various pages</li>
-            </ul>
-            In this page you may change to a different genus at any time by selecting a new genus from the dropdown list in the top nav-bar.
-        </div>
-    </div>
+    <br>
+
+    <form action="{% url 'orchidlist:browse' %}" autocomplete="off" style="display:inline-block">
+        <input type="hidden" name="role" value="{{ role }}" />
+        <input type="hidden" name="type" value="species" />
+        <input type="hidden" name="display" value="checked" />
+        <h4><i>{{genus}}</i> Genus&nbsp;&nbsp;<input list="genus_list" name="genus" onClick="this.setSelectionRange(0, this.value.length)" class="genus-select" placeholder="Select a different genus"/></h4>
+    </form>
+    <datalist id="genus_list">
+        {% for g in genus_list %}
+            <option value="{{g.genus}}">{{g.genus}}</option>
+        {% endfor %}
+    </datalist>
+    <form action="?" id="display" style="display:inline-block">
+        <input type="hidden" name="type" value="{{type}}" />
+        <input type="hidden" name="role" value="{{role}}" />
+        <input type="hidden" name="alpha" value="{{alpha}}" />
+        <input type="hidden" name="page" value="{{page}}" />
+        <input type="hidden" name="subgenus" value="{{subgenus}}" />
+        <input type="hidden" name="section" value="{{section}}" />
+        <input type="hidden" name="subsection" value="{{subsection}}" />
+        <input type="hidden" name="series" value="{{series}}" />
+        <input type="hidden" name="genus" value="{{genus}}" />
+        {% if display %}
+            <input type="checkbox" class="form-check-input" name="display" value="checked" checked onchange="this.form.submit()" style="margin-left:5px;">
+        {% else %}
+            <input type="checkbox" class="form-check-input" name="display" value="checked" onchange="this.form.submit()" style="margin-left:15px;">
+        {% endif %}
+        <label for=display style="display:inline-block" style="text-align: right;margin-left:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Show images only?</label>
+
+    </form>
+
+<!--        <a class="btn btn-xs btn-primary" type="button" data-toggle="collapse" href="#Instruction" style="width:100px;margin:20px 10px;padding:8px;">Instruction</a>-->
+<!--        <div id="Instruction" class="collapse" style="padding:0 20px;">-->
+<!--            This page provides sample images of species or hybrids of a given genus. There are two entry points.-->
+<!--            <ul>-->
+<!--                <li>From browse genus page</li>-->
+<!--                <li>From genus links in various pages</li>-->
+<!--            </ul>-->
+<!--            In this page you may change to a different genus at any time by selecting a new genus from the dropdown list in the top nav-bar.-->
+<!--        </div>-->
+</div>
+<div class="container justify-content-center align-items-center" style="display:block; clear:left; margin: 0 auto; width: 98%; text-align:center">
+
 
     <!--Filter-->
     <div class="d-flex flex-row  flex-wrap">
         <div class="btn-group">
-            <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">Species</button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'orchidlist:browse' %}?type=species&role={{role}}&display={{display}}">{{genus}} species images</a>
-                <a class="dropdown-item" href="{% url 'orchidlist:species' %}?genus={{genus}}&role={{role}}">{{genus}} species list</a>
+            <a class="btn btn-outline-secondary m-1 {% if type == 'species' %}selected{% endif %}" href="{% url 'orchidlist:browse' %}?type=species&role={{role}}&genus={{genus}}&display={{display}}">Species images</a>
+            <a class="btn btn-outline-secondary m-1 {% if type == 'hybrid' %}selected{% endif %}" href="{% url 'orchidlist:browse' %}?type=hybrid&role={{role}}&genus={{genus}}&display={{display}}">Hybrid images</a>
+            <a class="btn btn-outline-secondary m-1" href="{% url 'orchidlist:species' %}?role={{role}}&genus={{genus}}">Species list</a>
+            <a class="btn btn-outline-secondary m-1" href="{% url 'orchidlist:hybrid' %}?role={{role}}&genus={{genus}}">Hybrid list</a>
+        </div>
+        <!--  Opions -->
+        {% if type == 'species' %}
+            <!--Subgenus Filter-->
+            {% if subgenus_list %}
+            <div class="btn-group">
+                <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
+                    {% if subgenus_obj %}{{subgenus_obj.subgenus}}{% else %}Subgenus{% endif %}
+                </button>
+                <ul class="dropdown-menu scrollable-menu">
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&display={{display}}">Clear Subgenus</a>
+                    </li>
+                    {% for subgenus in subgenus_list %}
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus.subgenus}}&section=&subsection=&series=&type={{type}}&display={{display}}">{{subgenus.subgenus}}</a></li>
+                    {% endfor %}
+                </ul>
             </div>
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">Hybrid</button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="{% url 'orchidlist:browse' %}?type=hybrid&role={{role}}&display={{display}}">{{genus}} hybrid images</a>
-                <a class="dropdown-item" href="{% url 'orchidlist:species' %}?genus={{genus}}&role={{role}}">{{genus}} hybrid list</a>
+            {% endif %}
+
+            <!--Sections Filter-->
+            {% if section_list %}
+            <div class="btn-group">
+                <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
+                    {% if section_obj %}{{section_obj.section}}{% else %}Section{% endif %}
+                </button>
+                <ul class="dropdown-menu scrollable-menu">
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section=&subsection=&series=&type=species&display={{display}}">Clear Section</a>
+                    {% for section in section_list %}
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section.section}}&subsection=&series=&type={{type}}&display={{display}}">{{section.section}}</a></li>
+                    {% endfor %}
+                </ul>
             </div>
-        </div>
+            {% endif %}
 
-    <!--  Opions -->
-    {% if type == 'species' %}
-        <!--Subgenus Filter-->
-        {% if subgenus_list %}
-        <div class="btn-group">
-            <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
-                {% if subgenus_obj %}{{subgenus_obj.subgenus}}{% else %}Subgenus{% endif %}
-            </button>
-            <ul class="dropdown-menu scrollable-menu">
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&display={{display}}">Clear Subgenus</a>
-                </li>
-                {% for subgenus in subgenus_list %}
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus.subgenus}}&section=&subsection=&series=&type={{type}}&display={{display}}">{{subgenus.subgenus}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+             <!--Subections Filter-->
+            {% if subsection_list %}
+            <div class="btn-group">
+                <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
+                    {% if subsection_obj %}{{subsection_obj.subsection}}{% else %}Subsection{% endif %}
+                </button>
+                <ul class="dropdown-menu scrollable-menu">
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection=&series=&type=species&display={{display}}">Clear Subsection</a>
+                    {% for subsection in subsection_list %}
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection.subsection}}&series=&type=species&display={{display}}">{{subsection.subsection}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+             <!--seriesies Filter-->
+            {% if series_list.count > 0 or series_obj %}
+            <div class="btn-group">
+                <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
+                    {% if series_obj %}<span style="color:black">{{series_obj.series}}</span>{% else %}Series{% endif %}
+                </button>
+                <ul class="dropdown-menu scrollable-menu">
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&display={{display}}">clear Series</a>
+                    {% for series in series_list %}
+                    <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series={{series.series}}&type=species&display={{display}}">{{series.series}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         {% endif %}
-
-        <!--Sections Filter-->
-        {% if section_list %}
-        <div class="btn-group">
-            <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
-                {% if section_obj %}{{section_obj.section}}{% else %}Section{% endif %}
-            </button>
-            <ul class="dropdown-menu scrollable-menu">
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section=&subsection=&series=&type=species&display={{display}}">Clear Section</a>
-                {% for section in section_list %}
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section.section}}&subsection=&series=&type={{type}}&display={{display}}">{{section.section}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-
-         <!--Subections Filter-->
-        {% if subsection_list %}
-        <div class="btn-group">
-            <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
-                {% if subsection_obj %}{{subsection_obj.subsection}}{% else %}Subsection{% endif %}
-            </button>
-            <ul class="dropdown-menu scrollable-menu">
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection=&series=&type=species&display={{display}}">Clear Subsection</a>
-                {% for subsection in subsection_list %}
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection.subsection}}&series=&type=species&display={{display}}">{{subsection.subsection}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-
-         <!--seriesies Filter-->
-        {% if series_list.count > 0 or series_obj %}
-        <div class="btn-group">
-            <button class="btn btn-xs btn-outline-secondary m-1 dropdown-toggle infra-filter" type="button" data-toggle="dropdown">
-                {% if series_obj %}<span style="color:black">{{series_obj.series}}</span>{% else %}Series{% endif %}
-            </button>
-            <ul class="dropdown-menu scrollable-menu">
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&display={{display}}">clear Series</a>
-                {% for series in series_list %}
-                <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series={{series.series}}&type=species&display={{display}}">{{series.series}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-    {% endif %}
-
+    </div>
+    <br>
     <!-- Display -->
-<!--    <div style="margin:0 auto; text-align: left; min-height:200px;">-->
+
+    <div class="container justify-content-left align-items-center" style="margin:0 auto; padding:0; text-align: left;">
         {% include "orchidlist/alpha_list.html" %}
         {% if page_list %}
-            <div style="text-align:center;">
+            <div class="container justify-content-left align-items-center" style="margin:0 auto; padding:0; text-align: left;">
                 {% if last_page > 1 %}
                     <div style="float:left">
                     {% include "orchidlist/paginator_brw.html" %}
@@ -267,8 +282,12 @@ img{
                     ({{first}}-{{last}} of {{total}})<br>
                 </div>
             </div>
+        {% endif %}
+    </div>
 <!--            <br>-->
-            <div class="container justify-content-center align-items-center" style="display:block; ">
+<br>
+        {% if page_list %}
+            <div class="container justify-content-left align-items-center" style="clear:left;margin:0 auto; padding:0; text-align: left;">
             {% for x in page_list %}
                 <div class="imageitem m-1 border" style="display:inline-block; text-align:center;">
                     <div class="imgcaption_top">{{x.namecasual|safe}}</div>

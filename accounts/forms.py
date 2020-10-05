@@ -135,6 +135,9 @@ class RegisterForm(forms.ModelForm):
         username = self.cleaned_data.get('username')
         email = self.cleaned_data.get('email')
 
+        if (' ' in username):
+            raise forms.ValidationError('username must not contain blank space!')
+
         if username and User.objects.filter(username__iexact=username).count():
             raise forms.ValidationError('This username has already been taken!')
         return username

@@ -12,6 +12,7 @@ SpcImages     = apps.get_model('orchiddb', 'SpcImages')
 HybImages     = apps.get_model('orchiddb', 'HybImages')
 Comment     = apps.get_model('orchiddb', 'Comment')
 
+num_img = 30
 def orchid_home(request):
     randgenus = Genus.objects.exclude(status='synonym').extra(where=["num_spc_with_image + num_hyb_with_image > 0"]).values_list('pid',flat=True).order_by('?')
     print("randgenus = ",len(randgenus))
@@ -21,7 +22,7 @@ def orchid_home(request):
 
     randimages = []
     for e in randgenus:
-        if len(randimages) > 11:
+        if len(randimages) >= num_img:
             break
         if SpcImages.objects.filter(gen=e):
             randimages.append(SpcImages.objects.filter(gen=e).filter(rank__gt=0).filter(rank__lt=9).order_by('?')[0:1][0])

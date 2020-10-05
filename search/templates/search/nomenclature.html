@@ -2,34 +2,50 @@
 {% include "base.html" %}
 {% block body %}
 <style>
-
+.card-header {
+    background-color:lightgrey;
+}
 .custom-select{
-    margin-right:5px;
-    background-color: #f9f9f9;
-    color: #292929;
-    width:180px;
+    /*margin-right:200px;*/
+    /*background-color: #f9f9f9;*/
+    color: #100d0d;
+    width:200px;
     /*height:50px;*/
     font-size:13px;
 }
 
+.card {
+    background-color: white;
+}
+
 .custom-select:hover {
     text-decoration: none;
+    /*background-color: #8887bd;*/
+    color: black;
+}
+
+.custom-select:active {
+    text-decoration: none;
     background-color: #8887bd;
-    color: white;
+    color: black;
 }
 
 .custom-link{
-    margin-right:5px;
+    margin-right:3px;
     background-color: #f9f9f9;
     color: #292929;
-    width:180px;
+    width:200px;
+    border: 1px solid lightgrey;
     /*height:50px;*/
     font-size:13px;
 }
 
 .custom-link:hover {
+    padding:0;
+    margin:0 auto;
     text-decoration: none;
     background-color: #8887bd;
+    border: 1px solid lightgrey;
     color: white;
 }
 
@@ -40,149 +56,132 @@
     }
 </style>
 
+<div style="clear:both"></div>
 
 
 
-<div style="dixplay:inline; text-align:center; margin:0 auto">
+<div class="container-fluid" style="min-height:200px; width:100%; background-color:#15404a;">
     <br>
-    <h4>Nomenclature Profile</h4>
-    <div class="container" style="width:70%;text-align:left;font-size:13px;">
-        <div class="card">
-            <div class="card-header">
-                <h6 class="card-title" style="margin-bottom: 0">Select a Genus</h6>
-            </div>
-            <div class="card-body">
-                <form action="{% url 'search:nomenclature' %}" autocomplete="off">
-                    <input type="hidden" name="role" value="{{ role }}" />
-                    <input list="genus_list" name="genus" onClick="this.setSelectionRange(0, this.value.length)" value="{{genus}}" class="custom-select" placeholder="Select a genus first">
-                </form>
-                <datalist id="genus_list">
-                    {% for g in genus_list %}
-                        <option value="{{g.genus}}">{{g.genus}}</option>
-                    {% endfor %}
-                </datalist>
-    <!--            Species-->
-                <form action="{% url 'search:nomenclature' %}" autocomplete="off">
-                    <input list="species_list" name="species" value="{{species}}" class="custom-select" placeholder="{% if not genus %}Then select a species{% else %}Select {{genus}} species {% endif %}"/>
-        <!--                    <input list="species_list" name="species" onfocus="this.value=''"  value="{{species}}" class="custom-select" placeholder="{% if species.type == 'species' %}{{species}}{% endif %}"/>-->
-                    <input type="hidden" name="pid" value="{{ species.pid }}" />
-                    <input type="hidden" name="genus" value="{{ genus }}" />
-                    <input type="hidden" name="role" value="{{ role }}" />
-                    <input type="hidden" name="type" value="species" />
-                </form>
-                <datalist id="species_list">
-                    {% for s in species_list %}
-                    <option value="{{s.navbar_name}}"></option>
-                    {% endfor %}
-                </datalist>
-                <div class="d-flex p-2 justify-content-left">
-                    <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
-                        <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:species' %}?role={{role}}">Full Species List</a>
-                        <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=species">Species Sample Images</a>
-                    </div>
-                </div>
-
-    <!--            HYBRID LIST        -->
-                <form action="{% url 'search:nomenclature' %}" autocomplete="off">
-                    <input list="hybrid_list" name="species" value="{{species}}" class="custom-select" placeholder="{% if not genus %}Then select a hybrid{% else %}Select {{genus}} hybrid {% endif %}">
-                    <input type="hidden" name="pid" value="{{ species.pid }}" />
-                    <input type="hidden" name="genus" value="{{ genus }}" />
-                    <input type="hidden" name="role" value="{{ role }}" />
-                    <input type="hidden" name="type" value="hybrid" />
-                </form>
-                <datalist id="hybrid_list">
-                    {% for s in hybrid_list %}
-                        <option value="{{s.navbar_name}}"></option>
-                    {% endfor %}
-                </datalist>
-                <div class="d-flex p-2 justify-content-left">
-                    <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
-                        <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:hybrid' %}?role={{role}}">Full Hybrid List</a>
-                        <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=hybrid">Species Sample Images</a>
-                    </div>
+        <div class="container" style="width:99%;text-align:left;font-size:13px;">
+<!--            GENUS-->
+            <div class="card m-2">
+                <div class="card-header"><h6 class="card-title">{% if genus %} <span style="color:green; font-size:24px;"><b>Genus <i>{{genus|title}}</i></b></span>{% else %}Select a Genus{% endif %}</h6></div>
+                <div class="card-body">
+                    <form action="{% url 'search:nomenclature' %}" id="genus" autocomplete="off">
+                        <input type="hidden" form="genus" name="role" value="{{ role }}" />
+                        <input list="genus_list" name="genus" onClick="this.setSelectionRange(0, this.value.length)" value="" class="custom-select" placeholder="Enter a new genus">
+                    </form>
+                    <datalist id="genus_list">
+                        {% for g in genus_list %}
+                            <option value="{{g.genus}}">{{g.genus}}</option>
+                        {% endfor %}
+                    </datalist>
                 </div>
             </div>
-        </div>
-    </div>
+            {% if genus %}
+                {% if species_list or hybrid_list %}
+        <!--    Individual Species / Hybrid -->
+                <div class="card m-2">
+                    <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">Select a <i>{{genus|title}}</i> {% if not hybrid_list %}Species {% elif not species_list %}Hybrid {% else %}Species or hybrid{% endif %}</h6></div>
+                    <div class="card-body border-top">
+                        {% if species_list %}
+                        <form action="{% url 'search:nomenclature' %}" autocomplete="off" style="display:inline-block">
+                            <input list="species_list" name="species" value="{{species}}" class="custom-select" placeholder="{{genus.abrev|title}} species"/>
+                <!--                    <input list="species_list" name="species" onfocus="this.value=''"  value="{{species}}" class="custom-select" placeholder="{% if species.type == 'species' %}{{species}}{% endif %}"/>-->
+                            <input type="hidden" name="pid" value="{{ species.pid }}" />
+                            <input type="hidden" name="genus" value="{{ genus }}" />
+                            <input type="hidden" name="role" value="{{ role }}" />
+                            <input type="hidden" name="type" value="species" />
+                        </form>
+                        <datalist id="species_list">
+                            {% for s in species_list %}
+                            <option value="{{s.navbar_name}}"></option>
+                            {% endfor %}
+                        </datalist>
+                        {% endif %}
 
+                <!--    hybrid -->
+                        {% if hybrid_list %}
+                        <form action="{% url 'search:nomenclature' %}" autocomplete="off" style="display:inline-block">
+                            <input list="hybrid_list" name="species" value="{{species}}" class="custom-select" placeholder="{{genus.abrev|title}} hybrid">
+                            <input type="hidden" name="pid" value="{{ species.pid }}" />
+                            <input type="hidden" name="genus" value="{{ genus }}" />
+                            <input type="hidden" name="role" value="{{ role }}" />
+                            <input type="hidden" name="type" value="hybrid" />
+                        </form>
+                        <datalist id="hybrid_list">
+                            {% for s in hybrid_list %}
+                                <option value="{{s.navbar_name}}"></option>
+                            {% endfor %}
+                        </datalist>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    This genus has no species nor hybrid
+                {% endif %}
+                </div>
+            <br>
 
-    {% if genus %}
-    <div class="d-flex flex-row flex-wrap p-2 justify-content-left">
-        <div class="d-flex p-2 justify-content-left">
-                Go to {{genus}} species/hybrid lists or images
-        </div>
-        <div class="d-flex flex-row flex-wrap p-2 justify-content-left">
-            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:species' %}?role={{role}}&genus={{genus}}">{{genus}} Species List</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&genus={{genus}}&type=species">{{genus}} Species Images</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:hybrid' %}?role={{role}}&genus={{genus}}">{{genus}} Hybrid List</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&genus={{genus}}&type=hybrid">{{genus}} Hybrid Images</a>
+                {% if species_list %}
+                <div class="card m-2">
+                    <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">List of <i>{{genus|title}}</i> Species</h6></div>
+                    <div class="card-body border-top">
+                            <a class="btn btn-xs btn-color p-2 custom-link border" href="{% url 'orchidlist:species' %}?role={{role}}&genus={{genus}}">{{genus.abrev}} Species List</a>
+                            <a class="btn btn-xs btn-color p-2 custom-link border" href="{% url 'orchidlist:browse' %}?role={{role}}&genus={{genus}}&type=species&display=checked">{{genus.abrev}} Species Images</a>
+                    </div>
+                </div>
+                {% endif %}
+                {% if hybrid_list %}
+                <div class="card m-2">
+                    <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">List of <i>{{genus|title}}</i> Hybrids</h6></div>
+                    <div class="card-body border-top">
+                            <a class="btn btn-xs btn-color p-2 custom-link border" href="{% url 'orchidlist:hybrid' %}?role={{role}}&genus={{genus}}">{{genus.abrev}} Hybrids</a>
+                            <a class="btn btn-xs btn-color p-2 custom-link border" href="{% url 'orchidlist:browse' %}?role={{role}}&genus={{genus}}&type=hybrid&display=checked">{{genus.abrev}} Hybrid Images</a>
+                    </div>
+                </div>
+                {% endif %}
+
+            {% endif %}
+
+        <div class="card m-2">
+            <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">List of All Genera</h6></div>
+            <div class="card-body border-top">
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link border" href="{% url 'orchidlist:genera' %}?role={{role}}">All genera list</a>
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link border" href="{% url 'orchidlist:browsegen' %}?role={{role}}&type=species&display=checked">Sample Images</a>
             </div>
         </div>
-    </div>
-
-<!--    <div class="d-flex flex-row flex-wrap p-2 justify-content-left">-->
-<!--        <div class="d-flex flex-row flex-wrap p-2 justify-content-left">-->
-<!--            <form action="{% url 'search:nomenclature' %}" autocomplete="off">-->
-<!--                <input type="hidden" name="role" value="{{ role }}" />-->
-<!--                <input list="intragen_list" name="genus" onClick="this.setSelectionRange(0, this.value.length)" class="custom-select" placeholder="Other related genera">-->
-<!--            </form>-->
-<!--            <datalist id="intragen_list">-->
-<!--                {% for s in intragen_list %}-->
-<!--                    <option value="{{s.genus}}"></option>-->
-<!--                {% endfor %}-->
-<!--            </datalist>-->
-<!--        </div>-->
-<!--    </div>-->
-    {% endif %}
-
-    <div class="d-flex flex-row flex-wrap p-2 justify-content-left">
-        <div class="d-flex p-2 justify-content-left">
-                Still couldn't find your species/hybrid?.  Go to full lists / images
-        </div>
-        <div class="d-flex p-2 justify-content-left">
-            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
-            <h5>Genus</h5>&nbsp;&nbsp;
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:genera' %}?role={{role}}&genustype=all">Full Genus List</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browsegen' %}?role={{role}}&type=species">Genus Sample Images</a>
+        <div class="card m-2">
+            <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">List of All Species</h6></div>
+            <div class="card-body border-top">
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link border" href="{% url 'orchidlist:species' %}?role={{role}}">All Species List</a>
+                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link border" href="{% url 'orchidlist:browse' %}?role={{role}}&type=species&display=checked">Sample Images</a>
             </div>
         </div>
-
-        <div class="d-flex p-2 justify-content-left">
-            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
-            <h5>Species</h5>&nbsp;&nbsp;
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:species' %}?role={{role}}">Full Species List</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=species">Species Sample Images</a>
+        <div class="card m-2">
+            <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">List of All Hybrids</h6></div>
+            <div class="card-body border-top">
+                <a class="btn btn-xs p-2 custom-link border" href="{% url 'orchidlist:hybrid' %}?role={{role}}">All Hybrid List</a>
+                <a class="btn btn-xs p-2 custom-link border" href="{% url 'orchidlist:browse' %}?role={{role}}&type=hybrid&display=checked">Sample Images</a>
             </div>
         </div>
+        <br>
+        <br>
 
-        <div class="d-flex p-2 justify-content-left">
-            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
-            <h5>Hybrid</h5>&nbsp;&nbsp;
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:hybrid' %}?role={{role}}">Full Hybrid List</a>
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:browse' %}?role={{role}}&type=hybrid">Species Sample Images</a>
-            </div>
-        </div>
-    </div>
 
-    {% if intragen_list %}
-        <div class="d-flex p-2 justify-content-left">
-                Or try other related genera
-        </div>
-        <div class="d-flex p-2 justify-content-left">
-            <div class="d-flex flex-row flex-wrap p-2 m-2 justify-content-left">
-                    {% for x in intragen_list %}
-                <a class="btn btn-xs btn-outline-primary btn-color p-2 custom-link" href="{% url 'orchidlist:hybrid' %}?role={{role}}&genus={{x}}&type=hybrid">{{x}}</a>
+        {% if intragen_list %}
+        <div class="card m-2">
+            <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">Related Genera</h6></div>
+            <div class="card-body border-top">
+                {% for x in intragen_list %}
+                    <a class="btn btn-xs p-1 m-1 custom-link border" style="width:150px;" href="{% url 'search:nomenclature' %}?role={{role}}&genus={{x}}">{{x}}</a>
                 {% endfor %}
             </div>
+       {% endif %}
         </div>
-   {% endif %}
-
 
 </div>
-
-
-
-
+<br>
+<br>
+</div>
 
 {% endblock %}

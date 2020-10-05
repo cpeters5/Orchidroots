@@ -26,8 +26,8 @@ from myproject.views import orchid_home, home, private_home
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', home, name='home'),
-    path('orchid_home/', orchid_home, name='orchid_home'),
+    path('home/', home, name='home'),
+    path('', orchid_home, name='orchid_home'),
     # path('index/', index, name='index'),
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),

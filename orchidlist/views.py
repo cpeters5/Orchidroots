@@ -330,8 +330,8 @@ def series(request):
 
 @login_required
 def species_list(request):
-    species = spc = genus = ''
-    # this_species_list = Species.objects.none()
+    species = spc = genus = gen = ''
+    # genus = partial genus name
     subgenus = section = subsection = series = ''
     subgenus_obj = section_obj = subsection_obj = series_obj = ''
     region_obj = subregion_obj = ''
@@ -881,6 +881,7 @@ def browse(request):
     import collections
     subgenus = ''
     section = ''
+    display = ''
     subsection = ''
     series = ''
     subgenus_obj = ''
@@ -927,11 +928,13 @@ def browse(request):
 
     if 'display' in request.GET:
         display = request.GET['display']
-    else:
-        display = False
+    if not display:
+        display = ''
 
     if 'type' in request.GET:
         type = request.GET['type']
+    else:
+        type = 'species'
 
     intragen_list = subgenus_list = section_list = subsection_list = series_list = []
     intragen_list = Intragen.objects.filter(gen=genus.pid)

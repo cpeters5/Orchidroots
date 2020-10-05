@@ -126,15 +126,6 @@ img{
     font-size:13px;
     border-bottom: 0 solid lightgrey;
 }
-.list-group2{
-    /*max-height: 300px;*/
-    margin-bottom: 10px;
-    overflow:auto;
-    max-height: 300px;
-    border-bottom: 1px solid lightgrey;
-    -webkit-overflow-scrolling: touch;
-    font-size:13px;
-}
 
 .btn-group-xs > .btn, .btn-xs {
     padding  : 5px 30px;
@@ -180,10 +171,6 @@ img{
         font-size:11px;
         text-align: left;
     }
-    .list-group2{
-        /*max-height: 200px;*/
-        font-size:11px;
-    }
 
     .grandparent-title {
         font-size: 13px;
@@ -223,10 +210,6 @@ img{
         /*max-height: 200px;*/
         font-size:10px;
         padding:2px;
-    }
-    .list-group2{
-        /*max-height: 200px;*/
-        font-size:10px;
     }
     .grandparent-title {
         font-size: 12px;
@@ -620,7 +603,7 @@ seedparent, pollparent {
                             </div>
                         {% endfor %}
                     </div>
-                <span style="text-align:center"><a href="{% url 'detail:photos'  species.pid %}">more ... </a></span>
+                <span style="text-align:center;font-size:18px;"><a href="{% url 'detail:photos'  species.pid %}"><b>more ... </b></a></span>
                 {% else %}
                     <div style="width: 100%; font-size:12px;border:0 solid lightgrey; margin:0 auto; text-align: center; padding:10px">
                         No image available. if you have one please consider uploading it
@@ -845,6 +828,7 @@ seedparent, pollparent {
             </div>
             </div>
         {% endif %}
+        <br>
      </div>
 </div>
 

@@ -76,50 +76,51 @@
         li {
             list-style: none;
         }
-        .amt {
+        .name {
             margin: 2px;
-            width: 40px;
-            height:30px;
+            width: 250px !important;
+            height:40px;
             border: 1px solid #c9c9ff;
             text-align:center;
         }
+        .amt {
+            margin: 1px !important;
+            width: 33px !important;
+            height:33px;
+            border: 1px solid #c9c9ff;
+            text-align:center;
+            font-size:11px;
+        }
         .amt.active {
-    color: #fff!important;
-    background-color: #007bff!important;
-}
-    </style>
+            color: #fff!important;
+            background-color: #007bff!important;
+        }
+</style>
 {% endblock %}
 
 {% block body %}
 <div style="clear:both"></div>
 
-<div class="container-fluid" style="min-height:200px;border:0 solid grey">
-    <br><br>
-    <div class="row">
-        <div class="col-sm-2 hidden-xs m-2 p-1" style="padding-top:2px; min-height:800px; border:1px solid lightgrey">
+<div class="container-fluid" style="min-height:200px;">
+    <br>
+    <div class="row justify-content-center align-items-center">
+        <div class="d-none d-sm-block col-sm-3 col-lg-2" style="padding:0; border:1px solid lightgrey">
             {% include "side_home.html" %}
         </div>
+        <div class="col-xs-12 col-sm-8 border p-4 m-2">
+            <div class="mt-2" style="font-size:14px">
+                    OrchidRoots is a 501-(c)(3) non-profit organization.  We do not accept government funds in order to focus
+                    our time and energy in making OrchidRoots the best platform for any level of orchid reserch instead of forever
+                    keeping up with the exhaustive paper work required.
+                    Your support is vital for our progress.
+                    We are committed to constantly improving the website to be more complete,
+                    correct and available in formats that are more acceptable to our users.
+            </div>
 
-        <div class="col-xs-7 col-sm-6 border p-4 m-2">
-            <p>
-            OrchidRoots is a 501-(c)(3) non-profit organization.  We do not accept government funds in order to focus
-            our time and energy in making OrchidRoots the best platform for any level of orchid reserch instead of forever
-            keeping up with the exhaustive paper work required.
-            Therefore your support is vital for our progress.
-            </p>
-            <p>
-            We are committed to constantly improving the website to make our information more complete,
-            correct and available in formats that are more acceptable to our users.
-            </p>
-            <p>
-            We are currently raising fundings for a number of exciting future plans, including intelligent search by features and the long awaited OrchidRoots mobile app.
-        </div>
-
-        <div class="col-xs-4 col-sm-3 border p-4 m-2">
-
-
-
-
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h6 class="card-title" style="margin-bottom: 0">Your donation, even a small amount, will make a difference.</h6>
+                </div>
             <div class="container" style="width:100%; margin:0 auto;">
                 {% if error %}
                     <div class="alert alert-warning">
@@ -128,18 +129,16 @@
                     </div>
                 {% endif %}
 
-                <div class="container" align="center">
-                    Your donation, even a small amount, will make a difference.
+                <div class="container" align="left" style="width:100% !important">
                     <br>
-                    <br>
-                    <h5>Full Name (Optional)</h5>
+                    <h6>Full Name (Optional)</h6>
                     <div class="form-group">
-                        <input type="text" name="donor-name" id="donor-name" class="form-control" placeholder="Full Name or Organisation" >
+                        <input type="text" name="donor-name" id="donor-name" class="form-control name" placeholder="Full Name or Organisation" >
                     </div>
 
-                    <h5>Choose amount</h5>
+                    <h6>Choose amount</h6>
 
-                    <div class="btn-toolbar" role="toolbar" aria-label="toolbar" style="font-size: 11px;padding:2px; justify-content: center">
+                    <div class="btn-toolbar" role="toolbar" aria-label="toolbar" style="font-size: 11px;padding:2px; justify-content: left">
                       <div class="btn-group" role="group">
                         <button type="button" class="btn amt btn-outline-primary" data-amt="100">$1</button>
                       </div>

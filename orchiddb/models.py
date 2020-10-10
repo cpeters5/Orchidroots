@@ -2,7 +2,7 @@ from django.db import models
 # from django.contrib.auth.models import (
 #     BaseUserManager, AbstractBaseUser
 # )
-import six
+# import six
 from mptt.models import MPTTModel, TreeForeignKey
 from django.dispatch import receiver
 from PIL import Image as Img
@@ -12,7 +12,7 @@ import os, shutil
 from django.core.files import File
 from django.db.models.signals import post_save
 from django.conf import settings
-from django.utils import timezone
+# from django.utils import timezone
 
 from utils.utils import rotate_image
 from accounts.models import User, Photographer
@@ -1234,6 +1234,7 @@ class SpcImages(models.Model):
     is_private = models.BooleanField(null=True, default=False)
     block_id = models.IntegerField(null=True, blank=True)
     user_id = models.ForeignKey(User, db_column='user_id', null=True, blank=True,on_delete=models.DO_NOTHING)
+    approved_by = models.ForeignKey(User, db_column='approved_by',  related_name='spc_approved_by', null=True, blank=True,on_delete=models.DO_NOTHING)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     # upload_by = models.ForeignKey(User, db_column='upload_by', null=True, blank=True,on_delete=models.DO_NOTHING)
@@ -1349,6 +1350,7 @@ class HybImages(models.Model):
     is_private = models.BooleanField(null=True, default=False)
     block_id = models.IntegerField(null=True, blank=True)
     user_id = models.ForeignKey(User, db_column='user_id', null=True, blank=True,on_delete=models.DO_NOTHING)
+    approved_by = models.ForeignKey(User, db_column='approved_by',  related_name='hyb_approved_by', null=True, blank=True,on_delete=models.DO_NOTHING)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     # upload_by = models.ForeignKey(User, db_column='upload_by', null=True, blank=True,on_delete=models.DO_NOTHING)

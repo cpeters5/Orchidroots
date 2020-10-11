@@ -11,6 +11,9 @@ from django import forms
 from accounts.models import User, Profile
 from django.conf import settings
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
+from django.template import TemplateDoesNotExist
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 
 
 class AccountAdapter(DefaultAccountAdapter):
@@ -24,7 +27,6 @@ class AccountAdapter(DefaultAccountAdapter):
             return settings.LOGIN_REDIRECT_URL
         else:
             return "/"
-
 
 
 class SocialAccountAdapter(DefaultSocialAccountAdapter):

@@ -531,7 +531,7 @@ seedparent, pollparent {
                                         {% for off in offspring_list %}
                                          <tr >
                                              <td class="border-lb" style="text-align: left">
-                                                 <a href="{% url 'detail:information' off.pid.pid %}?role={{role}}">
+                                                 <a href="{% url 'detail:information' %}?pid={{off.pid.pid}}&role={{role}}">
                                                  <span style="font-zize:11px">
                                                      {{off.pid.name |safe}}
                                                      {% if off.pid.num_image > 0 %} *{% endif %}
@@ -539,13 +539,13 @@ seedparent, pollparent {
                                                  </a> </td>
                                              <td class="border-rb" style="text-align: left;">
                                                  {% if off.seed_id %}
-                                                    <a href="{% url 'detail:information' off.seed_id.pid %}?type={{type}}&role={{role}}">{{off.registered_seed_name|safe }}</a>
+                                                    <a href="{% url 'detail:information' %}?pid={{off.seed_id.pid}}&role={{role}}">{{off.registered_seed_name|safe }}</a>
                                                  {% else %}
                                                     na
                                                  {% endif %}
                                                     ×
                                                  {% if off.pollen_id %}
-                                                    <a href="{% url 'detail:information' off.pollen_id.pid %}?type={{type}}&role={{role}}">{{off.registered_pollen_name|safe }}</a>
+                                                    <a href="{% url 'detail:information' %}?pid={{off.pollen_id.pid}}&role={{role}}">{{off.registered_pollen_name|safe }}</a>
                                                  {% else %}
                                                     na
                                                  {% endif %}
@@ -636,12 +636,12 @@ seedparent, pollparent {
                                     {% endif %}
                                 {% endfor %}
                             {% else %}
-                                <img class="thumbnails thumbnails2" alt="" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                <img class="thumbnails thumbnails2" alt="" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                             {% endif %}
                         </div>
                         <div class="parent-text " style="text-align:center; margin-bottom:10px;">
                             {% if species.hybrid.seed_id.pid %}
-                                <a href="{% url 'detail:information' species.hybrid.seed_id.pid %}?role={{role}}">{{species.hybrid.registered_seed_name_long|safe}}</a>
+                                <a href="{% url 'detail:information' %}?pid={{species.hybrid.seed_id.pid}}&role={{role}}">{{species.hybrid.registered_seed_name_long|safe}}</a>
                             {% else %}
                                 No Data
                             {% endif %}
@@ -669,12 +669,12 @@ seedparent, pollparent {
                                     {% endif %}
                                 {% endfor %}
                             {% else %}
-                            <img class="thumbnails thumbnails2"  alt="" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                            <img class="thumbnails thumbnails2"  alt="" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                             {% endif %}
                         </div>
                         <div class="parent-text" style="text-align:center;">
                             {% if species.hybrid.pollen_id.pid %}
-                                    <a href="{% url 'detail:information' species.hybrid.pollen_id.pid %}?role={{role}}">{{species.hybrid.registered_pollen_name_long|safe}}</a>
+                                    <a href="{% url 'detail:information' %}?pid={{species.hybrid.pollen_id.pid}}&role={{role}}">{{species.hybrid.registered_pollen_name_long|safe}}</a>
                             {% else %}
                             No Data
                             {% endif %}
@@ -700,12 +700,12 @@ seedparent, pollparent {
                                                 </a>
                                         {% endfor %}
                                     {% else %}
-                                            <img class="thumbnails thumbnails2" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                            <img class="thumbnails thumbnails2" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                     {% endif %}
                                 </div>
                                 <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.seed_id.hybrid.seed_id %}
-                                    <a href="{% url 'detail:information' species.hybrid.seed_id.hybrid.seed_id.pid %}?role={{role}}">{{species.hybrid.seed_id.hybrid.seed_id.name|safe}}</a>
+                                    <a href="{% url 'detail:information' %}?pid={{species.hybrid.seed_id.hybrid.seed_id.pid}}&role={{role}}">{{species.hybrid.seed_id.hybrid.seed_id.name|safe}}</a>
                                     {% else %}
                                     Unknown
                                     {% endif %}
@@ -722,12 +722,12 @@ seedparent, pollparent {
                                             </a>
                                         {% endfor %}
                                     {% else %}
-                                            <img class="thumbnails thumbnails2" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                            <img class="thumbnails thumbnails2" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                     {% endif %}
                                 </div>
                                 <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.seed_id.hybrid.pollen_id %}
-                                    <a href="{% url 'detail:information' species.hybrid.seed_id.hybrid.pollen_id.pid %}?role={{role}}">{{species.hybrid.seed_id.hybrid.pollen_id.name|safe}}</a>
+                                    <a href="{% url 'detail:information' %}?pid={{species.hybrid.seed_id.hybrid.pollen_id.pid}}&role={{role}}">{{species.hybrid.seed_id.hybrid.pollen_id.name|safe}}</a>
                                     {% else %}
                                     unknown
                                     {% endif %}
@@ -754,12 +754,12 @@ seedparent, pollparent {
                                         </a>
                                         {% endfor %}
                                     {% else %} <!-- if seed_list -->
-                                        <img class="thumbnails thumbnails2"  src="{% static 'utils/images/' %}noimage4.jpg" style="border:0"/>
+                                        <img class="thumbnails thumbnails2"  src="{% static 'utils/images/' %}noimage_light.jpg" style="border:0"/>
                                     {% endif %}
                                 </div>
                                <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.pollen_id.hybrid.seed_id %}
-                                            <a href="{% url 'detail:information' species.hybrid.pollen_id.hybrid.seed_id.pid %}?role={{role}}">{{species.hybrid.pollen_id.hybrid.seed_id.name|safe}}</a>
+                                            <a href="{% url 'detail:information' %}?pid={{species.hybrid.pollen_id.hybrid.seed_id.pid}}&role={{role}}">{{species.hybrid.pollen_id.hybrid.seed_id.name|safe}}</a>
                                     {% else %}
                                         Unknown
                                     {% endif %} <!-- if pollenpollen_id -->
@@ -777,13 +777,13 @@ seedparent, pollparent {
                                             </a>
                                         {% endfor %}
                                     {% else %} <!-- if seed_list -->
-                                        <img class="thumbnails thumbnails2" src="{% static 'utils/images/' %}noimage4.jpg" style="border:0"/>
+                                        <img class="thumbnails thumbnails2" src="{% static 'utils/images/' %}noimage_light.jpg" style="border:0"/>
                                     {% endif %}
                                 </div>
 
                                 <div class="parent-text" style="text-align:center; margin-bottom:10px;">
                                     {% if species.hybrid.pollen_id.hybrid.pollen_id %}
-                                            <a href="{% url 'detail:information' species.hybrid.pollen_id.hybrid.pollen_id.pid %}?tab=sum">{{species.hybrid.pollen_id.hybrid.pollen_id.name|safe}}</a>
+                                            <a href="{% url 'detail:information' %}?pid={{species.hybrid.pollen_id.hybrid.pollen_id.pid}}&role={{role}}">{{species.hybrid.pollen_id.hybrid.pollen_id.name|safe}}</a>
                                     {% else %}
                                         Unknown
                                     {% endif %} <!-- if pollenpollen_id -->
@@ -810,11 +810,11 @@ seedparent, pollparent {
                                         <img class="thumbnails thumbnails3"  alt="" src="/static/utils/images/species/{{p.img}}">
                                 </a>
                             {% else %}
-                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                             {% endif %}
                             <br>
                             <div style="clear:left;font-size:9px;line-height:10px; height:40px"><br>
-                                    <a href="{% url 'detail:information' p.aid.pid %}?role={{role}}">
+                                    <a href="{% url 'detail:information' %}?pid={{p.aid.pid}}&role={{role}}">
                                 {% if p.aid.pid > 0 %}{{p.aid.abrevname|safe}}
                                 {% else %}no data
                                 {% endif %}

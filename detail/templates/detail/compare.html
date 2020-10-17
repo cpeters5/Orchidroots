@@ -369,7 +369,7 @@ label {
                         {% if role == 'cur' %}
                             <a href="{% url 'detail:photos' cross.pid.pid %}?role={{role}}">{{cross.pid.name|safe}}</a>
                         {% else %}
-                            <a href="{% url 'detail:information' cross.pid.pid %}?tab=sum&role=pub">{{cross.pid.name|safe}}</a>
+                            <a href="{% url 'detail:information' %}?pid={{cross.pid.pid}}&role=pub">{{cross.pid.name|safe}}</a>
                         {% endif %}
                     {% else %}
                         {% if pid1 and pid2 and pid1 != pid2 %}
@@ -379,7 +379,7 @@ label {
                                     <b>Oops! {{msgnogenus}} : Nothogenus of type {{genus1}} x {{genus2}} does not exist!  Please contact admin to create one.</b>
                                 {% else %}
                                     WARNING: The cross will be removed if no photo uploaded.<br>
-                                    <a class="btn btn-primary btn-xs" href="{% url 'detail:createhybrid' %}?pid1={{species1.pid}}&pid2={{species2.pid}}&role={{role}}&tab=sum">
+                                    <a class="btn btn-primary btn-xs" href="{% url 'detail:createhybrid' %}?pid1={{species1.pid}}&pid2={{species2.pid}}&role={{role}}">
                                         Create {{species1.namecasual|safe}} × {{species2.namecasual|safe}}
                                     </a>
                                 {% endif %}
@@ -471,7 +471,7 @@ label {
                             {% if message2 %}
                                 <span class="text-danger">{{message2|safe}}</span>
                             {% elif species2.species %}
-                                <a href="{% url 'detail:information'  %}?role={{role}}&pid={{species2.pid}}">{{species2.abrevname|safe}}</a> {{species2.author}} {{species2.year}}
+                                <a href="{% url 'detail:information' %}?role={{role}}&pid={{species2.pid}}">{{species2.abrevname|safe}}</a> {{species2.author}} {{species2.year}}
                                 {% if accepted2 %} <br>(syn. {{accepted2.name|safe}}) {% endif %}
                             {% else %}
                                 Enter the correct name of second orchid.

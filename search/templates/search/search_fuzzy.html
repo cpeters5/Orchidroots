@@ -47,7 +47,7 @@
                               {% if role == "cur" %}
                                   <a href="{% url 'detail:photos' species.0.pid %}?role={{role}}"><i>{{species.0.genus}} {{species.0.species}}</i>{% if species.0.infraspr %} {{species.0.infraspr}} <i>{{species.0.infraspe}}</i>{% endif %}</a>
                               {% else %}
-                                  <a href="{% url 'detail:information' species.0.pid %}?role={{role}}"><i>{{species.0.genus}} {{species.0.species}}</i>{% if species.0.infraspr %} {{species.0.infraspr}} <i>{{species.0.infraspe}}</i>{% endif %}</a>
+                                  <a href="{% url 'detail:information' %}?pid={{species.0.pid}}&role={{role}}"><i>{{species.0.genus}} {{species.0.species}}</i>{% if species.0.infraspr %} {{species.0.infraspr}} <i>{{species.0.infraspe}}</i>{% endif %}</a>
                               {% endif %}
                               {% if species.0.year %}
                                   ({{species.0.year }})
@@ -61,7 +61,7 @@
                                   {% if role == "cur" %}
                                        <a href="{% url 'detail:photos' species.0.pid %}?role={{role}}">{{species.0.getAccepted.abrevname|safe}}</a>
                                   {% else %}
-                                       <a href="{% url 'detail:information' species.0.pid %}?role={{role}}">{{species.0.getAccepted.abrevname|safe}}</a>
+                                       <a href="{% url 'detail:information' %}?pid={{species.0.pid}}&role={{role}}">{{species.0.getAccepted.abrevname|safe}}</a>
                                   {% endif %}
                               {% else %} na
                               {% endif %}
@@ -70,7 +70,7 @@
                                    {% if role == "cur" %}
                                        <a href="{% url 'detail:photos' species.0.hybrid.seed_id.pid %}?role={{role}}">{{species.0.hybrid.seed_id.abrevname|safe}}</a>
                                    {% else %}
-                                       <a href="{% url 'detail:information' species.0.hybrid.seed_id.pid %}?role={{role}}">{{species.0.hybrid.seed_id.abrevname|safe}}</a>
+                                       <a href="{% url 'detail:information' %}?pid={{species.0.hybrid.seed_id.pid}}&role={{role}}">{{species.0.hybrid.seed_id.abrevname|safe}}</a>
                                    {% endif %}
                               {% else %}
                                   na
@@ -80,7 +80,7 @@
                                   {% if role == "cur" %}
                                       <a href="{% url 'detail:photos' species.0.hybrid.pollen_id.pid %}?role={{role}}">{{species.0.hybrid.pollen_id.abrevname|safe}}</a>
                                   {% else %}
-                                      <a href="{% url 'detail:information' species.0.hybrid.pollen_id.pid %}?role={{role}}">{{species.0.hybrid.pollen_id.abrevname|safe}}</a>
+                                      <a href="{% url 'detail:information' %}?pid={{species.0.hybrid.pollen_id.pid}}&role={{role}}">{{species.0.hybrid.pollen_id.abrevname|safe}}</a>
                                   {% endif %}
                               {% else %} na
                               {% endif %}

@@ -11,6 +11,9 @@
 .nav2 {
     font-size: 13px;
 }
+.nav-link {
+    color: black !important;
+}
 @media only screen and (max-width: 600px) {
     .nav2 {
         font-size: 11px;
@@ -22,7 +25,7 @@
     <div class="nav2">
         <ul class="nav nav-tabs navbar-expand-lg" >
             {% if species %}
-                <li class="nav-item"><a class="nav-link {{tax}}" href="{% url 'detail:information' species.pid %}?gen={{species.gen.pid}}&type={{type}}&role={{role}}">Summary<br></a></li>
+                <li class="nav-item"><a class="nav-link {{tax}}" href="{% url 'detail:information' %}?pid={{species.pid}}&gen={{species.gen.pid}}&type={{type}}&role={{role}}">Summary<br></a></li>
                 <li class="nav-item"><a class="nav-link {{pho}}" href="{% url 'detail:photos' species.pid %}?gen={{species.gen.pid}}&pid={{species.pid}}&type={{type}}&role={{role}}">Photos<br></a></li>
                 <li class="nav-item"><a class="nav-link {{sbs}}" href="{% url 'detail:compare' %}?pid={{species.pid}}&role={{role}}">Compare<br></a></li>
                 {% if user.tier.tier > 2 %}

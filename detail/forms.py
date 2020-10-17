@@ -57,8 +57,8 @@ class SpeciesForm(ModelForm):
         labels = {
             'genus':'Genus',
             'species':'Species',
-            'infraspr':'infraspr',
-            'infraspe':'infraspe',
+            'infraspr':'infraspecific rank (e.g. var.)',
+            'infraspe':'infraspecific value (e.g. alba)',
             'year':'year',
         }
         widgets = {

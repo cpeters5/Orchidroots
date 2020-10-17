@@ -101,6 +101,7 @@
 
 body {
     width:100%;
+    /*background-color: #efeeee;*/
 }
 
 #wrapper {
@@ -173,7 +174,7 @@ body {
 @media only screen and (max-width: 600px){
     .searchbox {
         margin:2px;
-        font-size: 11px;
+        font-size: 12px;
     }
     .modal-content {
         width: 100%;
@@ -232,8 +233,14 @@ body {
     padding: 5px 10px;
 }
 
+.dropdown-item:hover {
+    background-color:lightgrey;
+}
+
+
 .dropdown-menu {
-    padding: 5px 10px;
+    padding: 10px;
+    font-size:13px;
 
 }
 
@@ -312,18 +319,22 @@ body {
     }
 
     .nav-link {
-      padding-right: .5rem !important;
-      padding-left: .5rem !important;
+        padding-right: .5rem !important;
+        padding-left: .5rem !important;
+        color: white !important;
+        font-size:16px;
+        margin:0 10px;
     }
 
 .custom-find{
-    color: #292929;
+    /*color: #292929;*/
+    color:white;
 }
 
 .custom-find:hover {
     text-decoration: none;
     background-color: #353547;
-    color: white;
+    color: lightblue !important;
 }
 
 </style>
@@ -347,11 +358,27 @@ body {
             </form>
             </div>
             <ul class="navbar-nav">
-                <a class="nav-link custom-find" href="{% url 'search:nomenclature' %}" style="margin:0 20px;">Advanced search</a>
+                <li class="nav-link"><a class="custom-find" href="{% url 'search:nomenclature' %}">Advanced search</a></li>
+
+                <li class="nav-item">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle custom-find" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"><span style="color:white">About us </span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'documents:whoweare' %}">Who we are</a></li>
+                                <li><a class="dropdown-item" href="{% url 'documents:termsofuse' %}">Terms of use</a></li>
+                                <li><a class="dropdown-item" href="{% url 'documents:disclaimer' %}">Disclaimer</a></li>
+                                <li><a class="dropdown-item" href="{% url 'documents:contact' %}">Contact us</a></li>
+                                <li><a class="dropdown-item" href="{% url 'donation:donateapp' %}">Donate</a></li>
+                                <li><a class="dropdown-item" href="{% url 'documents:help' %}">Help</a></li>
+                                <li><a class="dropdown-item" href="{% url 'documents:list' %}">Organization</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"><span style="color:white">{{user}}&nbsp;</span></a>
+                            <a class="nav-link dropdown-toggle custom-find" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"><span style="color:white">{{user}}&nbsp;</span></a>
                             <ul class="dropdown-menu">
                                 {% if user.tier.tier == 5 %}
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
@@ -371,27 +398,12 @@ body {
                     </li>
                 {% else %}
                     <li class="nav-item" style="margin-top:8px;">
-                            <a class="nav-link" href="{% url 'register' %}?next=/login">Register</a>
+                        <a class="nav-link custom-find" href="{% url 'register' %}?next=/login"><span style="color:white">Register</span></a>
                     </li>
                     <li class="nav-item" style="margin-top:8px;">
-                            <a class="nav-link" href="{% url 'login' %}?next=/">Login</a>
+                        <a class="nav-link custom-find" href="{% url 'login' %}?next=/"><span style="color:white">Login</span></a>
                     </li>
                 {% endif %}
-                    <li class="nav-item">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">About us</a>
-                            <ul class="dropdown-menu">
-<!--                                <li><a type="button" class="btn btn-outline-primary bannerfont" href="{% url 'orchid_home' %}" style="font-size:16px;"><b>Enter OrchidRoots</b></a></li>-->
-                                <li><a type="button" class="btn btn-default" href="{% url 'documents:termsofuse' %}">Terms of use</a></li>
-                                <li><a type="button" class="btn btn-default" href="{% url 'documents:disclaimer' %}">License & Disclaimer</a></li>
-                                <li><a type="button" class="btn btn-default" href="{% url 'documents:contact' %}">Contact us</a></li>
-                                <li><a type="button" class="btn btn-outline-primary" href="{% url 'donation:donateapp' %}">Donate</a></li>
-                                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:help' %}">Help</a></li>
-                                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:list' %}">Organization</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
 
 
             </ul>
@@ -420,9 +432,9 @@ body {
                     <div class="dropdown" id="pub2">
                         {% if species %}
                             {% if role == 'pub' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' %}?pid={{species.pid}}&role=pub">Public</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' %}?pid={{species.pid}}&role=pub">Public</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'pub' %}
@@ -452,9 +464,9 @@ body {
                     <div class="dropdown" id="pub3">
                         {% if species %}
                             {% if role == 'pub' %}
-                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
+                                <a class='dropbtn navbar2 selected rolebtn' href="{% url 'detail:information' %}?pid={{species.pid}}&role=pub">Public</a>
                             {% else %}
-                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' species.pid %}?role=pub">Public</a>
+                                <a class='dropbtn navbar2 rolebtn' href="{% url 'detail:information' %}?pid={{species.pid}}&role=pub">Public</a>
                             {% endif %}
                         {% else %}
                             {% if role == 'pub' %}

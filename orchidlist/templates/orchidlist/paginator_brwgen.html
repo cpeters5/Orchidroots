@@ -4,6 +4,7 @@
     padding:2px 6px;
     /*margin-top: 5px;*/
     margin-block-end: 5px;
+    clear:left;
 }
 .pagination a{
     padding:2px 6px;
@@ -23,7 +24,7 @@
 <div class="p-1 text-n">
     <ul class="pagination pagination-xs">
         {% if page > 1 %}
-            <li class="page-item"><a class="page-link" href="?page=1&alpha={{alpha}}&type={{type}}&gen={{gen}}&tab={{tab}}&display={{display}}"><span class="fa fa-angle-double-left" ></span></a></li>
+            <li class="page-item"><a class="page-link" href="?page=1&alpha={{alpha}}&type={{type}}&gen={{gen}}&tab={{tab}}&display={{display}}">x<span class="fa fa-angle-double-left" ></span></a></li>
         {% else %}
             <li class="page-item"><a class="page-link" href="#"><span class="fa fa-angle-double-left"></span></a></li>
         {% endif %}

@@ -248,29 +248,7 @@ def genera(request):
         else:
             genus_list = genus_list.order_by(sort)
     total = genus_list.count()
-    paginatiopaginator = ()
-    my_list = ''
-    if page_length > 0:
-        paginator = Paginator(genus_list, page_length)
-        try:
-            page = int(request.GET.get('page', '1'))
-        except:
-            page = 1
-        try:
-            my_list = paginator.page(page)
-            last_page = paginator.num_pages
-        except(EmptyPage):
-            my_list = paginator.page(1)
-            last_page = 1
-        # Get the index of the current page
-        index = my_list.number - 1  # edited to something easier without index
-        # This value is maximum index of your pages, so the last page - 1
-        max_index = len(paginator.page_range)
-        # You want a range of 7, so lets calculate where to slice the list
-        start_index = index - num_show if index >= num_show else 0
-        end_index = index + num_show if index <= max_index - num_show else max_index
-        # My new page range
-        page_range = paginator.page_range[start_index:end_index]
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(request,genus_list, page_length, num_show)
 
     # Get Alliances
     sf_list = Subfamily.objects.all()
@@ -289,14 +267,15 @@ def genera(request):
     t_list  = t_list.order_by('tribe')
     st_list = st_list.order_by('subtribe')
     genus_lookup = Genus.objects.filter(pid__gt=0).filter(type='species')
-    context = {'my_list': my_list,'total':total,'genus_lookup':genus_lookup,
+    context = {'my_list': page_list,'total':total,'genus_lookup':genus_lookup,
                'sf_obj':sf_obj,'sf_list':sf_list,
                't_obj':t_obj,'t_list':t_list,
                'st_obj':st_obj,'st_list':st_list,
                'title': 'genera', 'genus': genus, 'year': year, 'genustype': genustype,'status':status,
                'formula1':formula1, 'formula2':formula2,
                'sort': sort, 'prev_sort': prev_sort,
-               'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length, 'namespace':'orchidlist',}
+               'page': page,'page_range': page_range,'last_page':last_page,'next_page':next_page, 'prev_page':prev_page, 'num_show':num_show, 'first':first_item, 'last':last_item,}
+               # 'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length, 'namespace':'orchidlist',}
     logger.error("orchidlist/genus_list " + str(request.user))
     return render(request, 'orchidlist/genera.html', context)
 
@@ -546,6 +525,7 @@ def species_list(request):
     else:
         this_species_list = this_species_list.order_by('genus','species')
     total = this_species_list.count()
+
     page_range, page_list,last_page, next_page,prev_page, page_length,page,first_item,last_item = mypaginator(request,this_species_list,page_length,num_show)
 
     subgenus_list = intragen_list.filter(subgenus__isnull=False).values_list('subgenus','subgenus').distinct().order_by('subgenus')
@@ -604,7 +584,7 @@ def species_list(request):
                'author':author,'dist':dist,
                'region_obj':region_obj,'region_list':region_list,'subregion_obj':subregion_obj, 'subregion_list':subregion_list,
                'sort': sort, 'prev_sort': prev_sort,
-               'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length,
+               'page': page,'page_range': page_range,'last_page':last_page,'next_page':next_page, 'prev_page':prev_page, 'num_show':num_show, 'first':first_item, 'last':last_item,
                'level':'list', 'title': 'species_list','namespace':'orchidlist','type':'species'
                }
     return render(request, 'orchidlist/species.html', context)
@@ -632,9 +612,6 @@ def hybrid_list(request):
 
     num_show = 5
     page_length = 200
-    # max_page_length = 1000
-    page_range = []
-    last_page = 1
 
     if 'alpha' in request.GET:
         alpha = request.GET['alpha']
@@ -661,11 +638,8 @@ def hybrid_list(request):
     elif status == 'accepted':
         this_species_list = this_species_list.exclude(status='synonym')
 
-
     if 'genus' in request.GET:
         genus = request.GET['genus']
-
-    genus_list = Genus.objects.exclude(status='synonym').filter(Q(num_species__gte=0) | Q(num_hybrid__gte=0))
 
     species_list = []
     if genus:
@@ -702,9 +676,17 @@ def hybrid_list(request):
 
     if 'seed_genus' in request.GET:
         seed_genus = request.GET['seed_genus']
+    if seed_genus == 'clear':
+        seed_genus = ''
 
     if 'pollen_genus' in request.GET:
         pollen_genus = request.GET['pollen_genus']
+    if pollen_genus == 'clear':
+        pollen_genus = ''
+
+    seed_genus_list = list(Hybrid.objects.filter(genus=genus).distinct().values_list('seed_genus',flat=True))
+    poll_genus_list = list(Hybrid.objects.filter(genus=genus).distinct().values_list('pollen_genus',flat=True))
+
     if alpha != 'ALL':
         alpha = alpha[0:1]
 
@@ -767,35 +749,13 @@ def hybrid_list(request):
         this_species_list = this_species_list.order_by('genus','species')
     total = this_species_list.count()
 
-    my_list = ''
-    if page_length > 0:
-        paginator = Paginator(this_species_list, page_length)
-        try:
-            page = int(request.GET.get('page', '1'))
-        except:
-            page = 1
-        try:
-            my_list = paginator.page(page)
-            last_page = paginator.num_pages
-        except(EmptyPage):
-            my_list = paginator.page(1)
-            last_page = 1
-        # Get the index of the current page
-        index = my_list.number - 1  # edited to something easier without index
-        # This value is maximum index of your pages, so the last page - 1
-        max_index = len(paginator.page_range)
-        # You want a range of 7, so lets calculate where to slice the list
-        start_index = index - num_show if index >= num_show else 0
-        end_index = index + num_show if index <= max_index - num_show else max_index
-        # My new page range
-        page_range = paginator.page_range[start_index:end_index]
-
+    page_range, page_list,last_page, next_page,prev_page, page_length,page,first_item,last_item = mypaginator(request,this_species_list,page_length,num_show)
     logger.error("orchidlist/hybrid  " + str(request.user) + " " + str(genus))
-    context = {'my_list': my_list, 'genus_list':genus_list, 'total':total,'alpha_list': alpha_list, 'alpha': alpha,'spc':spc,
+    context = {'my_list': page_list, 'seed_genus_list':seed_genus_list, 'poll_genus_list':poll_genus_list, 'total':total,'alpha_list': alpha_list, 'alpha': alpha,'spc':spc,
                'genus':genus,'year': year,'status':status,
                'author':author,'originator':originator,'seed':seed,'pollen':pollen,'seed_genus':seed_genus,'pollen_genus':pollen_genus,
                'sort': sort, 'prev_sort': prev_sort,
-               'page_range': page_range,'last_page':last_page, 'num_show':num_show, 'page_length':page_length,
+               'page': page,'page_range': page_range,'last_page':last_page,'next_page':next_page, 'prev_page':prev_page, 'num_show':num_show, 'first':first_item, 'last':last_item,
                'level': 'list','title': 'hybrid_list', 'namespace':'orchidlist',
                }
     return render(request, 'orchidlist/hybrid.html', context)
@@ -1037,6 +997,7 @@ def progeny(request, pid):
     page_length = 30
     page_range = []
     role = 'pub'
+    last_page = 1
     if 'role' in request.GET:
         role = request.GET['role']
 

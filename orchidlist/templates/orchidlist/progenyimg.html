@@ -101,7 +101,8 @@ img{
     {% include "detail/detail-nav.html" %}
     <div class="tab-content clearfix" style="background:white; margin:0 auto;border-left:1px solid lightgrey;border-right:1px solid lightgrey;border-bottom:1px solid lightgrey">
     {% if des_list %}
-            {% if last_page > 1 %} {% include "detail/paginator_upl.html" %} {% endif %}
+        <br>
+            {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
             <div class="d-flex flex-wrap justify-content-center" style="display:inline-block; margin-top:5px;">
             {% for x in des_list %}
                 <div class="imageitem p-1 justify-content-center  border" style="margin:2px;">

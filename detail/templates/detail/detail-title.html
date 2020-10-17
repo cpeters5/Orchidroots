@@ -25,20 +25,20 @@
 
 </style>
 
-    {% if title == 'myphoto' %}
-          <div style="margin:0 auto;font-size: 15px; text-align: center;width:80%">
-                <h1 style="display:none">{{species.genus}} {{species.species}}</h1>
-                <h6><a href="{% url 'orchidlist:browse' %}?type={{species.type}}&genus={{species.genus}}&role={{role}}&alpha={{species.species|title|make_list|first}}&display=checked"><i>{{species.genus}}</i></a>
-                    {{species.get_species}}, {% if species.author %}{{species.author}} {% endif %}
-                    {% if species.year %}{{species.year}}{% endif %}
-                </h6>
-<!--              <a href="{% url 'orchidlist:browsegen' %}?type=species"><i>Go to Browse</i></a>-->
-          </div>
-    {% else %}
+<!--    {% if title == 'myphoto' %}-->
+<!--          <div style="margin:0 auto;font-size: 15px; text-align: center;width:80%">-->
+<!--                <h1 style="display:none">{{species.genus}} {{species.species}}</h1>-->
+<!--                <h6><a href="{% url 'orchidlist:browse' %}?type={{species.type}}&genus={{species.genus}}&role={{role}}&alpha={{species.species|title|make_list|first}}&display=checked"><i>{{species.genus}}</i></a>-->
+<!--                    {{species.get_species}}, {% if species.author %}{{species.author}} {% endif %}-->
+<!--                    {% if species.year %}{{species.year}}{% endif %}-->
+<!--                </h6>-->
+<!--&lt;!&ndash;              <a href="{% url 'orchidlist:browsegen' %}?type=species"><i>Go to Browse</i></a>&ndash;&gt;-->
+<!--          </div>-->
+<!--    {% else %}-->
         {% if title != 'curate_newupload' and title != 'curate_pending' and title != 'myphoto_browse' %}
             <div class="nav2 detail-title" style="text-align:center">
                 <h1 style="display:none">{{species.genus}} {{species.species}}</h1>
-                <h1><a href="{% url 'orchidlist:browse' %}?type={{species.type}}&genus={{species.genus}}&role={{role}}&alpha={{species.species|title|make_list|first}}"><i>{{species.genus}}</i></a>
+                <h1><a href="{% url 'orchidlist:browse' %}?type={{species.type}}&genus={{species.genus}}&role={{role}}&alpha={{species.species|title|make_list|first}}&display=checked"><i>{{species.genus}}</i></a>
                     {{species.get_species}}{% if species.author %}, {{species.author}} {% endif %}
                     {% if species.year %}{{species.year}}{% endif %}</h1>
                      <a href="{{species.sourceurl}}" target="_blank">({{species.source}}</a> {{species.status}})
@@ -85,5 +85,5 @@
             </div>
         {% endif %}
         <div style="clear:left;"></div>
-    {% endif %}
+<!--    {% endif %}-->
 

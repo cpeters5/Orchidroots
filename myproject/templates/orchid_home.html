@@ -9,20 +9,6 @@ div.text-c {
     transform: translate(-50%, -50%);
     font-size: 11px;
 }
-
-.btn {
-    margin:2px 0;
-    width: 95%;
-    font-size:11px;
-    color: #272ba3;
-    padding:5px 0;
-    background-color: white;
-    border:1px solid darkgrey;
-}
-.btn:hover {
-    background-color: #cad4f7;
-}
-
 .box {
     position: relative;
     display: inline-block;
@@ -35,54 +21,25 @@ div.text-c {
 .thumbnails {
    object-fit: cover;
    overflow: hidden;
-   height: 16vw;
-   width : 16vw;
+   height: 10vw;
+   width : 10vw;
    padding:2px;
-}
-.imgcaption {
-    font-size: 10px;
-    height: 20px;
-    overflow: hidden;
-}
-.imgcaption_top {
-    font-size: 14px;
-    height: 20px;
-    overflow: hidden;
-    text-align:center;
 }
 
 @media only screen and (max-width: 800px) {
     div.text-c {
         font-size: 11px;
     }
-    .btn {
-        margin:2px;
-        font-size: 12px;
-    }
-    .imgcaption_top {
-        font-size: 13px;
-        /*height: 20px;*/
-        /*overflow: hidden;*/
-    }
     .thumbnails {
-       height: 20vw;
-       width : 20vw;
+       height: 10vw;
+       width : 10vw;
     }
 }
 
 @media only screen and (max-width: 500px) {
-    .imgcaption_top {
-        font-size: 16px;
-        /*height: 20px;*/
-        /*overflow: hidden;*/
-    }
-    .btn {
-        font-size: 11px;
-        width:80%;
-    }
     .thumbnails {
-        width:70vw;
-        height:70vw;
+        width:15vw;
+        height:15vw;
     }
 }
 
@@ -91,16 +48,6 @@ img{
     width:100%;
 }
 
-.img-hover-zoom {
-  height: 300px; /* [1.1] Set it as per your need */
-  width: auto;
-  /*overflow: hidden; !* [1.2] Hide the overflowing of child elements *!*/
-}
-
-/* [2] Transition property for smooth transformation of images */
-.img-hover-zoom img {
-  transition: transform .5s ease;
-}
 
 /* [3] Finally, transforming the image when container gets hovered */
 .img-hover-zoom:hover img {
@@ -121,63 +68,53 @@ img{
 <div style="clear:both"></div>
 
 <div class="container-fluid" style="min-height:200px;border:0 solid grey">
+    <div style="clear:both"></div>
     <div class="row">
-        <div class="col-sm-2 center-image hidden-xs; " style="padding:0;">
-            <br><br>
-            <ul>
-                <li><a type="button" class="btn btn-default" href="{% url 'orchidlist:browsegen' %}?type=species">Browse Images</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'search:nomenclature' %}">Advanced Search</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Upload Guideline</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Upload Guideline</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Term of Use</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Contact us</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'donation:donateapp' %}">Donate</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:help' %}">Help</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:list' %}">Organization</a></li>
-                <li><a type="button" class="btn btn-default" href="#">Photo submission guideline</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:termsofuse' %}">Terms of use</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:disclaimer' %}">License & Disclaimer</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:contact' %}">Contact us</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:changes' %}">Release history</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:list' %}">Documentation</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:privacy_policy' %}">Privacy policy</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:list' %}">Other documentation</a></li>
-<hr>
-                <li><a type="button" class="btn btn-default" href="{% url 'donation:donateapp' %}">Become a supporter</a></li>
-<!--                <li><a type="button" class="btn btn-default" href="{ url 'home' %}">New home - UC</a></li>-->
-            </ul>
+        <div class="d-none d-sm-block col-sm-3 col-lg-2" style="padding:0; border:1px solid lightgrey">
+            {% include "side_home.html" %}
         </div>
-        <div class="col-xs-12 col-sm-10">
-            <div style="clear:left; margin:0 auto; ">
-                <h5>Sample Images
-                    <small style="font-size: 14px;"><br>Select a genus name to see the list of species or hybrid or click
-                        <a href="{% url 'orchidlist:browsegen' %}?role={{role}}">&nbsp;<b>here</b>&nbsp;</a> to see more complete list of genera available in OrchidRoots</a>
-                    </small>
-                </h5>
-                <br>
-                <div style="display:inline-block;">
+
+        <div class="col-sm-8 col-lg-9">
+            <div class="card mt-3">
+                <div class="card-body" style="font-size:15px">
+                    <h6 class="card-title">Welcome to OrchidRoots</h6>
+
+                    <p>OrchidRoots is a non-profit organization. Our goal is to provide a teaching tool that will help you
+                        search for and find the roots of your orchids.
+                        Even if the Orchidroots team works on a voluntary basis, there are ongoing costs for technology,
+                        operation and further development. So that Orchidroots can continue to exist in the future, we ask you for a small
+                        <a href="{% url 'donation:donateapp' %}">donation</a>.</p>
+                    <p>
+                    <form class="form-inline" action="{% url 'search:search_match' %}">
+                        And now, start your journey by looking for an orchid:&nbsp;&nbsp;&nbsp;
+                        <input type="hidden" name="role" value="">
+                        <input type="text" class="form-control border border-right-0 searchbox" name="search" value="" onfocus="this.select()" pattern=".{3,}" placeholder="Search..." required="" title="Include genus to speed up the search." style="width:250px; border:2px solid #3b9ff7 !important;">
+                    </form>
+
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+<!--                <div class="card-header">-->
+<!--                    <h6 class="card-title" style="margin-bottom: 0"><a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&display=checked">Browse Images</a></h6>-->
+<!--                </div>-->
+                <div class="card-body">
                     {% for image in randimages %}
                     {% if image.pid.pid.type == 'hybrid' %}
                         <div style="display:inline-block;">
-                        <div class="imgcaption_top">
-                            <a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&gen={{image.pid.pid.gen.pid}}&att"><i>{{image.pid.gen}}</i></a>
-                        </div>
-                        <a href="{% url 'detail:information' image.pid.pid_id %}?role={{role}}">
+                        <a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&genus={{image.pid.pid.genus}}&display=checked">
                             <div class="box">
                                 <img class="thumbnails" alt="" src="/static/utils/images/hybrid/{{image.image_file}}">
-                                <div class="text-c">{{image.pid.pid.speciesname|safe}}</div>
+<!--                                <div class="text-c">{{image.pid.pid.speciesname|safe}}</div>-->
                             </div>
                         </a>
                         </div>
                     {% else %}
                         <div style="display:inline-block;">
-                        <div class="imgcaption_top">
-                            <a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&gen={{image.pid.pid.gen.pid}}&att"><i>{{image.pid.gen}}</i></a>
-                        </div>
-                        <a href="{% url 'detail:information' image.pid.pid_id %}?role={{role}}">
+                        <a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&genus={{image.pid.pid.genus}}&display=checked">
                             <div class="box">
                                 <img class="thumbnails" alt="" src="/static/utils/images/species/{{image.image_file}}">
-                                <div class="text-c">{{image.pid.pid.speciesname|safe}}</div>
                             </div>
                         </a>
                         </div>

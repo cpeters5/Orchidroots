@@ -164,7 +164,7 @@ def search_fuzzy(request, partner=None):
         search = request.GET['search'].strip()
     send_url = '/search/search_match/?search=' + search + "&role=" + role
     keyword = search.lower()
-    logger.error("detail/search_fuzzy: " + str(request.user) + " " + role + " - ", keyword)
+    logger.error("detail/search_fuzzy: " + str(request.user) + " " + role + " - " + keyword)
 
     grexlist = Species.objects.exclude(status='pending')
     # Filter for partner specific list.

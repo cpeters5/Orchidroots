@@ -35,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '7nec)c($%l-df9q6036uu7e)f0sq=hhdxrbmuo5sba8+i_aw@3'
-SITE_ID = 3
+SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'session_cleanup',
+    'django_crontab',
     # 'rest_framework',
 
     #local
@@ -231,6 +233,15 @@ CACHES = {
     }
 }
 
+from session_cleanup.settings import weekly_schedule
+CELERYBEAT_SCHEDULE = {
+    'session_cleanup': weekly_schedule
+}
+
+CRONJOBS = [
+    ('*/2 * * * *', 'myproject.cron.my_cron_job')
+]
+
 LOGGING_CONFIG = None
 try:
     logging.config.dictConfig({
@@ -303,7 +314,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERSION': 'v7.0',
     }
 }
-LOGIN_REDIRECT_URL = "/home"
+LOGIN_REDIRECT_URL = "/"
 SOCIAL_AUTH_FACEBOOK_KEY = env.str('SOCIAL_FACEBOOK_KEY', default='')
 SOCIAL_AUTH_FACEBOOK_SECRET = env.str('SOCIAL_FACEBOOK_SECRET', default='') #app key
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'

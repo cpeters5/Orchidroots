@@ -687,9 +687,10 @@ def rank_update (request, species):
             elif species.type == 'hybrid':
                 try:
                     image = HybImages.objects.get(pk=id)
-                    logger.error("2. >>> hyb image = " + image.image_file)
                 except HybImages.DoesNotExist:
                     return 0
+            if image.image_file:
+                logger.error("2. >>> hyb image = " + image.image_file)
             image.rank = rank
             image.save()
     return rank
@@ -837,7 +838,7 @@ def ancestrytree(request, pid=None):
             if img:
                 s.img = hybdir + img.image_file
             else:
-                s.img = spcdir + 'noimage_light.jpg'
+                s.img = imgdir + 'noimage_light.jpg'
             # tree_list = tree_list + (s,)
             # SS
             if s and s.seed_id and s.seed_id.type == 'species':
@@ -1106,23 +1107,19 @@ def comment(request):
 
 def information(request, pid=None):
     # -- NEW Detail page of a given species
-    ancspc_list = ()
     distribution_list = ()
     ps_list=pp_list=ss_list=sp_list=seedimg_list=pollimg_list=()
-
+    pid = ''
     role = 'pub'
     if request.user.is_authenticated:
         if 'role' in request.GET:
             role = request.GET['role']
-    if not pid and 'pid' in request.GET:
+    if 'pid' in request.GET:
         pid = request.GET['pid']
-        if pid:
-            pid = int(pid)
-        else:
-            pid = 0
+    if not pid:
+        pid = 0
     try:
         species = Species.objects.get(pk=pid)
-        # This is old species
         genus = species.gen
     except Species.DoesNotExist:
         return HttpResponse(redirect_message)
@@ -1133,7 +1130,7 @@ def information(request, pid=None):
         return HttpResponse(redirect_message)
     if species.status == 'synonym':
         synonym = Synonym.objects.get(pk=species.pid)
-        return HttpResponseRedirect("/detail/information/" + str(synonym.acc_id) + "/?role=" + role)
+        return HttpResponseRedirect("/detail/information/?pid=" + str(synonym.acc_id) + "&role=" + role)
 
     accepted = ''
     hybrid = ''
@@ -1449,10 +1446,10 @@ def curate(request,pid):
 
 
 def photos(request,pid=None):
-    private_list = []
-    public_list = []
-    all_list = []
-    author = ''
+    # private_list = []
+    # public_list = []
+    # all_list = []
+    # author = ''
     role = ''
     debug = 0
     author, author_list = get_author(request)
@@ -1499,6 +1496,7 @@ def photos(request,pid=None):
         all_list = HybImages.objects.filter(pid=species.pid)
         # Loggedin user in public mode can see both public and owned photos
     myspecies_list = myhybrid_list = []
+    private_list, public_list, upload_list, myspecies_list, myhybrid_list = getmyphotos(request,author,species)
 
     if author:
         if role == 'pri':
@@ -1513,20 +1511,6 @@ def photos(request,pid=None):
 
     else:  # anonymous
         public_list = all_list.filter(rank__gt=0)
-
-
-    logger.error("role = " + role)
-    logger.error("all_list = " + str(len(all_list)))
-    logger.error("public_list = " + str(len(public_list)))
-    logger.error("private_list = " + str(len(private_list)))
-
-    # elif species.type == 'hybrid':
-    #     if request.user.is_authenticated and role == 'cur' and request.user.tier.tier > 2:
-    #         public_list = HybImages.objects.filter(pid=species.pid)
-    #     else:
-    #         public_list = HybImages.objects.filter(pid=species.pid).filter(Q(author=author) | Q(rank__gt=0))
-    # else:
-    #     return HttpResponse(redirect_message)
 
     upload_list = UploadFile.objects.filter(pid=species.pid)
     if role != 'cur':
@@ -1567,7 +1551,7 @@ def photos(request,pid=None):
     if public_list:
         if var == "alba":
             public_list = public_list.exclude(variation__icontains="semi")
-        public_list.order_by('-rank','-quality','?')
+        public_list = public_list.order_by('-rank','-quality','?')
         if private_list:
             private_list = private_list.order_by('created_date')
 
@@ -1651,7 +1635,7 @@ def curateinfospc(request,pid):
             spc.operator = request.user
             spc.save()
 
-            url = "%s?tab=%s&role=%s" % (reverse('detail:information', args=(species.pid,)), 'tax', role)
+            url = "%s?pid=%s&role=%s" % (reverse('detail:information'), species.pid, role)
             return HttpResponseRedirect(url)
         else:
             return HttpResponse("POST: Somethign's wrong")
@@ -1727,7 +1711,7 @@ def curateinfohyb(request,pid):
 
             spcspc.save()
             spc.save()
-            url = "%s?tab=%s&role=%s" % (reverse('detail:information', args=(species.pid,)), 'tax',role)
+            url = "%s?pid=%s&role=%s" % (reverse('detail:information'), species.pid,role)
             return HttpResponseRedirect(url)
         else:
             return HttpResponse("POST: Somethign's wrong")
@@ -1842,8 +1826,8 @@ def reidentify(request, id, pid):
 def myphoto(request,pid):
 
     if request.user.tier.tier < 2:
-        send_url = "%s?tab=%s" % (reverse('detail:information', args=(species.pid,)), 'sum')
-        return HttpResponseRedirect(send_url)
+        url = "%s?pid=%s&role=%s" % (reverse('detail:information'), species.pid, role)
+        return HttpResponseRedirect(url)
     else:
         author, author_list = get_author(request)
 
@@ -1874,7 +1858,7 @@ def myphoto_browse_spc(request):
     user = User.objects.get(pk=request.user.id)
     if not user.is_authenticated or user.tier.tier < 2:
     # if not request.user.is_authenticated or request.user.tier.tier < 2:
-        send_url = "%s?tab=%s" % (reverse('orchidlist:browse'), 'sum')
+        send_url = "%s" % (reverse('orchidlist:browsegen'))
         return HttpResponseRedirect(send_url)
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/login/')
@@ -2165,13 +2149,8 @@ def deletewebphoto(request, pid):
 
     if area == 'allpending':      #from curate_pending (all rank 0)
         url = "%s?role=%s&page=%s&type=%s&days=%s" % (reverse('detail:curate_pending'), role, page, type,days)
-    elif role == 'pri' or role == 'cur':
-        url = "%s?role=%s" % (reverse('detail:myphoto', args=(species.pid,)), role)
-    elif tab == 'und':
-        url = "%s?tab=%s&pid=999999999&page=%s" % (reverse('detail:curate'), 'und', page)
-    else:          # from curate/pending (specific rank 0)
-        url = "%s?role=%s" % (reverse('detail:curate', args=(species.pid,)), role)
-
+    else:
+        url = "%s?role=%s" % (reverse('detail:photos', args=(species.pid,)), role)
     return HttpResponseRedirect(url)
 
 

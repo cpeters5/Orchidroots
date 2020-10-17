@@ -209,44 +209,44 @@ a:hover {
 
 </style>
 
-<div class="container">
-    <div class="row justify-content-center align-items-center" style="border:0 solid blue;font-size:11px;">
-        <button class="btn btn-xs btn-primary" type="button" data-toggle="collapse" data-target="#Instruction">Instruction</button>
-        <div id="Instruction" class="collapse">
-        Curator view is being simplified:
-            <ul>
-                <li>There are 3 sections in this page: public, private and new upload, partitioned by a horizontal line.</li>
-                <li>To remove a photo from public view simply change its rank to 0</li>
-                <li>When you approve or upload a new photo, look for a replacement, e.g. similar photo or photos of lower quality, remove it(them).  We try to keep public photo population low.</li>
-                <li>When you add a new photo, select appropriate rank following the
-                    <button type="button" data-toggle="collapse" data-target="#rank">Rank assignement guideline</button>
-                    <div id="rank" class="collapse">
-                        <ol start="0">
-                            <li>Private photos visible only to their owner (and curators)</li>
-                            <li>Habitat or in situ photos</li>
-                            <li>Entire or part of plants</li>
-                            <li>Inflorescent</li>
-                            <li>Group of flowers</li>
-                            <li>Portrait of single flower</li>
-                            <li>reserved></li>
-                            <li>Closeup</li>
-                        </ol>
-                    </div>
-                </li>
-                <li>Select an appropriate quality
-                    <button type="button" data-toggle="collapse" data-target="#quality">Photo quality</button>
-                    <div id="quality" class="collapse">
-                        <ul start="0">
-                            <li>High</li>
-                            <li>Average</li>
-                            <li>Low</li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+<!--<div class="container">-->
+<!--    <div class="row justify-content-center align-items-center" style="border:0 solid blue;font-size:11px;">-->
+<!--        <button class="btn btn-xs btn-primary" type="button" data-toggle="collapse" data-target="#Instruction">Instruction</button>-->
+<!--        <div id="Instruction" class="collapse">-->
+<!--        Curator view is being simplified:-->
+<!--            <ul>-->
+<!--                <li>There are 3 sections in this page: public, private and new upload, partitioned by a horizontal line.</li>-->
+<!--                <li>To remove a photo from public view simply change its rank to 0</li>-->
+<!--                <li>When you approve or upload a new photo, look for a replacement, e.g. similar photo or photos of lower quality, remove it(them).  We try to keep public photo population low.</li>-->
+<!--                <li>When you add a new photo, select appropriate rank following the-->
+<!--                    <button type="button" data-toggle="collapse" data-target="#rank">Rank assignement guideline</button>-->
+<!--                    <div id="rank" class="collapse">-->
+<!--                        <ol start="0">-->
+<!--                            <li>Private photos visible only to their owner (and curators)</li>-->
+<!--                            <li>Habitat or in situ photos</li>-->
+<!--                            <li>Entire or part of plants</li>-->
+<!--                            <li>Inflorescent</li>-->
+<!--                            <li>Group of flowers</li>-->
+<!--                            <li>Portrait of single flower</li>-->
+<!--                            <li>reserved></li>-->
+<!--                            <li>Closeup</li>-->
+<!--                        </ol>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--                <li>Select an appropriate quality-->
+<!--                    <button type="button" data-toggle="collapse" data-target="#quality">Photo quality</button>-->
+<!--                    <div id="quality" class="collapse">-->
+<!--                        <ul start="0">-->
+<!--                            <li>High</li>-->
+<!--                            <li>Average</li>-->
+<!--                            <li>Low</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 <div style="width:95%;margin:0 auto;padding:0;">
@@ -385,16 +385,15 @@ a:hover {
                             {% else %}
                                 {% if image.source_url %}
                                     <a href="{{image.source_url}}" target="_blank">{{image.imgname|safe}}</a>
-                                {% else %}
-                                    {{image.imgname|safe}}
-                                {% endif %}
-                                {% if image.source_url %}
                                     <br>Photo: <a href="{{image.source_url}}" target="_blank">{{image.author.displayname }}</a>
                                 {% else %}
-                                    {{image.author.displayname }}
+                                    {{image.imgname|safe}}
+                                    <br>{{image.author.displayname }}
                                 {% endif %}
                             {% endif %}
-
+                            {% if role == 'pri' and image.rank == 0 %}
+                                (private <a href="{% url 'detail:deletewebphoto' image.pid_id %}?id={{image.id}}&role={{role}}" >Delete</a>)
+                            {% endif %}
                         </div>
 
                     </div>
@@ -469,10 +468,9 @@ a:hover {
                             <br>
                             {% if image.approved %}
                                 <b>Approved</b>
-                            {% else %}
+                            {% elif role == 'cur' %}
                                 <a href="{% url 'detail:approvemediaphoto' image.pid_id %}?&id={{image.id}}&tab={{tab}}&gen={{species.gen.pid}}&action=file">Approve</a> |
                             {% endif %}
-                            -
                             <a href="{% url 'detail:deletephoto' image.id %}?id={{image.id}}&role={{role}}" >Delete</a>
                         {% endif %}
                      </div>

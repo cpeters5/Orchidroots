@@ -66,34 +66,6 @@ a:hover {
   opacity: 1; /* Firefox */
 }
 
-.button1 {
-    background-color: #eae6eb;
-    color: #868686;
-    border: 1px solid #acaf9c;
-}
-
-.button1:hover {
-    background-color: #babbc1;
-    text-decoration: none;
-    color: white;
-}
-
-
-.filter {
-    height:27px;
-    width: 150px;
-    font-size:13px;
-    font-color:darkgrey;
-    text-align:center;
-    background-color: white;
-    border:1px solid darkgrey;
-    float: left;
-    margin: 0 5px;
-  color: darkgrey;
-    /*#bdaec6;*/
-  opacity: 1; /* Firefox */
-}
-
 ::placeholder {
   color: #bdaec6;
   opacity: 1; /* Firefox */
@@ -104,9 +76,9 @@ a:hover {
 
 input {
     text-align: center;
-    margin: 0 5px;
+    /*margin: 0 5px;*/
     padding:0;
-    height:27px;
+    height:30px;
     width: 150px;
  }
 .scrollable-menu {
@@ -120,8 +92,26 @@ input {
     color: darkgrey;
     line-height:30px;
 }
+.button-a {
+    /*background-color: #eaeaea;*/
+    height:30px;
+    width: 150px;
+    border:1px solid #857f7f;
+    padding-top:3px;
+    color: #322d2d;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+  opacity: 1; /* Firefox */
+}
+
 .submit {
-    height:27px;
+    height:30px;
     width: 70px;
     font-size:12px;
     /*font-color:lightgrey;*/
@@ -131,19 +121,17 @@ input {
     float: left;
     margin: 0 5px;
 }
-.p-2 {
-    padding:2px !important;
-    font-size:13px;
-}
+
 .select-p2 {
     font-size:13px;
-    color: black;
-    /*#b9b9b9;*/
+    text-align: center;
+    color: #b9b9b9;
     width:150px;
-    height:27px;
-    margin:0 5px;
-    border:1px solid #b8b8b8;
+    height:30px;
+    margin:0;
+    border:1px solid #857f7f;
     padding:0;
+    background-color:white;
 }
 .label {
     color:red;
@@ -152,107 +140,74 @@ input {
 </style>
 <br>
 <br>
-<div style="display:block; margin: 0 auto; width: 95%; font-size: 13px">
-    <div class="d-flex justify-content-center">
-
-
-        <h4>{% if genus %}{{genus}}{% endif %} Hybrid List ({{total|intcomma}})</h4></div>
+<div style="clear:both"></div>
         <!--Filter-->
-    <div class="d-flex flex-row  flex-wrap">
-        <!--Genus-->
-        <form action="?" id="filter">
-                <input type="hidden" name="alpha" value="{{alpha}}" />
-                <input type="hidden" name="sort" value="{{sort}}" />
-        </form>
-        <!--Genus-->
-        <div class="p-2">
-            <input form="filter" name="genus" onfocus="this.select()" value="{{genus}}"  placeholder="Genus" data-toggle="tooltip"  data-placement="bottom"  title="Genus match string"/>
+<div class="justify-content-left align-items-center" style="display:block; clear:left; margin: 0 auto; width: 95%; text-align:left">
+    <div class="card m-2">
+        <div class="card-header">
+            <h4>{% if genus %}{{genus}}{% endif %} Hybrid List ({{total|intcomma}})</h4>
         </div>
-        <!--Species-->
-        <div class="p-2">
-            <input form="filter" name="spc" value="{{spc}}"  placeholder="Epithet" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Hybrid name match string"/>
-        </div>
+        <!--Filter-->
+        <div class="card-body d-flex flex-row  flex-wrap">
 
-        <!--Year-->
-        <div class="p-2">
-            <input form="filter" name="year" value='{{year}}' placeholder="Year" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="YYYY"/>
-        </div>
-
-        <!--Registrant-->
-        <div class="p-2">
-            <input form="filter" name="author" value='{{author}}' placeholder="Registrant" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Registrant name match string"/>
-        </div>
-
-        <!--Originator-->
-        <div class="p-2">
-            <input form="filter" name="originator" value='{{originator}}' placeholder="Originator" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Originator name match string"/>
-        </div>
-    </div>
-    <div class="d-flex flex-row  flex-wrap">
-
-           <!--Seed genus-->
-        <div class="p-2">
-            <select class="select-p2" form="filter" name="seed_genus" class="form-control" tabindex="-1" aria-hidden="true" data-toggle="tooltip"  data-placement="bottom"  title="Parent genus #1 begins with">
+            <!--Genus-->
+            <form action="?" id="filter">
+                    <input type="hidden" name="alpha" value="{{alpha}}" />
+                    <input type="hidden" name="sort" value="{{sort}}" />
+            </form>
+            <!--Genus-->
+            <input class="p-2 m-1" form="filter" name="genus" onfocus="this.select()" value="{{genus}}"  placeholder="Genus" data-toggle="tooltip"  data-placement="bottom"  title="Genus match string"/>
+            <!--Species-->
+            <input class="p-2 m-1" form="filter" name="spc" value="{{spc}}"  placeholder="Epithet" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Hybrid name match string"/>
+            <!--Year-->
+            <input class="p-2 m-1" form="filter" name="year" value='{{year}}' placeholder="Year" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="YYYY"/>
+            <!--Registrant-->
+            <input class="p-2 m-1" form="filter" name="author" value='{{author}}' placeholder="Registrant" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Registrant name match string"/>
+            <!--Originator-->
+            <input class="p-2 m-1" form="filter" name="originator" value='{{originator}}' placeholder="Originator" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Originator name match string"/>
+            <!--Seed genus-->
+            <select class="select-p2 m-1" form="filter" name="seed_genus" class="form-control" tabindex="-1" aria-hidden="true">
                 {% if not seed_genus %}
                     <option selected disabled>Parent genus #1</option>
                 {% endif %}
-                <option></option>
-                {% for g in genus_list %}
-                    {% if seed_genus == g.genus %}
-                        <option selected="selectred">{{g.genus}}</option>
+                <option>clear</option>
+                {% for g in seed_genus_list %}
+                    {% if seed_genus == g %}
+                        <option selected="selected"><span style="color:red">{{g}}</span></option>
                     {% else %}
-                        <option>{{g.genus}}</option>
+                        <option>{{g}}</option>
                     {% endif %}
                 {% endfor %}
             </select>
-        </div>
-
-        <div class="p-2">
-            <select class="select-p2"  form="filter" name="pollen_genus" class="form-control" tabindex="-1" aria-hidden="true" data-toggle="tooltip"  data-placement="bottom"   title="Parent genus #2 begins with">
+            <select class="select-p2 m-1" form="filter" name="pollen_genus" class="form-control" tabindex="-1" aria-hidden="true">
                 {% if not pollen_genus %}
                 <option selected disabled><span style="color:grey">Parent genus #2</span></option>
                 {% endif %}
-                <option></option>
-                {% for g in genus_list %}
-                    {% if pollen_genus == g.genus %}
-                        <option selected="selected">{{g.genus}}</option>
+                <option value="">clear</option>
+                {% for g in poll_genus_list %}
+                    {% if pollen_genus == g %}
+                        <option selected="selected" style="color:black">{{g}}</option>
                     {% else %}
-                        <option>{{g.genus}}</option>
+                        <option>{{g}}</option>
                     {% endif %}
                 {% endfor %}
             </select>
-        </div>
-
             <!--Seed Parents-->
-        <div class="p-2">
-            <input form="filter" name="seed" value='{{seed}}' placeholder="Parent #1" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Species parent #1 match string"/>
-        </div>
-
+            <input class="p-2 m-1" form="filter" name="seed" value='{{seed}}' placeholder="Parent #1" onfocus="this.select()"/>
             <!--Pollen Parents-->
-        <div class="p-2">
-            <input form="filter" name="pollen" value='{{pollen}}' placeholder="Parent #2" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Species parent #2 match string"/>
+            <input class="p-2 m-1" form="filter" name="pollen" value='{{pollen}}' placeholder="Parent #2" onfocus="this.select()"/>
+            <!--Submit-->
+            <a class="button-a select-2" href="{% url 'orchidlist:browse' %}?type=hybrid&genus={{genus}}&display=checked">Show images</a>
+            <button class="submit" form="filter" style="height:30px;margin:0 5px;background-color: #1d6c6c; color:white">Submit</button>
         </div>
-        <!--Submit-->
-        <div class="p-2">
-            <button form="filter" style="height:27px;margin:0 5px;background-color: #1d6c6c; color:white">Submit</button>
-            <a class="button btn" href="{% url 'orchidlist:browse' %}?type=hybrid&genus={{genus}}&display=checked">Show Images</a>
-        </div>
-    </div>
-</div>
 
         <!--Main table-->
-<div style="display:block; margin: 0 auto; width: 95%">
-    {% include "orchidlist/alpha_list.html" %}
 
-    <div style="background-color: #f5f9f9;clear:left;">
         <!--Pagination        -->
         {% if my_list %}
-            <div style="float:left">
-            {% include "./pagination.html" %}
-            </div>
+            {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
             <!--main table-->
             <div class="table mytable" style="">
-
                 <table class="table table-sm table-condensed table-bordered table-hover" id="myTable">
                     <thead style="font-size:16px;">
     {#                First column - All options#}
@@ -370,11 +325,9 @@ input {
                             {%  endif %}
                         {% endfor %}
                 </table>
-            <!--Pagination-->
-            {% include "./pagination.html" %}
             </div>
+            {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
         {% endif %}
-    </div>
 </div>
 
 

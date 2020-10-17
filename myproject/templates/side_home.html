@@ -1,17 +1,38 @@
 <!--<div style="clear:both"></div>-->
 <style>
-    li {
+    .li-side {
         list-style:none;
     }
+
+.sidebtn {
+    margin:2px 0;
+    width: 95%;
+    height: 50px;
+    font-size:13px;
+    color: #272ba3;
+    padding-top:15px;
+    background-color: white;
+    border:1px solid darkgrey;
+}
+.btn:hover {
+    background-color: #cad4f7;
+}
+
 </style>
+<br>
             <ul style="padding-left:10px">
-                <li><a type="button" class="btn btn-outline-primary bannerfont" href="{% url 'orchid_home' %}" style="font-size:16px;"><b>Enter OrchidRoots</b></a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:termsofuse' %}">Terms of use</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:disclaimer' %}">License & Disclaimer</a></li>
-                <li><a type="button" class="btn btn-default" href="{% url 'documents:contact' %}">Contact us</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'donation:donateapp' %}">Donate</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:help' %}">Help</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:list' %}">Organization</a></li>
+<!--                <li><a type="button" class="btn btn-outline-primary bannerfont" href="{% url 'orchid_home' %}" style="font-size:16px;"><b>Enter OrchidRoots</b></a></li>-->
+                <li class="li-side"><a type="button" class="btn sidebtn btn-outline-primary bannerfont" href="{% url 'search:advanced' %}" style="font-size:14px;"><b>Advanced Search</b></a></li>
+                <li class="li-side"><a type="button" class="btn sidebtn btn-outline-primary" href="{% url 'documents:instructionupload_file' %}">Upload Guideline</a></li>
+                <li class="li-side"><a type="button" class="btn sidebtn btn-outline-primary" href="{% url 'donation:donateapp' %}">Donate</a></li>
+                <li class="li-side"><a type="button" class="btn sidebtn btn-default" href="{% url 'documents:photosubmissionguideline' %}">Photo submission</a></li>
+                <li class="li-side"><a type="button" class="btn sidebtn btn-default" href="{% url 'documents:changes' %}">Release history</a></li>
+                <li class="li-side"><a type="button" class="btn sidebtn btn-default" href="{% url 'documents:list' %}">Documentation</a></li>
+                <li class="li-side"><a type="button" class="btn sidebtn btn-default" href="{% url 'documents:privacy_policy' %}">Privacy policy</a></li>
+                {% if user.tier.tier > 3 %}
+                    <li class="li-side"><a type="button" class="btn sidebtn btn-default" href="{% url 'documents:migration' %}">Deployment</a></li>
+                    <li class="li-side"><a type="button" class="btn sidebtn btn-default" href="{% url 'documents:future_development' %}">Future Development</a></li>
+                {% endif %}
             </ul>
 
 

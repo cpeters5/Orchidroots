@@ -255,7 +255,7 @@ def search_fuzzy(request, partner=None):
                }
     return django.shortcuts.render(request, "search/search_fuzzy.html", context)
 
-def nomenclature(request, species=None, genus=None):
+def advanced(request, species=None, genus=None):
     debug = 1
     genus = ''
     gen = ''
@@ -381,4 +381,4 @@ def nomenclature(request, species=None, genus=None):
         'species_list': species_list, 'hybrid_list': hybrid_list, 'intragen_list':intragen_list,'type': type,
         'level': 'search', 'title': 'find_orchid', 'role': role, 'namespace': 'search',
     }
-    return django.shortcuts.render(request, "search/nomenclature.html", context)
+    return django.shortcuts.render(request, "search/advanced.html", context)

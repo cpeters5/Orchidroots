@@ -28,22 +28,13 @@
 <div style="clear:both"></div>
 <br>
 <div class="container-fluid" style="min-height:200px;border:0 solid grey">
-    <div class="row">
-        <div class="col-sm-2 hidden-xs" style="padding:0; border:1px solid lightgrey; min-height:600px;">
-            <br>
-            <ul style="padding-left:10px">
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'search:nomenclature' %}">Advanced Search</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Upload Guideline</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Upload Guideline</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Term of Use</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="#">Contact us</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'donation:donateapp' %}">Donate</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:help' %}">Help</a></li>
-                <li><a type="button" class="btn btn-outline-primary" href="{% url 'documents:list' %}">Organization</a></li>
-            </ul>
+    <div style="clear:both"></div>
+	<div class="row">
+        <div class="d-none d-sm-block col-sm-3 col-lg-2" style="padding:0; border:1px solid lightgrey">
+            {% include "side_home.html" %}
         </div>
 
-        <div class="col-xs-12 col-sm-10">
+        <div class="col-sm-8 col-lg-9">
 
             <div style="margin:0 auto; width:70%;">
 

@@ -1,37 +1,87 @@
-{% load static %}
 {% include "base.html" %}
 {% block body %}
-
 <style>
+
+div.text-c {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+}
+
+@media only screen and (max-width: 800px) {
+    div.text-c {
+        font-size: 11px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+}
+
+
+img{
+    width:100%;
+}
+
+
+/* [3] Finally, transforming the image when container gets hovered */
+.img-hover-zoom:hover img {
+  transform: scale(1.5);
+}
+    ul{
+        padding-left:15px;
+        /*font-size: 13px;*/
+        padding-left:10px;
+        line-height: 30px;
+        list-style-type:square;
+    }
+li {
+    display: list-item;
+}
+    .card-body {
+        font-size: 15px;
+    }
 </style>
+<br>
+<br>
 
-<body>
-<br><br>
-<div class="container-fluid" style="margin:0 auto;">
-    <h3>Upload Instruction</h3>
+<div style="clear:both"></div>
+
+<div class="container-fluid" style="min-height:200px;border:0 solid grey">
+    <div style="clear:both"></div>
+    <div class="row">
+        <div class="d-none d-sm-block col-sm-3 col-lg-2" style="padding:0; border:1px solid lightgrey">
+            {% include "side_home.html" %}
+        </div>
+
+        <div class="col-sm-8 col-lg-9">
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="card-title" style="margin-bottom: 0"><a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&display=checked">OrchidRoots V.3.1 - 2020-10-01</a></h6>
+                </div>
+
+                <div class="card-body">
+                    <h6 class="mb-0">Upload from Web</h6>
+
+                        <ul>
+                            <li>You must be the owner of the photo you wish to upload.</li>
+                            <li>Make sure you have the correct identity of hte the orchid in the photo</li>
+                            <li>Search for the orchid in OrchidRoots and navigate to its detail page</li>
+                            <li>Click on the "Access Area" button in the upper left hand corner of the page and select "My Photo Page"</li>
+                            <li>Click on "Upload local file" button to start an uppload form</li>
+                            <li>Select the author name from the dropdown menu.  If your name does not exist, cancel upload and notify admin to register asd a donor.</li>
+                            <li>Click on "Choose File" button and select the image file you wish to upload</li>
+                            <li>Fill in the rest of the form as appropriate</li>
+                            <li>Add your comment. At the end of hte comment, enter the name of the author of the comment, or you own name if the comment is made by you.</li>
+                            <li>Click "Save" button to upload, or the "Cancel" link to discard and go back to Identification page.</li>
+                        </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-<div class="container">
-<h5>Upload from Web</h5>
-
-<ul>
-    <li>You must be the owner of the photo you wish to upload.</li>
-    <li>Make sure you have the correct identity of hte the orchid in the photo</li>
-    <li>Search for the orchid in OrchidRoots and navigate to its detail page</li>
-    <li>Click on the "Access Area" button in the upper left hand corner of the page and select "My Photo Page"</li>
-    <li>Click on "Upload local file" button to start an uppload form</li>
-    <li>Select the author name from the dropdown menu.  If your name does not exist, cancel upload and notify admin to register asd a donor.</li>
-    <li>Click on "Choose File" button and select the image file you wish to upload</li>
-    <li>Fill in the rest of the form as appropriate</li>
-    <li>Add your comment. At the end of hte comment, enter the name of the author of the comment, or you own name if the comment is made by you.</li>
-    <li>Click "Save" button to upload, or the "Cancel" link to discard and go back to Identification page.</li>
-</ul>
-
-</div>
-
-</body>
 
 {% endblock %}
-
-

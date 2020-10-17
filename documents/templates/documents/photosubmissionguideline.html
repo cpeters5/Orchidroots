@@ -1,32 +1,50 @@
 {% load static %}
 {% include 'base.html' %}
-<head>
 
-</head>
 <style>
-</style>
+.doc {
+    overflow-wrap: break-word;
+    font-size: 14px;
+    padding:10px;
+    margin:0 auto;
+    border:1px solid lightgrey;
+}
 
-<body>
-<br><br>
-<div class="container-fluid" style="margin:0 auto;">
+</style>
+<br>
+<br>
+<br>
+
+<div class="container-fluid" style="min-height:200px;border:0 solid grey">
+    <div style="clear:both"></div>
+	<div class="row">
+        <div class="d-none d-sm-block col-sm-3 col-lg-2" style="padding:0; border:1px solid lightgrey">
+            {% include "side_home.html" %}
+        </div>
+
+        <div class="col-sm-8 col-lg-9">
     <h3>Guideline for Photo Submission<br>
         <small>In progress</small>
     </h3>
     <ul>
-        <li>Photo quality
+        <li>Must be correctly identified</li>
+        <li>Public photos are chosen based on the quality of the photo. What considered good photography:
             <ul>
-                <li>In focus</li>
-                <li>Natural color</li>
-                <li>Normal Brightness</li>
-                <li>Do not put species name in the photo</li>
-                <li>Copy right, if present should small font placed at lower right or left corner. </li>
+                <li>In focus, good Lighting and brightnerss and natural color</li>
+                <li>Easch photo should showcase the unique character of the orchid. E.g. flower, florescences, closeup of parts, leaf, plant or habitat.</li>
+                <li>The photo should be void of added text such as orchid name or date. If you must add copyright credit,
+                    it should be in small font placed in the lower right corner.
                 <li>Plain Simple background, preferable solid dark color.</li>
             </ul>
+            Photos following these guidelines will be chosen for public display over those that are not.
+        </li>
+        <li>
+
         </li>
     </ul>
 </div>
 
-</body>
+
 
 
 

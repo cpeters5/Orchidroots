@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.apps import apps
+from django.contrib.auth.decorators import login_required
+
+User       = apps.get_model('accounts', 'User')
 
 # Create your views here.
 def list(request):
@@ -29,6 +33,15 @@ def termsofuse(request):
     context = {'namespace':'termsofuse',}
     return render(request, 'documents/termsofuse.html', context)
 
+
+@login_required
+def future_development(request):
+    # if request.user.tier.tier < 5:
+    #     return HttpResponseRedirect(reverse('/'))
+    context = {'namespace':'future_development',}
+    return render(request, 'documents/future_development.html', context)
+
+
 def greetings(request):
     context = {'namespace':'greetings',}
     return render(request, 'documents/greetings.html', context)
@@ -38,9 +51,21 @@ def faq(request):
     context = {'namespace':'faq',}
     return render(request, 'documents/faq.html', context)
 
+def curator(request):
+    curator_list = User.objects.filter(tier=3).order_by('fullname')
+    context = {'namespace':'curator','curator_list':curator_list}
+    return render(request, 'documents/curator.html', context)
+
+@login_required
+def migration(request):
+    # if request.user.tier.tier < 5:
+    #     return HttpResponseRedirect(reverse('/'))
+    context = {'namespace':'documents',}
+    return render(request, 'documents/migration.html', context)
+
 
 def navigation(request):
-    context = {'namespace':'navigation',}
+    context = {'namespace':'documents',}
     return render(request, 'documents/navigation.html', context)
 
 
@@ -55,11 +80,11 @@ def datamodel(request):
 
 def photosubmissionguideline(request):
     context = {'namespace':'documents',}
-    return render(request, 'documents/photoguideline.html', context)
+    return render(request, 'documents/photosubmissionguideline.html', context)
 
 def photoacquisionguideline(request):
     context = {'namespace':'documents',}
-    return render(request, 'documents/photoguideline.html', context)
+    return render(request, 'documents/photoacquisitionguideline.html', context)
 
 
 def instructionupload_curate(request):
@@ -84,7 +109,7 @@ def development(request):
 
 def changes(request):
     context = {'namespace':'documents',}
-    return render(request, 'documents/R3.html', context)
+    return render(request, 'documents/changes.html', context)
 
 
 def termofuse(request):
@@ -96,6 +121,13 @@ def privacy_policy(request):
     context = {'namespace':'documents',}
     return render(request, 'documents/privacy_policy.html', context)
 
+
 def contact(request):
     context = {'namespace':'documents',}
     return render(request, 'documents/contact.html', context)
+
+
+def whoweare(request):
+    context = {'namespace':'documents',}
+    return render(request, 'documents/whoweare.html', context)
+

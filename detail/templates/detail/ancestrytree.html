@@ -240,12 +240,12 @@ right connector from last child*/
                                                         <img  class="thumbnails thumbnails3" src="{% static s.img %}" >
                                                     </a>
                                                     <div>
-                                                        <a class="fam" href="{% if s.type == 'hybrid' %}{% url 'detail:ancestrytree' s.pid.pid %}?tab=fam{% else %}{% url 'detail:information' s.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                        <a class="fam" href="{% if s.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{s.pid.pid}}&role={{role}}" style="border:0">
                                                             {{s.pid.abrevname|safe}}<br>{% if s.year %}{{s.year}}{% else %}<br>{%endif %}
                                                         </a>
                                                     </div>
                                                 {% else %}
-                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                                 {% endif %}
                                                 {% if s.type == 'hybrid' %}
                                                     <ul>
@@ -255,12 +255,12 @@ right connector from last child*/
                                                                             <img class="thumbnails thumbnails3" src="{% static ss.img %}" >
                                                                 </a>
                                                                 <div>
-                                                                    <a class="fam" href="{% if ss.type == 'hybrid' %}{% url 'detail:ancestrytree' ss.pid.pid %}?tab=fam{% else %}{% url 'detail:information' ss.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                    <a class="fam" href="{% if ss.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{ss.pid.pid}}&role={{role}}" style="border:0">
                                                                         {{ss.pid.abrevname|safe}}<br>{% if ss.year %}{{ss.year}}{% else %}<br>{% endif %}
                                                                     </a>
                                                                 </div>
                                                             {% else %}
-                                                                        <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                                                        <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                                             {% endif %}
                                                             {% if ss.type == 'hybrid' %}
                                                                 <ul>
@@ -270,12 +270,12 @@ right connector from last child*/
                                                                                         <img class="thumbnails thumbnails3" src="{% static sss.img %}">
                                                                             </a>
                                                                             <div>
-                                                                                <a class="fam" href="{% if sss.type == 'hybrid' %}{% url 'detail:ancestrytree' sss.pid.pid %}?tab=fam{% else %}{% url 'detail:information' sss.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                                <a class="fam" href="{% if sss.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{sss.pid.pid}}&role={{role}}" style="border:0">
                                                                                     <div>{{sss.pid.abrevname|safe}}<br>{% if sss.year %}{{sss.year}}{% else %}<br>{% endif %}</br></div>
                                                                                 </a>
                                                                                 </div>
                                                                         {% else %}
-                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                                                         {% endif %}
                                                                     </li>
                                                                     <li>
@@ -284,12 +284,12 @@ right connector from last child*/
                                                                                         <img class="thumbnails thumbnails3" src="{% static ssp.img %}">
                                                                             </a>
                                                                             <div>
-                                                                                <a class="fam" href="{% if ssp.type == 'hybrid' %}{% url 'detail:ancestrytree' ssp.pid.pid %}?tab=fam{% else %}{% url 'detail:information' ssp.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                                <a class="fam" href="{% if ssp.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{ssp.pid.pid}}&role={{role}}" style="border:0">
                                                                                     {{ssp.pid.abrevname|safe}}<br>{% if ssp.year %}{{ssp.year}}{% else %}<br>{% endif %}
                                                                                 </a>
                                                                             </div>
                                                                         {% else %}
-                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                                                         {% endif %}
                                                                     </li>
                                                                 </ul>
@@ -301,18 +301,18 @@ right connector from last child*/
                                                                             <img class="thumbnails thumbnails3" src="{% static sp.img %}">
                                                                 </a>
                                                                 <div>
-                                                                    <a class="fam" href="{% if sp.type == 'hybrid' %}{% url 'detail:ancestrytree' sp.pid.pid %}?tab=fam{% else %}{% url 'detail:information' sp.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                    <a class="fam" href="{% if sp.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{sp.pid.pid}}&role={{role}}" style="border:0">
                                                                         {{sp.pid.abrevname|safe}}<br>{% if sp.year %}{{sp.year}}{% else %}<br>{% endif %}
                                                                     </a>
                                                                 </div>
                                                             {% else %}
-                                                                        <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                                                        <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                                             {% endif %}
                                                             {% if sp.type == 'hybrid' %}
                                                                 <ul>
                                                                     <li>
                                                                         {% if sps %}
-                                                                            <a href="{% if sps.type == 'hybrid' %}{% url 'detail:ancestrytree' sps.pid.pid %}?tab=fam{% else %}{% url 'detail:information' sps.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                            <a href="{% if sps.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{sps.pid.pid}}&role={{role}}" style="border:0">
                                                                                         <img class="thumbnails thumbnails3" src="{% static sps.img %}">
                                                                             </a>
                                                                             <div>
@@ -321,7 +321,7 @@ right connector from last child*/
                                                                                 </a>
                                                                             </div>
                                                                         {% else %}
-                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                                                         {% endif %}
                                                                     </li>
                                                                     <li>
@@ -330,12 +330,12 @@ right connector from last child*/
                                                                                         <img class="thumbnails thumbnails3" src="{% static spp.img %}">
                                                                             </a>
                                                                             <div>
-                                                                                <a class="fam" href="{% if spp.type == 'hybrid' %}{% url 'detail:ancestrytree' spp.pid.pid %}?tab=fam{% else %}{% url 'detail:information' spp.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                                <a class="fam" href="{% if spp.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{spp.pid.pid}}&role={{role}}" style="border:0">
                                                                                     {{spp.pid.abrevname|safe}}<br>{% if spp.year %}{{spp.year}}{% else %}<br>{% endif %}
                                                                                 </a>
                                                                             </div>
                                                                         {% else %}
-                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}" style="border:0"/>
+                                                                                    <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                                                                         {% endif %}
                                                                     </li>
                                                                 </ul>
@@ -352,12 +352,12 @@ right connector from last child*/
                                                             <img class="thumbnails thumbnails3" src="{% static p.img %}">
                                                 </a>
                                                 <div>
-                                                    <a class="fam" href="{% if p.type == 'hybrid' %}{% url 'detail:ancestrytree' p.pid.pid %}?tab=fam{% else %}{% url 'detail:information' p.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                    <a class="fam" href="{% if p.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{p.pid.pid}}&role={{role}}" style="border:0">
                                                        {{p.pid.abrevname|safe}}<br>{% if p.pid.year %}{{p.pid.year}}{% else %}<br>{% endif %}
                                                     </a>
                                                 </div>
                                             {% else %}
-                                                        <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage4.jpg' %}"/>
+                                                        <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage_light.jpg' %}"/>
                                             {% endif %}
                                             {% if p.type == 'hybrid' %}
                                                 <ul>
@@ -367,12 +367,12 @@ right connector from last child*/
                                                                         <img class="thumbnails thumbnails3" src="{% static ps.img %}">
                                                             </a>
                                                             <div>
-                                                                <a class="fam" href="{% if ps.type == 'hybrid' %}{% url 'detail:ancestrytree' ps.pid.pid %}?tab=fam{% else %}{% url 'detail:information' ps.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                <a class="fam" href="{% if ps.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{ps.pid.pid}}&role={{role}}" style="border:0">
                                                                     {{ps.pid.abrevname|safe}}<br>{% if ps.year %}{{ps.year}}{% else %}<br>{% endif %}
                                                                 </a>
                                                             </div>
                                                         {% else %}
-                                                                    <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage4.jpg' %}"/>
+                                                                    <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage_light.jpg' %}"/>
                                                         {% endif %}
                                                         {% if ps.type == 'hybrid' %}
                                                             <ul>
@@ -382,12 +382,12 @@ right connector from last child*/
                                                                                     <img class="thumbnails thumbnails3" src="{% static pss.img %}">
                                                                         </a>
                                                                         <div>
-                                                                            <a class="fam" href="{% if pss.type == 'hybrid' %}{% url 'detail:ancestrytree' pss.pid.pid %}?tab=fam{% else %}{% url 'detail:information' pss.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                            <a class="fam" href="{% if pss.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{pss.pid.pid}}&role={{role}}" style="border:0">
                                                                                 {{pss.pid.abrevname|safe}}<br>{% if pss.year %}{{pss.year}}{% else %}<br>{% endif %}
                                                                             </a>
                                                                         </div>
                                                                     {% else %}
-                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}"/>
+                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}"/>
                                                                     {% endif %}
                                                                 </li>
 
@@ -397,12 +397,12 @@ right connector from last child*/
                                                                                     <img class="thumbnails thumbnails3" src="{% static psp.img %}" >
                                                                         </a>
                                                                         <div>
-                                                                            <a class="fam" href="{% if psp.type == 'hybrid' %}{% url 'detail:ancestrytree' psp.pid.pid %}?tab=fam{% else %}{% url 'detail:information' psp.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                            <a class="fam" href="{% if psp.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{psp.pid.pid}}&role={{role}}" style="border:0">
                                                                                 {{psp.pid.abrevname|safe}}<br>{% if psp.year %}{{psp.year}}{% else %}<br>{% endif %}
                                                                             </a>
                                                                         </div>
                                                                     {% else %}
-                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}"/>
+                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}"/>
                                                                     {% endif %}
                                                                 </li>
                                                             </ul>
@@ -415,12 +415,12 @@ right connector from last child*/
                                                                         <img class="thumbnails thumbnails3" src="{% static pp.img %}">
                                                             </a>
                                                             <div>
-                                                                <a class="fam" href="{% if pp.type == 'hybrid' %}{% url 'detail:ancestrytree' pp.pid.pid %}?tab=fam{% else %}{% url 'detail:information' pp.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                <a class="fam" href="{% if pp.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{pp.pid.pid}}&role={{role}}" style="border:0">
                                                                     {{pp.pid.abrevname|safe}}<br>{% if pp.year %}{{pp.year}}{% else %}<br>{% endif %}
                                                                 </a>
                                                             </div>
                                                         {% else %}
-                                                                    <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage4.jpg' %}"/>
+                                                                    <img class="thumbnails thumbnails3"  src="{% static 'utils/images/noimage_light.jpg' %}"/>
                                                         {% endif %}
                                                         {% if pp.type == 'hybrid' %}
                                                             <ul>
@@ -430,12 +430,12 @@ right connector from last child*/
                                                                                     <img class="thumbnails thumbnails3" src="{% static pps.img %}">
                                                                         </a>
                                                                         <div>
-                                                                            <a class="fam" href="{% if pps.type == 'hybrid' %}{% url 'detail:ancestrytree' pps.pid.pid %}?tab=fam{% else %}{% url 'detail:information' pps.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                            <a class="fam" href="{% if pps.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{pps.pid.pid}}&role={{role}}" style="border:0">
                                                                                 {{pps.pid.abrevname|safe}}<br>{% if pss.year %}{{pps.year}}{% else %}<br>{% endif %}
                                                                             </a>
                                                                         </div>
                                                                     {% else %}
-                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}"/>
+                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}"/>
                                                                     {% endif %}
                                                                 </li>
 
@@ -445,12 +445,12 @@ right connector from last child*/
                                                                                     <img class="thumbnails thumbnails3" src="{% static ppp.img %}" >
                                                                         </a>
                                                                         <div>
-                                                                            <a class="fam" href="{% if ppp.type == 'hybrid' %}{% url 'detail:ancestrytree' ppp.pid.pid %}?tab=fam{% else %}{% url 'detail:information' ppp.pid.pid %}?tab=sum{% endif %}" style="border:0">
+                                                                            <a class="fam" href="{% if ppp.type == 'hybrid' %}{% url 'detail:ancestrytree' %}{% else %}{% url 'detail:information' %}{% endif %}?pid={{ppp.pid.pid}}&role={{role}}" style="border:0">
                                                                                 {{ppp.pid.abrevname|safe}}<br>{% if ppp.year %}{{ppp.year}}{% else %}<br>{% endif %}
                                                                             </a>
                                                                         </div>
                                                                     {% else %}
-                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage4.jpg' %}"/>
+                                                                                <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}"/>
                                                                     {% endif %}
                                                                 </li>
                                                             </ul>

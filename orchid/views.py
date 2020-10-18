@@ -29,7 +29,7 @@ def family_tree (request,pid):
     if 'gen' in request.GET:
         gen = request.GET['gen']
 
-    send_url = '/detail/ancestor/' + str(pid) + '/?gen=gen&tab=anc&role=pub&state=show'
+    send_url = '/detail/ancestrytree/?pid=' + str(pid) + '&role=pub'
     return HttpResponseRedirect(send_url)
 
 
@@ -49,13 +49,12 @@ def search_match(request):
 
 # Detail
 def species(request, pid):
-    send_url = '/detail/' + str(pid) + '/species/?tab=sum'
+    send_url = '/detail/information/?pid=' + str(pid) + '&role=pub'
     return HttpResponseRedirect(send_url)
 
 
 def hybrids(request, pid):
-    send_url = '/detail/' + str(pid) + '/hybrid/?tab=sum'
-    # print("send url = ",send_url)
+    send_url = '/detail/information/?pid=' + str(pid) + '&role=pub'
     return HttpResponseRedirect(send_url)
 
 
@@ -63,7 +62,7 @@ def progeny(request):
     pid = ''
     if 'pid' in request.GET:
         pid = request.GET['pid']
-    send_url = '/detail/progeny/' + str(pid) + '/?tab=pro&role=pub'
+    send_url = '/orchidlist/progeny/' + str(pid) + '/?role=pub'
     return HttpResponseRedirect(send_url)
 
 def ancestor(request):
@@ -71,7 +70,7 @@ def ancestor(request):
     if 'pid' in request.GET:
         pid = request.GET['pid']
     if pid:
-        send_url = '/detail/ancestor/' + str(pid) + '/?tab=anc&role=pub'
+        send_url = '/detail/ancestor/?pid=' + str(pid) + '&role=pub'
     else:
         send_url = '/detail/ancestor/?tab=anc&role=pub'
     return HttpResponseRedirect(send_url)

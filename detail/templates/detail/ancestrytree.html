@@ -2,6 +2,7 @@
 {% include "base.html" %}
 {% include "detail/detail-title.html" %}
 {% block body %}
+
 <style>
 
 .border-lb {
@@ -29,10 +30,6 @@
 .btn-tree {
     text-decoration: none;
 }
-</style>
-
-
-<style>
 
 /*Style for tree*/
 .container-tree {
@@ -216,14 +213,13 @@ right connector from last child*/
     <br>
     {% include 'detail/detail-nav.html' %}
     <div class="tab-content clearfix" style="min-width:2000px;overflow-x:auto;padding:0;background-color:white; margin:0 auto;;border-left:1px solid lightgrey;border-right:1px solid lightgrey;border-bottom:1px solid lightgrey;">
-
-    {% if species.type == 'hybrid' %}
-        <div class="container-tree" style="border:0 solid blue;">
-            <h5><span style=" margin-left:100px;">Family Tree</span></h5>
+        {% if species.type == 'hybrid' %}
+        <div class="card m-2">
+            <div class="card-header"><h5><span style=" margin-left:100px;">Family Tree</span></h5></div>
             <br>
             <div class="card-body" style="margin:0; text-align:center">
 
-<!--        Tree here-->
+    <!--        Tree here-->
                 <div class="tree" style="margin: 0; padding:0;">
                         <div style="margin: 0 auto;">
                             <ul style="display:inline-block;float:left;padding:0;margin:0;">
@@ -468,13 +464,10 @@ right connector from last child*/
             </div>
         </div>
         <div style="clear:left"></div>
-
+        {% else %}
+            <h6>{{species.name|safe}} is not a hybrid</h6>
+        {% endif %}   <!--    If it is a hybrid-->
     </div>
-    {% else %}
-    <div style="margin:20px 0 20px 20px;">
-    <h6>{{species.name|safe}} is not a hybrid</h6>
-    </div>
-    {% endif %}   <!--    If it is a hybrid-->
 </div>
 {% endblock %}
 

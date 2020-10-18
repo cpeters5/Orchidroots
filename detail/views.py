@@ -480,188 +480,6 @@ def compare(request):
     return render(request, 'detail/compare.html', context)
 
 
-def xcompare(request):
-    if 'role' in request.GET:
-        role = request.GET['role']
-    logger.error("1. >> role = " + role)
-    print("1.1 >> role = " + role)
-
-    # TODO:  Use Species form instead
-    (pid,pid1,species1,genus1,infraspr1,infraspe1,author1,year1,spc1,gen1)  = ('','','','','','','','','','')
-    (pid2,species2,genus2,infraspr2,infraspe2,author2,year2,spc2,gen2)      = ('','','','','','','','','')
-
-    if 'pid' in request.GET:
-        pid = request.GET['pid']
-        if pid:
-            try:
-                species1 = Species.objects.get(pk=pid)
-                pid1 = species1.pid
-                genus1 = species1.genus
-            except Species.DoesNotExist:
-                species1 = ''
-                pid1 = ''
-
-    # Should use SpcForm instead.
-    if not species1:
-        if 'species1' in request.GET:
-            spc1 = request.GET['species1']
-            spc1 = spc1.strip()
-        if 'genus1' in request.GET:
-            gen1 = request.GET['genus1']
-            gen1 = gen1.strip()
-        if 'infraspe1' in request.GET:
-            infraspe1 = request.GET['infraspe1']
-            infraspe1 = infraspe1.strip()
-        if 'infraspr1' in request.GET:
-            infraspr1 = request.GET['infraspr1']
-            infraspr1 = infraspr1.strip()
-        if 'author1' in request.GET:
-            author1 = request.GET['author1']
-            author1 = author1.strip()
-        if 'year1' in request.GET:
-            year1 = request.GET['year1']
-            year1 = year1.strip()
-            if year1:
-                year1 = int(year1)
-        if gen1:
-            try:
-                genus1 = Genus.objects.get(genus__iexact=gen1)
-            except Genus.DoesNotExist:
-                message = "The first genus, " + gen1 + ' does not exist'
-                # send_url += '&message=' + message + '&genus2=' + gen2 + '&species2=' + spc2 + '&infraspr2=' + infraspr2 + '&infraspe2=' + infraspe2
-                # return HttpResponseRedirect(send_url)
-                # return HttpResponse("\"" + gen1 + "\" genus does not exist. Please enter a valid genus.")
-            #
-            # message = "The first species, " + gen1 + " " + spc1
-            # if infraspe1:
-            #     message += "  " + infraspr1 + " " + infraspe1
-            species1 = Species.objects.filter(species__iexact=spc1).filter(genus__iexact=gen1)
-            if (infraspe1 and infraspr1):
-                species1 = species1.filter(infraspe__icontains=infraspe1).filter(infraspr__icontains=infraspr1)
-            else:
-                # There may be synonym wiht duplicate name
-                species1 = species1.filter(infraspe__isnull=True).filter(infraspr__isnull=True)
-            if year1:
-                species1 = species1.filter(year=year1)
-
-            # if not species1:
-            #     message += ' does not exist'
-            #     send_url += '&message=' + message + '&genus2=' + gen2 + '&species2=' + spc2 + '&infraspr2=' + infraspr2 + '&infraspe2=' + infraspe2
-            #     return HttpResponseRedirect(send_url)
-            # elif species1.count() > 1:
-            #     species1 = species1.exclude(status='synonym')
-            #     if len(species1) > 1:
-            #         message += " is not unique"
-            #         send_url += '&message=' + message + '&genus2=' + gen2 + '&species2=' + spc2 + '&infraspr2=' + infraspr2 + '&infraspe2=' + infraspe2
-            #         return HttpResponseRedirect(send_url)
-            # else:
-            if not species1:
-                species1 = ''
-                pid1 = ''
-            else:
-                species1 = species1[0]
-                pid1 = species1.pid
-
-    if 'species2' in request.GET:
-        spc2 = request.GET['species2']
-        spc2 = spc2.strip()
-    if 'genus2' in request.GET:
-        gen2 = request.GET['genus2']
-        gen2 = gen2.strip()
-    if 'infraspe2' in request.GET:
-        infraspe2 = request.GET['infraspe2']
-        infraspe2 = infraspe2.strip()
-    if 'infraspr2' in request.GET:
-        infraspr2 = request.GET['infraspr2']
-        infraspr2 = infraspr2.strip()
-    if 'author2' in request.GET:
-        author2 = request.GET['author2']
-        author2 = author2.strip()
-    if 'year2' in request.GET:
-        year2 = request.GET['year2']
-        if year2:
-            year2 = year2.strip()
-
-    # send_url = '/detail/compare/?pid=' + str(pid1)
-    # if not species1 and not species2:
-    #     return HttpResponseRedirect(send_url)
-
-
-    if gen2:
-        try:
-            genus2 = Genus.objects.get(genus__iexact=gen2)
-        except Genus.DoesNotExist:
-            genus2 = ''
-
-        if not genus2:
-            message = "The second genus " + gen2 + ' does not exist'
-        else:
-            species2 = Species.objects.filter(species__iexact=spc2).filter(genus__iexact=gen2)
-            if (infraspe2 and infraspr2):
-                species2 = species2.filter(infraspe__icontains=infraspe2).filter(infraspr__icontains=infraspr2)
-            else:
-                species2 = species2.filter(infraspe__isnull=True).filter(infraspr__isnull=True)
-            if year2:
-                species2 = species2.filter(year=year2)
-            if species2.count() > 1:
-                species2 = species2.exclude(status='synonym')
-            if len(species2) > 1:
-                species2 = ''
-            elif not species2:
-                species2 = ''
-            else:
-                species2 = species2[0]
-                pid2 = species2.pid
-    else:
-        # The second species was not requested
-        pid2 = ''
-
-    cross = ''
-    spcimg1_list = []
-    spcimg2_list = []
-    tab = 'sbs'
-    if species1 and species1.status == 'synonym':
-        pid1 = species1.getAcc()
-    if species2 and species2.status == 'synonym':
-        pid2 = species2.getAcc()
-
-    if pid1 and pid2:
-        try:
-            cross = Hybrid.objects.filter(seed_id=pid1).filter(pollen_id=pid2)
-        except Hybrid.DoesNotExist:
-            try:
-                cross = Hybrid.objects.filter(seed_id=pid2).filter(pollen_id=pid1)
-            except Hybrid.DoesNotExist:
-                cross = ''
-        if cross:
-            cross = cross[0]
-
-    if species1:
-        if species1.type == 'species':
-            spcimg1_list = SpcImages.objects.filter(pid=pid1).filter(rank__lt=7).order_by('-rank','quality', '?')[0:2]
-        else:
-            spcimg1_list = HybImages.objects.filter(pid=pid1).filter(rank__lt=7).order_by('-rank','quality', '?')[0:2]
-
-    if species2:
-        if species2.type == 'species':
-            spcimg2_list = SpcImages.objects.filter(pid=pid2).filter(rank__lt=7).order_by('-rank','quality', '?')[0:2]
-        else:
-            spcimg2_list = HybImages.objects.filter(pid=pid2).filter(rank__lt=7).order_by('-rank','quality', '?')[0:2]
-
-    message = ''
-    if 'message' in request.GET:
-        message = request.GET['message']
-    role = 'pub'
-
-    logger.error("detail/compare     " + str(request.user) + " " + role + " - " + species1 + " vs "+species2)
-    context = {
-                'pid1':pid1,'genus1':genus1,'species1':species1, 'infraspr1':infraspr1,'infraspe1':infraspe1,'spcimg1_list':spcimg1_list,
-                'pid2':pid2,'genus2':genus2,'species2':species2, 'infraspr2':infraspr2,'infraspe2':infraspe2,'spcimg2_list':spcimg2_list,
-                'cross':cross,
-                'message':message,
-                'title':'compare','tab':'sbs', 'sbs':'active','role':role}
-    return render(request, 'detail/compare.html', context)
-
 # Curator only - role = cur
 @login_required
 def rank_update (request, species):
@@ -1223,7 +1041,7 @@ def information(request, pid=None):
         if img:
             x.img = img.image_file
 
-    context = {'pid': species.pid, 'species': species, 'synonym_list': synonym_list,
+    context = {'pid': species.pid, 'species': species, 'synonym_list': synonym_list,'accepted':accepted,
                'title': 'information', 'tax':'active','q':species.name,
                'type':'species', 'genus':genus,
                'display_items':display_items,
@@ -1543,7 +1361,7 @@ def photos(request,pid=None):
     if public_list:
         if var == "alba":
             public_list = public_list.exclude(variation__icontains="semi")
-        public_list = public_list.order_by('-rank','-quality','?')
+        public_list = public_list.order_by('-rank','quality','?')
         if private_list:
             private_list = private_list.order_by('created_date')
 

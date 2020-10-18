@@ -346,47 +346,47 @@ seedparent, pollparent {
                         <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?type=species&genus={{species.genus}}&role={{role}}">list</a>&nbsp;&nbsp;|
                         &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
 
-                    {% if species.accepted.subgenus %}
+                    {% if accepted.subgenus %}
                         <br><b>Subgenus:</b>
-                        {{species.accepted.subgenus}}:
-                            <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                            &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                        {{accepted.subgenus}}:
+                            <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                            &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{accepted.subgenus}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                     {% endif %}
 
-                    {% if species.accepted.section %}
+                    {% if accepted.section %}
                         <br><b>Section:</b>
-                            {{species.accepted.section}}:
-                                {% if species.accepted.subgenus %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                            {{accepted.section}}:
+                                {% if accepted.subgenus %}
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{accepted.subgenus}}&section={{accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{accepted.subgenus}}&section={{accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{accepted.section}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{accepted.section}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 
-                    {% if species.accepted.subsection %}
+                    {% if accepted.subsection %}
                         <br><b>Subsection:</b>
-                                {{species.accepted.subsection}}:
-                                {% if species.accepted.subgenus %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                                {{accepted.subsection}}:
+                                {% if accepted.subgenus %}
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?subgenus={{accepted.subgenus}}&section={{accepted.section}}&subsection={{accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?subgenus={{accepted.subgenus}}&section={{accepted.section}}&subsection={{accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&subsection={{species.accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{accepted.section}}&subsection={{accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{accepted.section}}&subsection={{accepted.subsection}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 
-                    {% if species.accepted.series %}
+                    {% if accepted.series %}
                         <br><b>Series:</b>
-                                {{species.accepted.series}}
-                                {% if species.accepted.section %}
+                                {{accepted.series}}
+                                {% if accepted.section %}
 
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?section={{accepted.section}}&series={{accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?section={{accepted.section}}&series={{accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% else %}
-                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
-                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
+                                    <br>&nbsp;&nbsp;<a href="{% url 'orchidlist:species' %}?series={{accepted.series}}&genus={{species.genus}}&type=species&role={{role}}">list</a>&nbsp;&nbsp;|
+                                    &nbsp;&nbsp;<a href="{% url 'orchidlist:browse' %}?series={{accepted.series}}&genus={{species.genus}}&type=species&role={{role}}&display=checked">images</a>
                                 {% endif %}
                     {% endif %}
 <!--                <hr>-->
@@ -433,23 +433,23 @@ seedparent, pollparent {
                     </div>
                     {% endif %}
 
-                    {% if species.accepted.description %}
+                    {% if accepted.description %}
                     <div class="card">
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Description">Description</button>
                         <div id="Description" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                            {{species.accepted.description|safe}}
+                            {{accepted.description|safe}}
                             </div>
                         </div>
                     </div>
                     {% endif %}
 
-                    {% if species.accepted.comment %}
+                    {% if accepted.comment %}
                     <div class="card">
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Comments">Comments</button>
                         <div id="Comments" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                            {{species.accepted.comment|safe}}
+                            {{accepted.comment|safe}}
                             </div>
                         </div>
                     </div>
@@ -460,38 +460,38 @@ seedparent, pollparent {
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Culture">Culture</button>
                         <div id="Culture" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                            {{species.accepted.culture|safe}}
+                            {{accepted.culture|safe}}
                             </div>
                         </div>
                     </div>
                     {% endif %}
 
-                    {% if species.accepted.common_name or species.accepted.local_name or species.accepted.altitude or species.accepted.bloom_month or species.accepted.history or species.accepted.etymology %}
+                    {% if accepted.common_name or accepted.local_name or accepted.altitude or accepted.bloom_month or accepted.history or accepted.etymology %}
                     <div class="card">
                         <button type="button" class="btn btn-light btn-xs info-collapse" data-toggle="collapse" data-target="#Information">Misc. Information</button>
                         <div id="Information" class="collapse" data-parent="#accordion">
                             <div class="card-body">
-                                {% if species.accepted.common_name or species.accepted.local_name or species.accepted.altitude or species.accepted.bloom_month or species.accepted.history or species.accepted.etymology %}
-                                    {% if species.accepted.common_name or species.accepted.local_name %}
+                                {% if accepted.common_name or accepted.local_name or accepted.altitude or accepted.bloom_month or accepted.history or accepted.etymology %}
+                                    {% if accepted.common_name or accepted.local_name %}
                                        Common Name:
-                                        {% if species.accepted.common_name %}{{species.accepted.common_name}},{% endif %}
-                                        {% if species.accepted.local_name %}{{species.accepted.local_name}}{% endif %}
+                                        {% if accepted.common_name %}{{accepted.common_name}},{% endif %}
+                                        {% if accepted.local_name %}{{accepted.local_name}}{% endif %}
                                     {% endif %}
-                                    {% if species.accepted.altitude %}
+                                    {% if accepted.altitude %}
                                         <b>Altitude:</b>
-                                        {{species.accepted.altitude|safe}}
+                                        {{accepted.altitude|safe}}
                                     {% endif %}
-                                    {% if species.accepted.bloom_month %}
+                                    {% if accepted.bloom_month %}
                                         <b>bloom_month:</b>
-                                        {{species.accepted.bloom_month|safe}}
+                                        {{accepted.bloom_month|safe}}
                                     {% endif %}
-                                    {% if species.accepted.history %}
+                                    {% if accepted.history %}
                                         <b>History</b>
-                                        {{species.accepted.history|safe}}
+                                        {{accepted.history|safe}}
                                     {% endif %}
-                                    {% if species.accepted.etymology %}
+                                    {% if accepted.etymology %}
                                         <b>Etymology</b>
-                                        {{species.accepted.etymology|safe}}
+                                        {{accepted.etymology|safe}}
                                     {% endif %}
                                 {% else %}
                                     None

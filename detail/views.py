@@ -233,8 +233,7 @@ def compare(request):
             pid = species.pid
             genus = species.genus
         except Species.DoesNotExist:
-            species1 = ''
-            pid1 = ''
+            return HttpResponse("Bad request!")
         logger.error("229 pid = " + str(pid))
 
     # Handfle request. Should use SpcForm instead.
@@ -447,16 +446,12 @@ def compare(request):
 
     if pid1 and pid2:
         cross = Hybrid.objects.filter(seed_id=pid1).filter(pollen_id=pid2)
-        print("1 >>> cross = ", len(cross))
         if not cross:
             cross = Hybrid.objects.filter(seed_id=pid2).filter(pollen_id=pid1)
-            print("2 >>> cross = ", len(cross))
         if cross:
             cross = cross[0]
-            print("3 >>> cross = ", cross)
         else:
             cross = ''
-            print("4 >>> cross = ", cross)
 
     if species1:
         if species1.type == 'species':
@@ -689,8 +684,6 @@ def rank_update (request, species):
                     image = HybImages.objects.get(pk=id)
                 except HybImages.DoesNotExist:
                     return 0
-            if image.image_file:
-                logger.error("2. >>> hyb image = " + image.image_file)
             image.rank = rank
             image.save()
     return rank
@@ -698,26 +691,25 @@ def rank_update (request, species):
 
 @login_required
 def quality_update (request, species):
-    if request.user.is_authenticated:
-        if request.user.tier.tier > 2 and 'quality' in request.GET:
-            quality = request.GET['quality']
-            quality = int(quality)
-            if 'id' in request.GET:
-                id = request.GET['id']
-                id = int(id)
-                image = ''
-                if species.type == 'species':
-                    try:
-                        image = SpcImages.objects.get(pk=id)
-                    except SpcImages.DoesNotExist:
-                        return 3
-                elif species.type == 'hybrid':
-                    try:
-                        image = HybImages.objects.get(pk=id)
-                    except HybImages.DoesNotExist:
-                        return 3
-                image.quality = quality
-                image.save()
+    if request.user.tier.tier > 2 and 'quality' in request.GET:
+        quality = request.GET['quality']
+        quality = int(quality)
+        if 'id' in request.GET:
+            id = request.GET['id']
+            id = int(id)
+            image = ''
+            if species.type == 'species':
+                try:
+                    image = SpcImages.objects.get(pk=id)
+                except SpcImages.DoesNotExist:
+                    return 3
+            elif species.type == 'hybrid':
+                try:
+                    image = HybImages.objects.get(pk=id)
+                except HybImages.DoesNotExist:
+                    return 3
+            image.quality = quality
+            image.save()
     # return quality
 
 
@@ -1518,7 +1510,7 @@ def photos(request,pid=None):
             upload_list = upload_list.filter(author=author)
 
     rank_update (request,species)
-    # quality_update (request,species)
+    quality_update (request,species)
     # Handle Variety filter
     if 'variety' in request.GET:
         variety = request.GET['variety']

@@ -45,6 +45,10 @@ urlpatterns = [
     path('documents/', include('documents.urls')),
     path('donation/', include('donation.urls')),
 
+    # old
+    path('natural/', include('natural.urls')),
+    path('orchid/', include('orchid.urls')),
+
     # path('sendmail/', include('sendmail.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

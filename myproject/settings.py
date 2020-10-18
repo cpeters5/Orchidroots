@@ -84,10 +84,12 @@ INSTALLED_APPS = [
     # Experiment
     # 'django_mailbox',
     # 'sendmail',
+
+    # old
     # 'genera',
-    # 'orchid',
+    'orchid',
     # 'orchidlite',
-    # 'natural',
+    'natural',
 
     # Third Party
     'allauth',

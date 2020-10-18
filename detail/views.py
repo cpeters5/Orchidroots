@@ -873,7 +873,7 @@ def comment(request):
             #comm.species = species
             comm.memo = request.POST['memo']
             comm.reason = request.POST['reason']
-            send_url = '/detail/' + str(species.pid) + "/" + species.type + "/?tab=sum"
+            send_url = '/detail/' + str(species.pid) + "/" + species.type
             if len(comm.memo.lstrip(digits).strip()) == 0:
                 return HttpResponseRedirect(send_url)
 
@@ -1083,7 +1083,7 @@ def comments(request):
         memo = com.memo
         if len(memo) > 80:
             memo = memo[0:80] + '...'
-        send_url = '/detail/' + str(spc.pid) + '/' + spc.type + "_detail/?tab=comm"
+        send_url = '/detail/' + str(spc.pid) + '/' + spc.type + "_detail"
 
         item = [spc,date,memo,send_url]
         comment_list.append(item)

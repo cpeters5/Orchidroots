@@ -190,6 +190,39 @@ img{
     /*background-color:lightgrey;*/
 }
 
+.alphalist {
+    font-size:11px;
+    padding:2px 6px;
+    margin-top: 5px;
+    margin-block-end: 2px;
+}
+.alphalist a{
+    padding:2px 6px;
+    margin: 0;
+}
+.alphalist a.hover {
+    background-color: #f5f9f9;
+}
+
+.alphalist a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.alphalist ul {
+    margin: 0;
+    padding: 0 !important;
+    list-style-type: none;
+    list-style-image: none;
+}
+
+.alphalist li
+{
+    float: left;
+    display:inline-block;
+    /*margin: 20px 0;*/
+}
+
 </style>
 
 <div class="container justify-content-left align-items-center" style="display:block; clear:left; margin: 0 auto; width: 98%; text-align:left">
@@ -198,7 +231,7 @@ img{
     <div class="card m-2">
         <div class="card-header">
             {% if genus %} <span style="color:green; font-size:24px;"><b>Genus <i>{{genus|title}}</i></b></span>{% else %}Select a Genus{% endif %}
-            <form action="{% url 'orchidlist:browse' %}" autocomplete="off" style="display:inline-block">
+            <form action="?" autocomplete="off" style="display:inline-block">
                 <input type="hidden" name="role" value="{{ role }}" />
                 <input type="hidden" name="type" value="species" />
                 <input type="hidden" name="display" value="checked" />
@@ -215,10 +248,10 @@ img{
             <input type="hidden" name="role" value="{{role}}" />
             <input type="hidden" name="alpha" value="{{alpha}}" />
             <input type="hidden" name="page" value="{{page}}" />
-            <input type="hidden" name="subgenus" value="{{subgenus}}" />
-            <input type="hidden" name="section" value="{{section}}" />
-            <input type="hidden" name="subsection" value="{{subsection}}" />
-            <input type="hidden" name="series" value="{{series}}" />
+            <input type="hidden" name="subgenus" value="{{subgenus_obj.subgenus}}" />
+            <input type="hidden" name="section" value="{{section_obj.section}}" />
+            <input type="hidden" name="subsection" value="{{subsection_obj.subsection}}" />
+            <input type="hidden" name="series" value="{{series_obj.series}}" />
             <input type="hidden" name="genus" value="{{genus}}" />
             {% if display %}
             <input type="checkbox" class="form-check-input" name="display" value="checked" checked onchange="this.form.submit()" style="margin-left:5px;"> <span style="margin-left:30px;font-size:13px;">Show images only?</span>
@@ -244,10 +277,10 @@ img{
                         {% if subgenus_obj %}{{subgenus_obj.subgenus}}{% else %}Subgenus{% endif %}
                     </button>
                     <ul class="dropdown-menu scrollable-menu">
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&display={{display}}">Clear Subgenus</a>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&type=species&display={{display}}">Clear Subgenus</a>
                         </li>
                         {% for subgenus in subgenus_list %}
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus.subgenus}}&section=&subsection=&series=&type={{type}}&display={{display}}">{{subgenus.subgenus}}</a></li>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus.subgenus}}&type={{type}}&display={{display}}">{{subgenus.subgenus}}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -258,9 +291,9 @@ img{
                         {% if section_obj %}{{section_obj.section}}{% else %}Section{% endif %}
                     </button>
                     <ul class="dropdown-menu scrollable-menu">
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section=&subsection=&series=&type=species&display={{display}}">Clear Section</a>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&type=species&display={{display}}">Clear Section</a>
                         {% for section in section_list %}
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section.section}}&subsection=&series=&type={{type}}&display={{display}}">{{section.section}}</a></li>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section.section}}&type={{type}}&display={{display}}">{{section.section}}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -271,9 +304,9 @@ img{
                         {% if subsection_obj %}{{subsection_obj.subsection}}{% else %}Subsection{% endif %}
                     </button>
                     <ul class="dropdown-menu scrollable-menu">
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection=&series=&type=species&display={{display}}">Clear Subsection</a>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&type=species&display={{display}}">Clear Subsection</a>
                         {% for subsection in subsection_list %}
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection.subsection}}&series=&type=species&display={{display}}">{{subsection.subsection}}</a></li>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection.subsection}}&type=species&display={{display}}">{{subsection.subsection}}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -284,9 +317,9 @@ img{
                         {% if series_obj %}<span style="color:black">{{series_obj.series}}</span>{% else %}Series{% endif %}
                     </button>
                     <ul class="dropdown-menu scrollable-menu">
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series=&type=species&display={{display}}">clear Series</a>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&type=species&display={{display}}">clear Series</a>
                         {% for series in series_list %}
-                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&subgenus=&section=&subsection=&series={{series.series}}&type=species&display={{display}}">{{series.series}}</a></li>
+                        <li class="dropdown-item"><a href="?genus={{genus}}&alpha={{ alpha }}&series={{series.series}}&type=species&display={{display}}">{{series.series}}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -297,7 +330,26 @@ img{
     <!-- Display -->
     <div class="card m-2">
         <div class="container justify-content-left align-items-center" style="margin:0 auto; padding:0; text-align: left;">
-            {% include "orchidlist/alpha_list.html" %}
+
+            <ul class="alphalist text-n" style="display:inline-block !important">
+                    <!--Alphabetical-->
+                        {% for opt in alpha_list %}
+                            {% if alpha == opt %}
+                                <li class="page-item active"><a class="page-link" {% if opt == alpha %} class="active" {% endif %} href="#" >{{opt}}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" {% if opt == alpha %} class="active" {% endif %} href="?alpha={{opt}}&prev_alpha={{alpha}}&role={{role}}&type={{type}}&genus={{genus}}&display={{display}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}" >{{opt}}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if not alpha or alpha == "ALL" %}
+                <li class="page-item active"><a class="page-link" href="#">All </a></li>
+                        {% else %}
+                <li class="page-item"><a class="page-link" href="?alpha=ALL&prev_alpha={{alpha}}&role={{role}}&type={{type}}&genus={{genus}}&genustype={{genustype}}&gen={{genus.pid}}&display={{display}}">All </a></li>
+                        {% endif %}
+            </ul>
+
+
+
+
             {% if page_list %}
                 <div class="container justify-content-left align-items-center" style="margin:0 auto; padding:0; text-align: left;">
                     {% if last_page > 1 %}

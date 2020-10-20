@@ -221,10 +221,10 @@ def compare(request):
     # Initial species
     if 'pid' in request.GET:
         pid = request.GET['pid']
-        logger.error("229 pid = " + str(pid))
+        # logger.error("229 pid = " + str(pid))
         if pid:
             pid = int(pid)
-            logger.error("229 pid = " + str(pid))
+            # logger.error("229 pid = " + str(pid))
     else:
         return HttpResponse("Bad request!")
     if pid > 0:
@@ -234,7 +234,10 @@ def compare(request):
             genus = species.genus
         except Species.DoesNotExist:
             return HttpResponse("Bad request!")
-        logger.error("229 pid = " + str(pid))
+    else:
+        return HttpResponse("Bad request!")
+
+        # logger.error("229 pid = " + str(pid))
 
     # Handfle request. Should use SpcForm instead.
     if 'species1' in request.GET:
@@ -919,15 +922,15 @@ def information(request, pid=None):
     # -- NEW Detail page of a given species
     distribution_list = ()
     ps_list=pp_list=ss_list=sp_list=seedimg_list=pollimg_list=()
-    pid = ''
+    # pid = ''
     role = 'pub'
     if request.user.is_authenticated:
         if 'role' in request.GET:
             role = request.GET['role']
-    if 'pid' in request.GET:
+    if not pid and  'pid' in request.GET:
         pid = request.GET['pid']
-    if not pid:
-        pid = 0
+        if not pid or pid == '' or pid == '0':
+            return HttpResponse(redirect_message)
     try:
         species = Species.objects.get(pk=pid)
         genus = species.gen
@@ -977,7 +980,7 @@ def information(request, pid=None):
             elif x.rank == 7 and i_7 <= 2:
                 i_7 += 1
                 display_items.append(x)
-            elif x.rank == 8 and i_8 <= 2:
+            elif x.rank == 8 and i_8 < 2:
                 i_8 += 1
                 display_items.append(x)
     seed_list = Hybrid.objects.filter(seed_id=species.pid).order_by('pollen_genus', 'pollen_species')
@@ -1279,7 +1282,7 @@ def photos(request,pid=None):
         role = request.GET['role']
     elif 'role' in request.POST:
         role = request.POST['role']
-    logger.error("1573: role = " + role)
+    # logger.error("1573: role = " + role)
 
     if species.status == 'synonym':
         synonym = Synonym.objects.get(pk=pid)

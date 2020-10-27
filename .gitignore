@@ -13,3 +13,6 @@ src/
 myproject/.env
 myproject.sock
 base.html
+*_test*
+*-test*
+

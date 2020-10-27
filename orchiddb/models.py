@@ -36,8 +36,8 @@ class Publisher(models.Model):
     url = models.CharField(max_length=200, blank=True)
     web = models.CharField(max_length=200, blank=True)
     status = models.CharField(max_length=10, default='TBD')
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
     expertise = models.CharField(max_length=500, null=True)
 
     @property
@@ -52,8 +52,8 @@ class Family(models.Model):
     author = models.CharField(max_length=200, blank=True)
     year = models.IntegerField(null=True)
     description = models.TextField(null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.family
@@ -67,8 +67,8 @@ class Subfamily(models.Model):
     author = models.CharField(max_length=200, blank=True)
     year = models.IntegerField(null=True)
     description = models.TextField(null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.subfamily
@@ -83,8 +83,8 @@ class Tribe(models.Model):
     subfamily = models.ForeignKey(Subfamily, null=True, default='', db_column='subfamily',on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=50, null=True)
     description = models.TextField(null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.tribe
@@ -94,14 +94,14 @@ class Tribe(models.Model):
 
 class Subtribe(models.Model):
     subtribe = models.CharField(max_length=50,primary_key=True, default='', db_column='subtribe')
-    author = models.CharField(max_length=200, blank=True)
+    author = models.CharField(max_length=200, null=True, blank=True)
     year = models.IntegerField(null=True)
     subfamily = models.ForeignKey(Subfamily, null=True, default='', db_column='subfamily',on_delete=models.DO_NOTHING)
     tribe  = models.ForeignKey(Tribe, null=True, default='', db_column='tribe',on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=50, null=True)
     description = models.TextField(null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.subtribe
@@ -143,8 +143,8 @@ class Genus(models.Model):
     num_hyb_with_image = models.IntegerField(null=True,default=0)
     pct_hyb_with_image = models.DecimalField(decimal_places=2, max_digits=7,null=True,default=0)
     notepad = models.CharField(max_length=500, default='')
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.genus
@@ -251,8 +251,8 @@ class Genusacc(models.Model):
     num_hyb_with_image = models.IntegerField(null=True, blank=True)
     pct_hyb_with_image = models.DecimalField(decimal_places=2, max_digits=7,null=True, blank=True)
     notepad = models.CharField(max_length=500, default='')
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.pid
@@ -326,8 +326,8 @@ class Genussyn(models.Model):
     source = models.CharField(max_length=50, default='')
     abrev = models.CharField(max_length=50, default='')
     year = models.IntegerField(null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.genus
@@ -348,8 +348,8 @@ class Gensyn(models.Model):
     source = models.CharField(max_length=50, default='')
     abrev = models.CharField(max_length=50, default='')
     acc = models.ForeignKey(Genus, verbose_name='genus', related_name='gen_id', null=True,on_delete=models.CASCADE)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.pid
@@ -371,8 +371,8 @@ class Subgenus(models.Model):
     gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.CASCADE)
     genus = models.CharField(max_length=50, null=True)
     source = models.CharField(max_length=50, null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.subgenus
@@ -393,8 +393,8 @@ class Section(models.Model):
     gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.CASCADE)
     genus = models.CharField(max_length=50, null=True)
     source = models.CharField(max_length=50, null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.section
@@ -417,8 +417,8 @@ class Subsection(models.Model):
     gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.DO_NOTHING)
     genus = models.CharField(max_length=50)
     source = models.CharField(max_length=50,null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.subsection
@@ -441,8 +441,8 @@ class Series(models.Model):
     gen         = models.ForeignKey(Genus, null=True, db_column='gen',on_delete=models.DO_NOTHING)
     genus = models.CharField(max_length=50, null=True)
     source = models.CharField(max_length=50, null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.series
@@ -471,8 +471,8 @@ class Alliance(models.Model):
     gen = models.ForeignKey(Genus, db_column='gen', related_name='algen', null=True, blank=True,on_delete=models.CASCADE)
     alliance = models.CharField(max_length=50)
     type = models.CharField(max_length=10)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.alliance
@@ -492,8 +492,8 @@ class Infragen (models.Model):
     year     = models.IntegerField(null=True)
     source   = models.CharField(max_length=50,null=True)
     description = models.TextField(null=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
 
 class Infragenrelation (models.Model):
@@ -501,8 +501,8 @@ class Infragenrelation (models.Model):
     genus    = models.CharField(max_length=50, null=True)
     infragen = models.CharField(max_length=50)
     parent   = models.ForeignKey(Infragen,null=True, db_column='parent_pid',on_delete=models.CASCADE)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
 
 class Intragen (models.Model):
@@ -526,8 +526,8 @@ class Intragen (models.Model):
     # section   = models.CharField(max_length=50, blank=True)
     # subsection= models.CharField(max_length=50, blank=True)
     # series   = models.CharField(max_length=50, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
 
 class Species(models.Model):
@@ -557,8 +557,8 @@ class Species(models.Model):
     num_dir_descendant = models.IntegerField(null=True, blank=True)
     gen = models.ForeignKey(Genus, db_column='gen', default=0,on_delete=models.DO_NOTHING)
     notepad = models.CharField(max_length=500, default='')
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
     description = models.TextField(null=True, blank=True)
 
     # TODO: add reference column
@@ -735,8 +735,8 @@ class Specieshistory(models.Model):
     type = models.CharField(max_length=10)
     status = models.CharField(max_length=20)
     is_active = models.BooleanField(null=True,default=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
 
 class Comment(models.Model):
@@ -747,8 +747,8 @@ class Comment(models.Model):
     memo = models.TextField(max_length=500, blank=True)
     id_list = models.CharField(max_length=200, blank=True)
     # relevancy = models.IntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         # user = self.user
@@ -780,8 +780,8 @@ class SpeciesDetail (models.Model):
     habitat         = models.CharField(max_length=500, blank=True)
     altitude = models.CharField(max_length=500, blank=True)
     bloom_period    = models.CharField(max_length=50, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return '%s %s %s %s' % (self.genus, self.species,
@@ -799,8 +799,8 @@ class Culture (models.Model):
     water           = models.CharField(max_length=100, blank=True)
     winter_care     = models.CharField(max_length=100, blank=True)
     bloom_month     = models.CharField(max_length=50, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return '%s %s %s %s' % (self.genus, self.species,
@@ -814,8 +814,8 @@ class Similarity (models.Model):
     pid2            = models.ForeignKey(Species,db_column='pid2', related_name='pid2',on_delete=models.CASCADE)
     differences     = models.TextField(blank=True)
     similar         = models.TextField(blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
 
 class NewAcceptedManager(models.Manager):
@@ -863,8 +863,8 @@ class Accepted(models.Model):
 
     num_image = models.IntegerField(null=True, blank=True)
     num_descendant = models.IntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
     operator = models.ForeignKey(User, db_column='operator', null=True,on_delete=models.DO_NOTHING)
 
     def __str__(self):
@@ -892,8 +892,8 @@ class Infragenspc (models.Model):
     # section   = models.CharField(max_length=50, blank=True, default=None)
     # subsection= models.CharField(max_length=50, blank=True, default=None)
     # series   = models.CharField(max_length=50, blank=True, default=None)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
 
 class Synonym(models.Model):
@@ -921,8 +921,8 @@ class Synonym(models.Model):
     type = models.CharField(max_length=10, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.spid.name()
@@ -1013,8 +1013,8 @@ class Hybrid(models.Model):
     num_ancestor = models.IntegerField(null=True, blank=True)
     num_species_ancestor = models.IntegerField(null=True, blank=True)
     num_descendant = models.IntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.pid.name()
@@ -1111,8 +1111,8 @@ class InfragenHybrid(models.Model):
     sec_pct     = models.CharField(max_length=500, null=True, blank=True)
     subsec_pct  = models.CharField(max_length=500, null=True, blank=True)
     ser_pct     = models.CharField(max_length=500, null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     # def __str__(self):
     #     return '%s' % (self.pid)
@@ -1185,8 +1185,8 @@ class UploadFile(models.Model):
     approved    = models.BooleanField(null=True, default=False)
     compressed  = models.BooleanField(null=True, default=False)
     block_id    = models.IntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.pid.name()
@@ -1235,8 +1235,8 @@ class SpcImages(models.Model):
     block_id = models.IntegerField(null=True, blank=True)
     user_id = models.ForeignKey(User, db_column='user_id', null=True, blank=True,on_delete=models.DO_NOTHING)
     approved_by = models.ForeignKey(User, db_column='approved_by',  related_name='spc_approved_by', null=True, blank=True,on_delete=models.DO_NOTHING)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
     # upload_by = models.ForeignKey(User, db_column='upload_by', null=True, blank=True,on_delete=models.DO_NOTHING)
 
     def __str__(self):
@@ -1351,8 +1351,8 @@ class HybImages(models.Model):
     block_id = models.IntegerField(null=True, blank=True)
     user_id = models.ForeignKey(User, db_column='user_id', null=True, blank=True,on_delete=models.DO_NOTHING)
     approved_by = models.ForeignKey(User, db_column='approved_by',  related_name='hyb_approved_by', null=True, blank=True,on_delete=models.DO_NOTHING)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
     # upload_by = models.ForeignKey(User, db_column='upload_by', null=True, blank=True,on_delete=models.DO_NOTHING)
 
     def __str__(self):
@@ -1464,8 +1464,8 @@ class HybImgHistory(models.Model):
     img_id = models.IntegerField(null=True, blank=True)
     user_id = models.ForeignKey(User, db_column='user_id', on_delete=models.CASCADE)
     action = models.CharField(max_length=50,null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return '%s %s %s %s' % (self.pid, self.user_id, self.created_date, self.modified_date)
@@ -1476,8 +1476,8 @@ class SpcImgHistory(models.Model):
     img_id = models.IntegerField(null=True, blank=True)
     user_id = models.ForeignKey(User, db_column='user_id', on_delete=models.CASCADE)
     action = models.CharField(max_length=50,null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return '%s %s %s %s' % (self.pid, self.user_id, self.created_date, self.modified_date)
@@ -1489,8 +1489,8 @@ class ReidentifyHistory(models.Model):
     from_pid = models.ForeignKey(Species, db_column='from_pid', related_name='from_pid', on_delete=models.CASCADE)
     to_pid = models.ForeignKey(Species, db_column='to_pid', related_name='to_pid',on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, db_column='user_id', on_delete=models.DO_NOTHING)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return '%s %s %s %s' % (self.pid, self.user_id, self.created_date, self.modified_date)
@@ -1528,8 +1528,8 @@ class Region(models.Model):
     name            = models.CharField(max_length=100,null=True, blank=True, unique=True)
     note            = models.CharField(max_length=500,null=True, blank=True)
     source          = models.CharField(max_length=10, null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -1542,8 +1542,8 @@ class SubRegion(models.Model):
     name            = models.CharField(max_length=100,null=True, blank=True, unique=True)
     note            = models.CharField(max_length=500,null=True, blank=True)
     source          = models.CharField(max_length=10, null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -1561,8 +1561,8 @@ class LocalRegion(models.Model):
     note            = models.CharField(max_length=500,null=True, blank=True)
     source          = models.CharField(max_length=10, null=True, blank=True)
     subregion       = models.CharField(max_length=10,null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -1585,8 +1585,8 @@ class GeoLoc(models.Model):
     name              = models.CharField(max_length=100,null=True, blank=True, unique=True)
     note            = models.CharField(max_length=500,null=True, blank=True)
     source          = models.CharField(max_length=20, null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -1607,8 +1607,8 @@ class Distribution(models.Model):
     dist_status = models.CharField(max_length=10,blank=True)
     confidence  = models.CharField(max_length=10,blank=True)
     comment = models.CharField(max_length=500,blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         unique_together = (("pid", "region_id","subregion_code","localregion_id"),)
@@ -1650,8 +1650,8 @@ class TaxUpdate(models.Model):
     previous_name       = models.CharField(max_length=500, blank=True)
     previous_status     = models.CharField(max_length=500, blank=True)
     previous_dist       = models.CharField(max_length=500, blank=True)
-    created_date        = models.DateTimeField(auto_now_add=True)
-    modified_date       = models.DateTimeField(auto_now=True)
+    created_date        = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date       = models.DateTimeField(auto_now=True, null=True)
 
 
 class Donation(models.Model):
@@ -1687,8 +1687,8 @@ class Donation(models.Model):
     amount = models.DecimalField(max_digits=5, decimal_places=2)
     country_code = models.CharField(max_length=2, null=True, blank=True)
 
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return f"Donation made by {self.donor_display_name} - ${self.amount}"

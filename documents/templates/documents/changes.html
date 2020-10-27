@@ -1,68 +1,35 @@
 {% include "base.html" %}
 {% block body %}
 <style>
-
-div.text-c {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 11px;
-}
-
-@media only screen and (max-width: 800px) {
-    div.text-c {
-        font-size: 11px;
-    }
-}
-
-@media only screen and (max-width: 500px) {
-}
-
-
-img{
-    width:100%;
-}
-
-
-/* [3] Finally, transforming the image when container gets hovered */
-.img-hover-zoom:hover img {
-  transform: scale(1.5);
-}
     ul{
-        padding-left:15px;
-        /*font-size: 13px;*/
         padding-left:10px;
         line-height: 30px;
-        list-style-type:square;
+        list-style-type:none;
     }
-li {
-    display: list-item;
-}
+    li {
+            display: list-item;
+    }
     .card-body {
         font-size: 15px;
     }
 </style>
 <br>
-<br>
 
-<div style="clear:both"></div>
-
-<div class="container-fluid" style="min-height:200px;border:0 solid grey">
+<div class="container-fluid" style="min-height:200px;">
     <div style="clear:both"></div>
     <div class="row">
-        <div class="d-none d-sm-block col-sm-3 col-lg-2" style="padding:0; border:1px solid lightgrey">
+        <div class="d-none d-sm-block col-sm-3 col-lg-2 ">
             {% include "side_home.html" %}
         </div>
 
-        <div class="col-sm-8 col-lg-9">
+        <div class="col-sm-8 col-lg-9" style="margin-top:7px;">
 
             <div class="card mt-3">
                 <div class="card-header">
                     <h6 class="card-title" style="margin-bottom: 0"><a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&display=checked">OrchidRoots V.3.1 - 2020-10-01</a></h6>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body" style="padding:20px;">
                     <h6 class="mb-0">User Accounts</h6>
                     <ul>
                         <li><b>Authentication</b>: User must sign in with unique user id and email.  A confirmation email will be sent after a successful registration or after an email change request.</li>
@@ -104,106 +71,66 @@ li {
             </div>
 
 
+
+
             <div class="card mt-3">
                 <div class="card-header">
                     <h6 class="card-title" style="margin-bottom: 0"><a href="{% url 'orchidlist:browse' %}?role={{role}}&type={{image.pid.pid.type}}&display=checked">OrchidRoots V.3 - 2019/06/01</a></h6>
                 </div>
-
-                <div class="accordion" id="OrchidRootsHome" style="border:0 solid blue">
-
-                 <div class="card">
-                    <div class="card-header" id="headingUser">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true" aria-controls="collapseUser">
-                          Public vs Private Photos
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseUser" class="collapse mytext" aria-labelledby="headingUser" data-parent="#OrchidRootsHome" >
-                      <div class="card-body">
-                          Uploaded photos are either public or private
+                <div class="card-body" style="padding:20px;">
+                    <h6 class="mb-0">Public vs Private Photos</h6>
+                    <div class="card-body">
+                        Uploaded photos are either public or private
                         <ul>
                             <li>Public photos are visible to all users. No login required. Private photos are visible to their owner.</li>
                             <li>Uploaded photos will remain private until they are approved by a curator.  Once approved, they will be displayed in public view.</li>
                             <li>Photo owners have an option to keep their photos private</li>
                         </ul>
-                      </div>
                     </div>
-                 </div>
 
-                 <div class="card">
-                    <div class="card-header" id="headingPhoto">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsePhoto" aria-expanded="true" aria-controls="collapsePhoto">
-                          Three Access levels
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapsePhoto" class="collapse mytext" aria-labelledby="headingPhoto" data-parent="#OrchidRootsHome" >
-                      <div class="card-body">
-                        <ul>
-                            <li><b>Basic view</b>: Anonymous Users can access public pages, search, browse images and detail pages.</li>
-                            <li><b>Private view</b>: Registered Users can access all features in the basic level including ability to upload and manage their own photos in their private album.
-                                    Registered users can also view filtered lists of species and hybrids.</li>
-                            <li><b>Curate view</b>: Registered Curators can access all features in the private level including the ability to approve or reject private photos.  Curators can also
-                                reidentify a miss-identified photo and update information related to a species of hybrid.</li>
-                        </ul>
-                      </div>
-                    </div>
-                 </div>
+                    <h6 class="mb-0">
+                        Three Access levels
+                    </h6>
+                    <ul>
+                        <li><b>Basic view</b>: Anonymous Users can access public pages, search, browse images and detail pages.</li>
+                        <li><b>Private view</b>: Registered Users can access all features in the basic level including ability to upload and manage their own photos in their private album.
+                               Registered users can also view filtered lists of species and hybrids.</li>
+                        <li><b>Curate view</b>: Registered Curators can access all features in the private level including the ability to approve or reject private photos.  Curators can also
+                               reidentify a miss-identified photo and update information related to a species of hybrid.</li>
+                    </ul>
 
-                 <div class="card">
-                    <div class="card-header" id="headingOne">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <h6 class="mb-0">
                           Improved Navigation
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseOne" class="collapse mytext" aria-labelledby="headingOne" data-parent="#OrchidRootsHome" >
-                      <div class="card-body">
-                        <ul>
-                            <li>Home page: A number of random images that will jump directly to the detail page of the species or hybrids in the photo.  Useful for new users who just want to browse around.
-                            <li>Dropdown lists of genus, species and hybrids are now available in the navigation bar. From anywhere in the website, it is easy to find a species or hybrid and go directly
+                    </h6>
+                    <ul>
+                        <li>Home page: A number of random images that will jump directly to the detail page of the species or hybrids in the photo.  Useful for new users who just want to browse around.
+                        <li>Dropdown lists of genus, species and hybrids are now available in the navigation bar. From anywhere in the website, it is easy to find a species or hybrid and go directly
                             to ites detail page using these dropdown lists.</li>
-                        </ul>
-                      </div>
-                    </div>
-                 </div>
+                    </ul>
 
-                 <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                User Private Album
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseTwo" class="collapse mytext" aria-labelledby="headingOne" data-parent="#OrchidRootsHome" >
-                      <div class="card-body">
-                         User's private album shows all photos belonging users. To access private album, select "Private" button on the top of the page.  There are 5 different tabs in private album.
-                         <ul>
-                            <li>My collection tab: This tab contains random samples of each and every species/hybrid that has at least one photo submitted by the user</li>
-                            <li>Detail tab: Shows all photos of a species/hybrid submitted by the user.  Approved photos for public display are on the first half of the page.  Photos not approved are at the bottom half.
-                                We try to keep list short but large enough to cover all aspects of the orchid.
-                                Guidelines for photos acceptance will be available soon (?probably?) </li>
-                            <li>Private Photos: These photos were not approved for public access due to a number of factors, such as the quality of photo, incorrect or doubful identity,
-                                or there are already many photos submitted for the species. Photos can be approved pending for approval and photos uploaded by users.<br>
-                                This tab shows
-                                <ul>
-                                    <li>The list of all species and hybrids on the right hand side of hte page.  The user has one or more photos in each orchid in hte list. Through thi slist,
-                                        user can access all of his/her photos in OrchidRoots</li>
-                                    <li>Upload local file button:  Let user upload photos from phone or desktop.</li>
-                                    <li>Upload from web button:  Let user upload photos from internet, including BlueNanta Group in Facebook</li>
-                                </ul>
-                            </li>
-                        </ul>
-                          {% if user.tier.tier > 1 %}
-                            <a href="{% url 'documents:instructionupload_private' %}">How to upload a Photo</a>
-                            <a href="{% url 'documents:instructionupload_file' %}">How to upload a file </a>
-                          {% endif %}
-                      </div>
-                    </div>
+                    <h6 class="mb-0">
+                        User Private Album
+                    </h6>
+                    User's private album shows all photos belonging users. To access private album, select "Private" button on the top of the page.  There are 5 different tabs in private album.
+                    <ul>
+                        <li>My collection tab: This tab contains random samples of each and every species/hybrid that has at least one photo submitted by the user</li>
+                        <li>Detail tab: Shows all photos of a species/hybrid submitted by the user.  Approved photos for public display are on the first half of the page.  Photos not approved are at the bottom half.
+                            We try to keep list short but large enough to cover all aspects of the orchid.
+                            Guidelines for photos acceptance will be available soon (?probably?) </li>
+                        <li>Private Photos: These photos were not approved for public access due to a number of factors, such as the quality of photo, incorrect or doubful identity,
+                            or there are already many photos submitted for the species. Photos can be approved pending for approval and photos uploaded by users.<br>
+                            This tab shows
+                            <ul>
+                                <li>The list of all species and hybrids on the right hand side of hte page.  The user has one or more photos in each orchid in hte list. Through thi slist,
+                                    user can access all of his/her photos in OrchidRoots</li>
+                                <li>Upload local file button:  Let user upload photos from phone or desktop.</li>
+                                <li>Upload from web button:  Let user upload photos from internet, including BlueNanta Group in Facebook</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% if user.tier.tier > 1 %}
+                        <a href="{% url 'documents:instructionupload' %}">How to upload a Photo</a>
+                    {% endif %}
                   </div>
                 </div>
             </div>

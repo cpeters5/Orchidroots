@@ -97,9 +97,9 @@ def instructionupload_private(request):
     return render(request, 'documents/instructionupload_private.html', context)
 
 
-def instructionupload_file(request):
+def instructionupload(request):
     context = {'namespace':'documents',}
-    return render(request, 'documents/instructionupload_file.html', context)
+    return render(request, 'documents/instructionupload.html', context)
 
 
 def development(request):

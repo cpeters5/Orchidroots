@@ -39,7 +39,7 @@
             <div class="nav2 detail-title" style="text-align:center">
                 <h1 style="display:none">{{species.genus}} {{species.species}}</h1>
                 <h1><a href="{% url 'orchidlist:browse' %}?type={{species.type}}&genus={{species.genus}}&role={{role}}&alpha={{species.species|title|make_list|first}}&display=checked"><i>{{species.genus}}</i></a>
-                    {{species.get_species}}{% if species.author %}, {{species.author}} {% endif %}
+                    {% if species.is_hybrid %}{{species.is_hybrid}}{% endif %} {{species.get_species}}{% if species.author %}, {{species.author}} {% endif %}
                     {% if species.year %}{{species.year}}{% endif %}</h1>
                      <a href="{{species.sourceurl}}" target="_blank">({{species.source}}</a> {{species.status}})
                     <br>

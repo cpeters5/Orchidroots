@@ -175,9 +175,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'orchidroots',
+        'PORT': env.str('PORT', default=''),
         'HOST': env.str('DBHOST', default=''),
         'USER': env.str('DBUSER', default=''),
-        'PASSWORD':env.str('PASSWD', default='')
+        'PASSWORD': env.str('DBPASSWD', default=''),
     }
 }
 

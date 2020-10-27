@@ -1369,14 +1369,28 @@ def photos(request,pid=None):
             private_list = private_list.order_by('created_date')
 
     logger.error("detail/photos      " + str(request.user) + " " + role + " - " + str(species))
-    context = {'species': species, 'author':author, 'author_list':author_list,
-               'variety': variety, 'pho':'active','tab':'pho',
-               'public_list': public_list,'private_list':private_list,'upload_list':upload_list,
-               'myspecies_list':myspecies_list,'myhybrid_list':myhybrid_list,
-               'level':'detail','section':'Curator Corner',
-               'role':role,'title': 'photos', 'namespace':'detail',
-               }
-    return render(request, 'detail/photos.html', context)
+    if role == 'pri':
+        author = Photographer.objects.get(user_id=request.user)
+        if author:
+            public_list = public_list.filter(author=author)
+        context = {'species': species, 'author': author, 'author_list': author_list,
+                   'variety': variety, 'pho': 'active', 'tab': 'pho',
+                   'public_list': public_list, 'private_list': private_list, 'upload_list': upload_list,
+                   'myspecies_list': myspecies_list, 'myhybrid_list': myhybrid_list,
+                   'level': 'detail', 'section': 'Curator Corner',
+                   'role': role, 'title': 'photos', 'namespace': 'detail',
+                   }
+
+        return render(request, 'detail/myphoto.html', context)
+    else:
+        context = {'species': species, 'author': author, 'author_list': author_list,
+                   'variety': variety, 'pho': 'active', 'tab': 'pho',
+                   'public_list': public_list, 'private_list': private_list, 'upload_list': upload_list,
+                   'myspecies_list': myspecies_list, 'myhybrid_list': myhybrid_list,
+                   'level': 'detail', 'section': 'Curator Corner',
+                   'role': role, 'title': 'photos', 'namespace': 'detail',
+                   }
+        return render(request, 'detail/photos.html', context)
 
 
 def progeny(request, pid):
@@ -1656,6 +1670,9 @@ def myphoto(request,pid):
         species = Species.objects.get(pk=pid)
 
     private_list, public_list, upload_list, myspecies_list, myhybrid_list = getmyphotos(request,author,species)
+    author = Photographer.objects.get(user_id=request.user)
+    if author:
+        public_list = public_list.filter(author=author)
     totalphotos = private_list.count() + upload_list.count()
     context = {'species': species, 'private_list': private_list, 'public_list': public_list,'upload_list': upload_list,
                'myspecies_list':myspecies_list,'myhybrid_list':myhybrid_list, 'author_list':author_list,
@@ -1663,7 +1680,7 @@ def myphoto(request,pid):
                'level':'detail','title':'myphoto','section':'My Collection', 'totalphotos': totalphotos,'namespace':'detail',
                }
     logger.error("detail/myphoto: " + str(request.user) + " - " + str(species))
-    return render(request, 'detail/photos.html', context)
+    return render(request, 'detail/myphoto.html', context)
 
 
 @login_required

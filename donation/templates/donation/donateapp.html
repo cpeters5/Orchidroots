@@ -59,23 +59,17 @@
         background-color: #cad4f7;
     }
 
-        ul{
-            padding-left:15px;
-            font-size: 13px;
-            line-height: 30px;
-        }
-        .partner {
-            /*height:50px;*/
-            width:120px;
-            margin:5px;
-            padding: 5px;
-            line-height: 15px;
-            text-align:center;
-            padding:5px;
-        }
-        li {
-            list-style: none;
-        }
+    ul{
+        padding-left:10px;
+        line-height: 30px;
+        list-style-type:none;
+    }
+    li {
+            display: list-item;
+    }
+    .card-body {
+        font-size: 15px;
+    }
         .name {
             margin: 2px;
             width: 250px !important;
@@ -99,101 +93,104 @@
 {% endblock %}
 
 {% block body %}
-<div style="clear:both"></div>
+    <br>
 
 <div class="container-fluid" style="min-height:200px;">
-    <br>
-    <div class="row justify-content-center align-items-center">
-        <div class="d-none d-sm-block col-sm-3 col-lg-2" style="padding:0; border:1px solid lightgrey">
+    <div style="clear:both"></div>
+    <div class="row">
+        <div class="d-none d-sm-block col-sm-3 col-lg-2">
             {% include "side_home.html" %}
         </div>
-        <div class="col-xs-12 col-sm-8 border p-4 m-2">
-            <div class="mt-2" style="font-size:14px">
+
+        <div class="col-xs-12 col-sm-8 border p-4 m-2" style="margin-top:35px;">
+
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h6 class="card-title" style="margin-bottom: 0">Your donation, even a small amount, will make a difference.</h6>
+                </div>
+                <div class="container" style="width:100%; margin:0 auto;">
                     OrchidRoots is a 501-(c)(3) non-profit organization.  We do not accept government funds in order to focus
                     our time and energy in making OrchidRoots the best platform for any level of orchid reserch instead of forever
                     keeping up with the exhaustive paper work required.
                     Your support is vital for our progress.
                     We are committed to constantly improving the website to be more complete,
                     correct and available in formats that are more acceptable to our users.
-            </div>
 
-            <div class="card mt-2">
-                <div class="card-header">
-                    <h6 class="card-title" style="margin-bottom: 0">Your donation, even a small amount, will make a difference.</h6>
+
+                    {% if error %}
+                        <div class="alert alert-warning">
+                            <span>An error occurred while trying to charge your card, please try again {{ error }}</span>
+
+                        </div>
+                    {% endif %}
+
+                    <div class="container" align="left" style="width:100% !important">
+                        <br>
+                        <h6>Full Name (Optional)</h6>
+                        <div class="form-group">
+                            <input type="text" name="donor-name" id="donor-name" class="form-control name" placeholder="Full Name or Organisation" >
+                        </div>
+
+                        <h6>Choose amount</h6>
+
+                        <div class="btn-toolbar" role="toolbar" aria-label="toolbar" style="font-size: 11px;padding:2px; justify-content: left">
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn amt btn-outline-primary" data-amt="100">$1</button>
+                          </div>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn amt btn-outline-primary" data-amt="500">$5</button>
+                          </div>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn amt btn-outline-primary" data-amt="1000">$10</button>
+                          </div>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn amt btn-outline-primary" data-amt="1500">$15</button>
+                          </div>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn amt btn-outline-primary" data-amt="2000">$20</button>
+                          </div>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn amt btn-outline-primary" data-amt="5000">$50</button>
+                          </div>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn amt btn-outline-primary" data-amt="10000">$100</button>
+                          </div>
+                        </div>
+
+
+
+                        <br>
+                   </div>
+
+                    <div id="complete-donation" class="d-none">
+                        <h4 align="center">Thank you for your $<span id="selected-amount">0</span> contribution
+                        </h4>
+
+                       <form align="middle" action="{% url 'donation:donate' donateamt %}" method="post" id="stripe-form">
+                            {% csrf_token %}
+                <!--            <input type="hidden" name="donateamt" value="{{donateamt}}" />-->
+                           <input type="hidden" name="donor_display_name" id="added-donor-name">
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="{{ key }}"
+                                data-description="Donation Charge"
+                                data-amount="{{donateamt}}"
+                                data-locale="auto">
+                            </script>
+
+                        </form>
+                        <div id="paypal-button" class="paypal-buttons">
+
+                        </div>
+                    </div>
+
+
+
+
+        <!--                        <div style="text-align:center; margin-top:10px;"><a href="/?role={{role}}">Cancel...</a></div>-->
                 </div>
-            <div class="container" style="width:100%; margin:0 auto;">
-                {% if error %}
-                    <div class="alert alert-warning">
-                        <span>An error occurred while trying to charge your card, please try again {{ error }}</span>
 
-                    </div>
-                {% endif %}
-
-                <div class="container" align="left" style="width:100% !important">
-                    <br>
-                    <h6>Full Name (Optional)</h6>
-                    <div class="form-group">
-                        <input type="text" name="donor-name" id="donor-name" class="form-control name" placeholder="Full Name or Organisation" >
-                    </div>
-
-                    <h6>Choose amount</h6>
-
-                    <div class="btn-toolbar" role="toolbar" aria-label="toolbar" style="font-size: 11px;padding:2px; justify-content: left">
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn amt btn-outline-primary" data-amt="100">$1</button>
-                      </div>
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn amt btn-outline-primary" data-amt="500">$5</button>
-                      </div>
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn amt btn-outline-primary" data-amt="1000">$10</button>
-                      </div>
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn amt btn-outline-primary" data-amt="1500">$15</button>
-                      </div>
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn amt btn-outline-primary" data-amt="2000">$20</button>
-                      </div>
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn amt btn-outline-primary" data-amt="5000">$50</button>
-                      </div>
-                      <div class="btn-group" role="group">
-                        <button type="button" class="btn amt btn-outline-primary" data-amt="10000">$100</button>
-                      </div>
-                    </div>
-
-
-
-                    <br>
-               </div>
-
-                <div id="complete-donation" class="d-none">
-                    <h4 align="center">Thank you for your $<span id="selected-amount">0</span> contribution
-                    </h4>
-
-                   <form align="middle" action="{% url 'donation:donate' donateamt %}" method="post" id="stripe-form">
-                        {% csrf_token %}
-            <!--            <input type="hidden" name="donateamt" value="{{donateamt}}" />-->
-                       <input type="hidden" name="donor_display_name" id="added-donor-name">
-                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                            data-key="{{ key }}"
-                            data-description="Donation Charge"
-                            data-amount="{{donateamt}}"
-                            data-locale="auto">
-                        </script>
-
-                    </form>
-                    <div id="paypal-button" class="paypal-buttons">
-
-                    </div>
-                </div>
-
-
-
-
-<!--                        <div style="text-align:center; margin-top:10px;"><a href="/?role={{role}}">Cancel...</a></div>-->
             </div>
-		</div>
+        </div>
 	</div>
 </div>
 

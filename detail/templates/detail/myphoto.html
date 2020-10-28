@@ -156,25 +156,11 @@ div.text-br {
         </div>
 
         <div class="p-2 dropdown" >
-            <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Species Photos</button>
-            {% if myspecies_list %}
-                <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
-                    {% for spc in myspecies_list %}
-                        <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:myphoto_browse_spc' %}?role={{role}}">My Species Photos</a>
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <a class="btn dropdown-toggle btn-xs btn-outline-primary" href="{% url 'detail:myphoto_browse_spc' %}?role={{role}}">My Species Photos</a>
         </div>
 
         <div class="p-2 dropdown" >
-            <button class="dropdown-toggle btn-outline-primary btn-xs select-p2" data-toggle="dropdown">My Hybrid Photos</button>
-            {% if myspecies_list %}
-                <div class="dropdown-menu  scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
-                    {% for spc in myspecies_list %}
-                    <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:myphoto_browse_hyb' %}?role={{role}}">My Hybrid Photos</a>
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:myphoto_browse_hyb' %}?role={{role}}">My Hybrid Photos</a>
         </div>
 
         {% if author.author_id == 'anonymous' %}
@@ -187,7 +173,9 @@ div.text-br {
             to <a href="https://www.facebook.com/Orchidrootscom-306266603228487/inbox/?mailbox_id=306266603228487&selected_item_id=631912977">OrchidRoots In-Box</a>
         </div>
         {% else %}
-            <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}&tab=loc">upload file</a>
+        <div class="p-2 dropdown" >
+            <a class="btn btn-xs mybtn btn-outline-primary" href="{% url 'detail:uploadfile' species.pid %}?role={{role}}">upload file</a>
+        </div>
         {% endif %}
 
 
@@ -267,6 +255,50 @@ div.text-br {
             {% endfor %}
        </div>
 
+    {% if upload_list or msg %}
+    <div class="p-2 border" style="background:white; margin-top:10px;">
+        <div class="p-2 justify-content-center align-items-center" style="margin:0 auto;width:100%">
+            <div class="font-weight-bold text-center text-info" ><h4>New Uploaded Files</h4></div>
+            {% if msg %}<h6>{{msg}}</h6>{% endif %}
+            <br><br>
+            {% for image in upload_list %}
+                 <div class="imageitem" style="display:inline-block">
+                     {% if image.image_file_path %}
+                          <a href="{% static 'media/' %}{{image.image_file_path}}" data-lightbox="media" data-title="
+                                   {{image.id}}: {{image.imgname}}
+                                   <br> {{image.get_displayname}}
+                                   <br>{% if image.text_data %}{{image.text_data|safe}}{% endif %}">
+                              <div class="box">
+                                  <img class="thumbnails" alt="" src="{% static 'media/' %}{{image.image_file_path}}" style="border: 0 solid red;">
+                                  <div class="text text-br">{{image.id}}</div>
+                                </div>
+                           </a>
+                     {% else %}
+<!--                                    <div class="box">-->
+<!--                                        <img class="thumbnails" alt="" src="{{image.image_url}}" class="img-fluid" style="width:100%;">-->
+<!--                                        <div class="text">{{image.id}}</div>-->
+<!--                                    </div>-->
+                        Requested file does not exist
+                     {% endif %}
+                     <div style="font-size:10px">
+                        <a href="{{image.source_url}}">{{image.author}}</a>
+<!--                            Private and curate role may delete photos-->
+                        {% if role == "cur" or role == "pri" %}
+                            <br>
+                            {% if image.approved %}
+                                <b>Approved</b>
+                            {% elif role == 'cur' %}
+                                <a href="{% url 'detail:approvemediaphoto' image.pid_id %}?&id={{image.id}}&tab={{tab}}&gen={{species.gen.pid}}&action=file">Approve</a> |
+                            {% endif %}
+                            <a href="{% url 'detail:deletephoto' image.id %}?id={{image.id}}&role={{role}}" >Delete</a>
+                        {% endif %}
+                     </div>
+
+                 </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 
 
 

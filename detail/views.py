@@ -1673,6 +1673,7 @@ def myphoto(request,pid):
     author = Photographer.objects.get(user_id=request.user)
     if author:
         public_list = public_list.filter(author=author)
+        private_list = private_list.filter(author=author)
     totalphotos = private_list.count() + upload_list.count()
     context = {'species': species, 'private_list': private_list, 'public_list': public_list,'upload_list': upload_list,
                'myspecies_list':myspecies_list,'myhybrid_list':myhybrid_list, 'author_list':author_list,
@@ -1685,14 +1686,6 @@ def myphoto(request,pid):
 
 @login_required
 def myphoto_browse_spc(request):
-    user = User.objects.get(pk=request.user.id)
-    if not user.is_authenticated or user.tier.tier < 2:
-    # if not request.user.is_authenticated or request.user.tier.tier < 2:
-        send_url = "%s" % (reverse('orchidlist:browsegen'))
-        return HttpResponseRedirect(send_url)
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('/login/')
-
     author_list = Photographer.objects.exclude(user_id__isnull=True).order_by('fullname')
 
     if request.user.tier.tier > 2 and 'author' in request.GET:
@@ -2116,7 +2109,10 @@ def uploadfile(request,pid):
             spc.user_id = request.user
             spc.text_data = spc.text_data.replace("\"","\'\'")
             spc.save()
-            url = "%s?role=%s&author=%s" % (reverse('detail:photos', args=(species.pid,)), role,request.user.photographer.author_id )
+            if role == 'pri':
+                url = "%s?role=%s&author=%s" % (reverse('detail:myphoto', args=(species.pid,)), role,request.user.photographer.author_id )
+            else:
+                url = "%s?role=%s&author=%s" % (reverse('detail:photos', args=(species.pid,)), role,request.user.photographer.author_id )
             return HttpResponseRedirect(url)
         else:
             return HttpResponse('save failed')
@@ -2227,7 +2223,7 @@ def uploadweb(request,pid,id=None):
 
             else:
                 # Public role shouldn't get to this '
-                url = "%s?role=pub" % (reverse('detail:photos', args=(species.pid,)))
+                url = "%s?role=pub" % (reverse('detail:myphoto', args=(species.pid,)))
             logger.error("detail/UploadWeb:  " + str(request.user) + " " + str(pid))
             return HttpResponseRedirect(url)
 

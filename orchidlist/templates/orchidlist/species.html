@@ -138,6 +138,7 @@ input {
             {% if section_obj %}Section {{section_obj.section}}{% endif %}
             {% if subsection_obj %}Subsection {{subsection_obj.subsection}}{% endif %}
             {% if series_obj %}Series {{series_obj.series}}{% endif %}
+            <a class="btn btn-xs btn-primary p-2 m-2 custom-link border" href="{% url 'orchidlist:hybrid' %}?role={{role}}&alpha=A">Go to Hybrid List</a>
             </h4>
         </div>
         <div class="card-body d-flex flex-wrap">
@@ -294,6 +295,7 @@ input {
 
     <!--Pagination        -->
     {% if page_list %}
+        {% include "orchidlist/alpha_list.html" %}
         {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
         <div style="float:left; width:100%;">
         <!--main table-->

@@ -175,7 +175,7 @@ input {
                     {% if formula1 %}<span style="color:black">{{formula1}}</span>{% else %} Genus 1{% endif %}
                 </button>
                 <ul class="dropdown-menu scrollable-menu">
-                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2={{formula2}}">&nbsp;clear choice</a></li>
+                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2={{formula2}}">-----</a></li>
                     {% for g in genus_lookup %}
                     <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula1={{g.genus}}&Cattleya&formula2={{formula2}}">&nbsp;{{g.genus}}</a></li>
                     {% endfor %}
@@ -186,7 +186,6 @@ input {
                     {% if formula2 %}<span style="color:black">{{formula2}}</span>{% else %} Genus 2{% endif %}
                 </button>
                 <ul class="dropdown-menu scrollable-menu" >
-                    <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2=&formula1={{formula1}}">&nbsp;clear choice</a></li>
                     {% for g in genus_lookup %}
                     <li><a href="?sort=&genustype=hybrid&status=&sf=&t=&st=&genus=&year=orchidroots.com&formula2={{g.genus}}&formula1={{formula1}}">&nbsp;{{g.genus}}</a></li>
                     {% endfor %}
@@ -202,8 +201,7 @@ input {
                     {% if sf_obj.subfamily %}<span style="color:black">&nbsp;{{sf_obj.subfamily}}</span>{% else %}Subfamily{% endif %}
                 </button>
                 <ul class="dropdown-menu scrollable-menu">
-                    <li>{% if sf_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf=&t=&st=&genus=&genustype={{genustype}}">&nbsp;</a>
-                        {% else %}<a href="#">&nbsp;</a>
+                    <li>{% if sf_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf=&t=&st=&genustype={{genustype}}">-----</a>
                         {% endif %}
                     </li>
                     {% for sf in sf_list %}
@@ -224,8 +222,7 @@ input {
                 </button>
 
                 <ul class="dropdown-menu scrollable-menu">
-                    <li>{% if t_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.sf}}&t=&st=&genustype={{genustype}}&author={{author}}">&nbsp;</a>
-                        {% else %}<a href="#">&nbsp;</a>
+                    <li>{% if t_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.subfamily}}&genustype={{genustype}}&author={{author}}">-----</a>
                         {% endif %}
                     </li>
                     {% for t in t_list %}
@@ -246,13 +243,12 @@ input {
                 </button>
 
                 <ul class="dropdown-menu scrollable-menu">
-                    <li>{% if st_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st=&genustype={{genustype}}&author={{author}}">&nbsp;</a>
-                        {% else %}<a href="#">&nbsp;</a>
+                    <li>{% if st_obj %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.subfamily}}&t={{t_obj.tribe}}&st=&genustype={{genustype}}&author={{author}}">-----</a>
                         {% endif %}
                     </li>
                     {% for st in st_list %}
                     <li>{% if st.subtribe != st_obj.subtribe %}<a href="?sort={{ sort }}&genus={{genus}}&year={{ year }}&sf={{sf_obj.subfamily}}&t={{t_obj.tribe}}&st={{st.subtribe}}&genustype={{genustype}}&author={{author}}">{{st.subtribe}}</a>
-                        {% else %}<a href="#">{{st_obj.subfamily}}</a>
+                        {% else %}<a href="#">{{st_obj.subtribe}}</a>
                         {% endif %}
                     </li>
                     {% endfor %}

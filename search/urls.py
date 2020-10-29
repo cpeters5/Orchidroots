@@ -6,7 +6,6 @@ urlpatterns = [
     # Top level
     path('search_match/', views.search_match, name='search_match'),
     path('search_fuzzy/', views.search_fuzzy, name='search_fuzzy'),
-    path('advanced/', views.advanced, name='advanced'),
     re_path(r'^(?P<partner>[A-Za-z]+)/search_match/', views.search_match, name='search_match'),
     re_path(r'^(?P<partner>[A-Za-z]+)/search_fuzzy/', views.search_fuzzy, name='search_fuzzy'),
 ]

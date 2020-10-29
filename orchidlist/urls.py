@@ -23,6 +23,7 @@ urlpatterns = [
     path('section/', views.section, name='section'),  # -- All species
     path('subsection/', views.subsection, name='subsection'),  # -- All species
     path('series/', views.series, name='series'),  # -- All species
+    path('advanced/', views.advanced, name='advanced'),
 
     path('browsegen/', views.browsegen, name='browsegen'),
     path('browse/', views.browse, name='browse'),

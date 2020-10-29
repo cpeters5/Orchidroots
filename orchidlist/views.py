@@ -13,6 +13,7 @@ import logging
 # Create your views here.
 from django.apps import apps
 Genus = apps.get_model('orchiddb', 'Genus')
+GenusRelation = apps.get_model('orchiddb', 'GenusRelation')
 Genusacc = apps.get_model('orchiddb', 'Genusacc')
 Intragen = apps.get_model('orchiddb', 'Intragen')
 Species = apps.get_model('orchiddb', 'Species')
@@ -95,6 +96,84 @@ def subtribe(request):
     context = {'subtribe_list': subtribe_list, 'title': 'subtribes', 't': t, 'sf': sf, 'sf_list': sf_list,
                't_list': t_list, 'namespace': 'orchidlist', }
     return render(request, 'orchidlist/subtribe.html', context)
+
+
+@login_required
+def advanced(request):
+    gen = ''
+    sf = t = st = ''
+    species = ''
+    species_list = []
+    hybrid_list = []
+    intragen_list = []
+
+    subfamily_list = Subfamily.objects.all()
+    if 'sf' in request.GET:
+        sf = request.GET['sf']
+    if sf:
+        tribe_list = Tribe.objects.filter(subfamily=sf)
+    else:
+        tribe_list = Tribe.objects.all()
+    if 't' in request.GET:
+        t = request.GET['t']
+    if t:
+        subtribe_list = Subtribe.objects.filter(tribe=t)
+    else:
+        subtribe_list = Subtribe.objects.all()
+    if 'st' in request.GET:
+        st = request.GET['st']
+
+    genus_list = Genus.objects.filter(cit_status__isnull=True).exclude(cit_status__exact='').order_by('genus')
+
+    if 'role' in request.GET:
+        role = request.GET['role']
+    else:
+        role = 'pub'
+
+    if 'genus' in request.GET:
+        genus = request.GET['genus']
+        if genus:
+            try:
+                genus = Genus.objects.get(genus=genus)
+                gen = genus.pid
+            except Genus.DoesNotExist:
+                genus = 'NOT FOUND!'
+                pass
+    else:
+        genus = ''
+
+    if genus:
+        # new genus has been selected. Now select new species/hybrid
+        gen = genus.pid
+        species_list = Species.objects.filter(gen=genus.pid).filter(type='species').filter(
+                cit_status__isnull=True).exclude(cit_status__exact='').order_by('species', 'infraspe', 'infraspr')
+
+        hybrid_list = Species.objects.filter(gen=genus.pid).filter(type='hybrid').order_by('species')
+
+        # Construct intragen list
+        if genus.type == 'hybrid':
+            parents = GenusRelation.objects.get(gen=genus.pid)
+            if parents:
+                parents = parents.parentlist.split('|')
+                # logger.error("parents = " + parents)
+                intragen_list = Genus.objects.filter(pid__in=parents)
+                # logger.error("intragen list = " + len(intragen_list))
+        else:
+            intragen_list = Genus.objects.filter(description__icontains=genus).filter(type='hybrid').filter(
+                num_hybrid__gt=0)
+
+    if species and isinstance(species, Species):
+        send_url = "/detail/information/" + str(species.pid) + "/?role=cur"
+        return HttpResponseRedirect(send_url)
+
+    context = {
+        'genus': genus, 'species': species, 'genus_list': genus_list,
+        'species_list': species_list, 'hybrid_list': hybrid_list, 'intragen_list': intragen_list,
+        'subfamily': sf, 'tribe': t, 'subtribe': st,
+        'subfamily_list': subfamily_list, 'tribe_list': tribe_list, 'subtribe_list': subtribe_list,
+        'level': 'search', 'title': 'find_orchid', 'role': role, 'namespace': 'search',
+    }
+    return render(request, "orchidlist/advanced.html", context)
 
 
 @login_required

@@ -145,7 +145,9 @@ input {
 <div class="justify-content-left align-items-center" style="display:block; clear:left; margin: 0 auto; width: 95%; text-align:left">
     <div class="card m-2">
         <div class="card-header">
-            <h4>{% if genus %}{{genus}}{% endif %} Hybrid List ({{total|intcomma}})</h4>
+            <h4>{% if genus %}{{genus}}{% endif %} Hybrid List ({{total|intcomma}})
+            <a class="btn btn-xs btn-primary p-2 m-2 custom-link border" href="{% url 'orchidlist:species' %}?role={{role}}&alpha=A">Go to Species List</a>
+            </h4>
         </div>
         <!--Filter-->
         <div class="card-body d-flex flex-row  flex-wrap">
@@ -205,6 +207,7 @@ input {
 
         <!--Pagination        -->
         {% if my_list %}
+            {% include "orchidlist/alpha_list.html" %}
             {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
             <!--main table-->
             <div class="table mytable" style="">
@@ -278,14 +281,21 @@ input {
                         </tr>
                     </thead>
                         {% for spc in my_list %}
-                            {%  if spc.status != 'synopnym' %}
-                                <tr>
-                                    <td align="left">
-                                        <a href="{% url 'detail:information' spc.pid %}?role={{role}}"><i>{{spc.genus}}</i> {{spc.get_species}}</a> <i>{{spc.author}} {% if spc.originator %} / {{spc.originator}}{% endif %}</i>
-                                        {% if spc.year > 0 %}<span  style="font-size: 11px;">{{spc.year}}</span>{% endif %}
-                                    </td>
+                            <tr>
+                                <td align="left">
+                                    <a href="{% url 'detail:information' spc.pid %}?role={{role}}"><i>{{spc.genus}}</i>
+                                        {% if spc.is_hybrid %}
+                                            <i>{{spc.get_species}}</i></a> {{spc.author}} {% if spc.originator %} / {{spc.originator}}{% endif %}</i>
+                                        {% else %}
+                                            {{spc.get_species}}</a> {{spc.author}} {% if spc.originator %} / {{spc.originator}}{% endif %}</i>
+                                        {% endif %}
+                                    {% if spc.year > 0 %}<span  style="font-size: 11px;">{{spc.year}}</span>{% endif %}
+                                </td>
 
-                                    <td class="align-center">
+                                <td class="align-center">
+                                    {% if spc.status == 'synonym' %}
+                                    Synonym of <a href="{% url 'detail:information' spc.getAccepted.pid %}?role={{role}}">{{spc.getAccepted.name|safe}}</a>
+                                    {% else %}
                                         {% if spc.hybrid.seed_id.type == 'species' %}
                                             {% if spc.hybrid.seed_id_id %}
                                                 <a href="{% url 'detail:information' spc.hybrid.seed_id_id %}?role={{role}}">{{spc.hybrid.seed_id.abrevname|safe}}</a>
@@ -303,7 +313,8 @@ input {
                                             <a href="{% url 'detail:information' spc.hybrid.pollen_id_id %}?role={{role}}">{{spc.hybrid.pollen_id.abrevname|safe}}</a>
                                         {% else %}na
                                         {% endif %}
-                                    </td>
+                                    {% endif %}
+                                </td>
 
                                     <!--<td class="small  d-none d-sm-table-cell ">{% if spc.intergenhybrid.subgenus %}{{spc.intergenhybrid.subgenus}}{% endif %}</td>-->
     <!--                                <td class="small  d-none d-sm-table-cell ">-->
@@ -322,7 +333,6 @@ input {
                                         {% endif %}</td>
                                     <td class="small  d-none d-sm-table-cell text-center">{% if spc.num_image %}{{spc.num_image}}{% endif %}</td>
                                 </tr>
-                            {%  endif %}
                         {% endfor %}
                 </table>
             </div>

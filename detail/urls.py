@@ -24,10 +24,6 @@ urlpatterns = [
     path('information/<int:pid>/', views.information, name='information'),
     path('information/', views.information, name='information'),
 
-    # Moved to orchidlist
-    path('progeny/<int:pid>/', views.progeny, name='progeny'),
-    path('progenyimg/<int:pid>/', views.progenyimg, name='progenyimg'),
-    path('ancestor/<int:pid>/', views.ancestor, name='ancestor'),
     path('ancestor/', views.ancestor, name='ancestor'),
     path('ancestrytree/<int:pid>/', views.ancestrytree, name='ancestrytree'),
     path('ancestrytree/', views.ancestrytree, name='ancestrytree'),
@@ -48,12 +44,12 @@ urlpatterns = [
     path('curate_newupload/', views.curate_newupload, name='curate_newupload'),
     path('curate_pending/', views.curate_pending, name='curate_pending'),
     path('curate_newapproved/', views.curate_newapproved, name='curate_newapproved'),
-    path('reidentify/<int:id>/<int:pid>/', views.reidentify, name='reidentify'),
+    path('reidentify/<int:orid>/<int:pid>/', views.reidentify, name='reidentify'),
 
     path('uploadfile/<int:pid>/', views.uploadfile, name='uploadfile'),        #Just load form
     path('uploadweb/<int:pid>/', views.uploadweb, name='uploadweb'),
-    path('uploadweb/<int:pid>/<int:id>/', views.uploadweb, name='uploadweb'),
-    path('deletephoto/<int:id>/', views.deletephoto, name='deletephoto'),
+    path('uploadweb/<int:pid>/<int:orid>/', views.uploadweb, name='uploadweb'),
+    path('deletephoto/<int:orid>/', views.deletephoto, name='deletephoto'),
     path('deletewebphoto/<int:pid>/', views.deletewebphoto, name='deletewebphoto'),
     path('approvemediaphoto/<int:pid>/', views.approvemediaphoto, name='approvemediaphoto'),
 ]

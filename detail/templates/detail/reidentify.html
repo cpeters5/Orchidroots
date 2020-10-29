@@ -12,7 +12,7 @@
      <div class="tab-content clearfix" style="background:white; margin:0;border-left:1px solid lightgrey;border-right:1px solid lightgrey;border-bottom:1px solid lightgrey;min-height:1000px">
         <br>
          <div class="container" style="width:90%;font-size:13px;">
-             <form method="post" action="{% url 'detail:reidentify' id=img.id pid=img.pid_id %}?role={{role}}&tab={{tab}}">
+             <form method="post" action="{% url 'detail:reidentify' orid=img.id pid=img.pid_id %}?role={{role}}&tab={{tab}}">
                  {% csrf_token %}
                  <span style="font-size:16px;">
                      <button type="submit" class="btn btn-primary btn-sm"  style="width:80px">Save</button>

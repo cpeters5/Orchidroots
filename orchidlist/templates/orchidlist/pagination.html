@@ -35,19 +35,6 @@
 
 
 </style>
-<!--    <div style="width:100%">-->
-<!--    <ul class="pagination" style="display:inline-block !important">-->
-<!--            &lt;!&ndash;Alphabetical&ndash;&gt;-->
-<!--                {% for opt in alpha_list %}-->
-<!--        <li class="page-item"><a class="page-link" {% if opt == alpha %} class="active" {% endif %} href="?alpha={{opt}}&prev_alpha={{alpha}}&year={{year}}&type={{type}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsectiont={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&pp={{pollen}}&a={{accepted}}" >{{opt}}</a></li>-->
-<!--                {% endfor %}-->
-<!--                {% if alpha == "ALL" %}-->
-<!--        <li class="page-item"><a class="page-link" class="active" href="?alpha=ALL&prev_alpha={{alpha}}&year={{year}}&type={{type}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&pp={{pollen}}&a={{accepted}}">All </a></li>-->
-<!--                {% else %}-->
-<!--        <li class="page-item"><a class="page-link" href="?year={{year}}&alpha=ALL&prev_alpha={{alpha}}&year={{year}}&type={{type}}&status={{status}}&sort={{sort}}&genus={{genus}}&genustype={{genustype}}&spc={{species}}&g={{g}}&sf={{sf_obj.sf}}&t={{t_obj.t}}&st={{st_obj.st}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&author={{author}}&originator={{originator}}&parent={{parent}}&ancestor={{ancestor}}&gn={{gn}}&gen={{genus.pid}}&d={{d}}&sp={{seed}}&pp={{pollen}}&a={{accepted}}">All </a></li>-->
-<!--                {% endif %}-->
-<!--    </ul>-->
-<!--    </div>-->
             <!--Page-->
     <ul class="pagination pagination-xs">
     {% if last_page > 1 %}

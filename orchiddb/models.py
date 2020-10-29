@@ -167,7 +167,7 @@ class Genus(models.Model):
         if 'synonym' in self.status:
             acc_id = Gensyn.objects.get(pid=self.pid).acc_id
             gen = Genus.objects.get(pid=acc_id)
-            return "%s <i>%s</i>" % (gen.genus, gen.author)
+            return "<i>%s</i> %s" % (gen.genus, gen.author)
 
     def getAcc(self):
         if 'synonym' in self.status:
@@ -651,8 +651,8 @@ class Species(models.Model):
 
     def get_species(self):
         name = '%s' % (self.species)
-        # if self.is_hybrid:
-        #     name = '%s %s' % (self.is_hybrid, name)
+        if self.is_hybrid:
+            name = '%s %s' % (self.is_hybrid, name)
         if self.infraspr:
             name = '%s %s %s' % (name, self.infraspr, self.infraspe)
         return name

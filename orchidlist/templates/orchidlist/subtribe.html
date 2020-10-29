@@ -55,7 +55,7 @@
 				<th>Subfamily</th></th><th>Tribe </th><th>subtribe</th><th>author</th><th>year</th><th> Description</th>
 			</tr>
 			{% for subtribe in subtribe_list %}
-			<tr bgcolor="{% cycle '#DFEFEF' '#FFFFFF' '#EFEFEF' '#FFFFFF'%}">
+			<tr>
 				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&genustype=species">{{subtribe.subfamily}}</a></td>
 				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&t={{subtribe.tribe}}&genustype=species">{{subtribe.tribe}}</a></td>
 				<td><a href="{% url 'orchidlist:genera' %}?sf={{subtribe.subfamily}}&t={{subtribe.tribe}}&st={{subtribe.subtribe}}&genustype=species">{{subtribe.subtribe}}</a></td>

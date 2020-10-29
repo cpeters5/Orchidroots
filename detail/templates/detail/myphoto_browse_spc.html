@@ -75,7 +75,7 @@ img{
                 <button class="btn btn-default mybtn dropdown-toggle" type="button" data-toggle="dropdown">My species list ({{myspecies_list.count}})</button>
                 <div class="dropdown-menu mymenu">
                     {% for spc in myspecies_list %}
-                        <a class="dropdown-item" href="{% url 'detail:photos' spc.pid %}?type=species&role={{role}}&author={{author.author_id}}">{{spc.name|safe}}</a>
+                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=species&role={{role}}&author={{author.author_id}}">{{spc.name|safe}}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -90,7 +90,7 @@ img{
                 <button class="btn btn-default mybtn dropdown-toggle " type="button" data-toggle="dropdown">My hybrid list ({{myhybrid_list.count}})</button>
                 <div class="dropdown-menu mymenu">
                     {% for spc in myhybrid_list %}
-                        <a class="dropdown-item" href="{% url 'detail:photos' spc.pid %}?type=hybrid&role={{role}}&author={{author.author_id}}">{{spc.name|safe}}</a>
+                        <a class="dropdown-item" href="{% url 'detail:myphoto' spc.pid %}?type=hybrid&role={{role}}&author={{author.author_id}}">{{spc.name|safe}}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -135,7 +135,7 @@ img{
                     <br>
                         {% if last_page > 1 %} {% include "detail/paginator_brw.html" %} {% endif %}
                         {% for x in my_list %}
-                            <a href="{% url 'detail:photos' x.pid_id %}?role={{role}}&author={{author.author_id}}">
+                            <a href="{% url 'detail:myphoto' x.pid_id %}?role={{role}}&author={{author.author_id}}">
                                 <div class="box">
                                     <img class="thumbnails" alt="" src="{% static x.image_dir %}{{ x.image_file }}" class="img-fluid fullimg">
                                     <div class="text-c">{{x.pid.pid.name|safe}}</div>

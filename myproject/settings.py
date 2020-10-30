@@ -298,6 +298,7 @@ except: # noqa
 
 
 # allauth account settings
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
@@ -340,6 +341,7 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
 
 # mail settings
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 ANYMAIL = {
     "MAILGUN_API_KEY": env.str("MAILGUN_API_KEY", default=''),
@@ -349,7 +351,6 @@ ANYMAIL = {
 DEFAULT_FROM_EMAIL = "admin@mail.orchidroots.org"  # if you don't already have this in settings
 SERVER_EMAIL = "admin@mail.orchidroots.org"
 
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 STRIPE_SECRET_KEY = env.str('STRIPE_SECRET_KEY', default='')

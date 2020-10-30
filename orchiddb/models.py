@@ -49,7 +49,7 @@ class Publisher(models.Model):
 
 class Family(models.Model):
     family = models.CharField(primary_key=True, default='', db_column='family', max_length=50)
-    author = models.CharField(max_length=200, blank=True)
+    author = models.CharField(max_length=200, null=True, blank=True)
     year = models.IntegerField(null=True)
     description = models.TextField(null=True)
     created_date = models.DateTimeField(auto_now_add=True, null=True)

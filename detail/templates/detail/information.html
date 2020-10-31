@@ -473,27 +473,33 @@ seedparent, pollparent {
                             <div class="card-body">
                                 {% if accepted.common_name or accepted.local_name or accepted.altitude or accepted.bloom_month or accepted.history or accepted.etymology %}
                                     {% if accepted.common_name or accepted.local_name %}
-                                       Common Name:
+                                        <br>
+                                        <b>Common Name:</b>
                                         {% if accepted.common_name %}{{accepted.common_name}},{% endif %}
                                         {% if accepted.local_name %}{{accepted.local_name}}{% endif %}
                                     {% endif %}
                                     {% if accepted.altitude %}
+                                        <br>
                                         <b>Altitude:</b>
                                         {{accepted.altitude|safe}}
                                     {% endif %}
                                     {% if accepted.bloom_month %}
+                                        <br>
                                         <b>bloom_month:</b>
                                         {{accepted.bloom_month|safe}}
                                     {% endif %}
                                     {% if accepted.history %}
+                                        <br>
                                         <b>History</b>
                                         {{accepted.history|safe}}
                                     {% endif %}
                                     {% if accepted.etymology %}
+                                        <br>
                                         <b>Etymology</b>
                                         {{accepted.etymology|safe}}
                                     {% endif %}
                                 {% else %}
+                                        <br>
                                     None
                                 {% endif %}
                             </div>

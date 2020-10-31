@@ -141,7 +141,7 @@
                     <td class="border-lb text-right">
                         {% if image.did.seed_id.pid %}
                             {% if role == 'cur' %}
-                                <a href="{% url 'detail:curate' image.did.seed_id.pid %}?role={{role}}">{{image.did.registered_seed_name_short|safe}}</a>
+                                <a href="{% url 'detail:photos' image.did.seed_id.pid %}?role={{role}}">{{image.did.registered_seed_name_short|safe}}</a>
                             {% else %}
                                 <a href="{% url 'detail:information' image.did.seed_id.pid %}?role={{role}}">{{image.did.registered_seed_name_short|safe}}</a>
                             {% endif %}
@@ -154,7 +154,7 @@
 <!--                        Some hybrrid's parent(s) are missing-->
                         {% if image.did.pollen_id.pid %}
                             {% if role == 'cur' %}
-                                <a href="{% url 'detail:curate' image.did.pollen_id.pid %}?role={{role}}">{{image.did.registered_pollen_name_short|safe}}</a>
+                                <a href="{% url 'detail:photos' image.did.pollen_id.pid %}?role={{role}}">{{image.did.registered_pollen_name_short|safe}}</a>
                             {% else %}
                                     <a href="{% url 'detail:information' image.did.pollen_id.pid %}?role={{role}}">{{image.did.registered_pollen_name_short|safe}}</a>
                             {% endif %}
@@ -178,7 +178,7 @@
     {% elif alpha %}
         <div style="display:block; margin: 0; width: 100%; font-size:13px">
             <br>
-            {% include "detail/alpha_list.html" %}
+            {% include "orchidlist/alpha_list.html" %}
         </div>
         <div class="container" style="width:100%;text-align:center;padding:30px;">
             <h5><small>{{species.name|safe}} has no offspring with name begins with {{alpha|upper}}.</small></h5>

@@ -49,13 +49,11 @@ ALLOWED_HOSTS = [
     'www.orchidroots.com',
     'bluenanta.com',
     'www.bluenanta.com',
-    # 'dev.orchidroots.org',
+    'dev.orchidroots.org',
     '157.245.210.148',
     '127.0.0.1',
     'localhost',
     'orchids-roots.beta.com'
-    'bluenanta.com'
-    'www.bluenanta.com'
 ]
 
 

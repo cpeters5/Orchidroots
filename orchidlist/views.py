@@ -963,13 +963,18 @@ def browse(request):
     if 'subgenus' in request.GET:
         orsubgenus = request.GET['subgenus']
         if orsubgenus:
-            subgenus_obj = Subgenus.objects.get(pk=orsubgenus)
+            try:
+                subgenus_obj = Subgenus.objects.get(pk=orsubgenus)
+            except Subgenus.DoesNotExist:
+                logger.error(">>>> subgenus = " + orsubgenus)
+                subgenus_obj = ''
     if 'section' in request.GET:
         orsection = request.GET['section']
         if orsection:
             try:
                 section_obj = Section.objects.get(pk=orsection)
             except Section.DoesNotExist:
+                logger.error(">>>> section = " + orsection)
                 section_obj = ''
     if 'subsection' in request.GET:
         orsubsection = request.GET['subsection']
@@ -977,11 +982,16 @@ def browse(request):
             try:
                 subsection_obj = Subsection.objects.get(pk=orsubsection)
             except Subsection.DoesNotExist:
+                logger.error(">>>> subsection = " + orsection)
                 subsection_obj = ''
     if 'series' in request.GET:
         orseries = request.GET['series']
         if orseries:
-            series_obj = Series.objects.get(pk=orseries)
+            try:
+                series_obj = Series.objects.get(pk=orseries)
+            except Series.DoesNotExist:
+                logger.error(">>>> series = " + orseries)
+                series_obj = ''
 
     if 'genus' in request.GET:
         genus = request.GET['genus']

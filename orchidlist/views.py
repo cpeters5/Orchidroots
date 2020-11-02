@@ -48,15 +48,14 @@ logger = logging.getLogger(__name__)
 def family(request):
     # -- List Genuses
     family_list = Family.objects.order_by('family')
-    context = {'family_list': family_list, 'alpha_list': alpha_list, 'title': 'families', 'namespace': 'orchidlist', }
+    context = {'family_list': family_list, 'alpha_list': alpha_list, 'title': 'families', }
     return render(request, 'orchidlist/family.html', context)
 
 
 def subfamily(request):
     # -- List Genuses
     subfamily_list = Subfamily.objects.order_by('subfamily')
-    context = {'subfamily_list': subfamily_list, 'alpha_list': alpha_list, 'title': 'subfamilies',
-               'namespace': 'orchidlist', }
+    context = {'subfamily_list': subfamily_list, 'alpha_list': alpha_list, 'title': 'subfamilies', }
     return render(request, 'orchidlist/subfamily.html', context)
 
 
@@ -70,7 +69,7 @@ def tribe(request):
             sf_obj = Subfamily.objects.get(pk=sf)
             if sf_obj:
                 tribe_list = tribe_list.filter(subfamily=sf)
-    context = {'tribe_list': tribe_list, 'title': 'tribes', 'sf': sf, 'sf_list': sf_list, 'namespace': 'orchidlist', }
+    context = {'tribe_list': tribe_list, 'title': 'tribes', 'sf': sf, 'sf_list': sf_list, }
     return render(request, 'orchidlist/tribe.html', context)
 
 
@@ -94,17 +93,16 @@ def subtribe(request):
                 subtribe_list = subtribe_list.filter(tribe=t)
 
     context = {'subtribe_list': subtribe_list, 'title': 'subtribes', 't': t, 'sf': sf, 'sf_list': sf_list,
-               't_list': t_list, 'namespace': 'orchidlist', }
+               't_list': t_list, }
     return render(request, 'orchidlist/subtribe.html', context)
 
 
 @login_required
 def advanced(request):
-    gen = ''
     sf = t = st = ''
     species = ''
-    species_list = []
-    hybrid_list = []
+    specieslist = []
+    hybridlist = []
     intragen_list = []
 
     subfamily_list = Subfamily.objects.all()
@@ -135,29 +133,24 @@ def advanced(request):
         if genus:
             try:
                 genus = Genus.objects.get(genus=genus)
-                gen = genus.pid
             except Genus.DoesNotExist:
-                genus = 'NOT FOUND!'
-                pass
+                genus = ''
     else:
         genus = ''
 
     if genus:
         # new genus has been selected. Now select new species/hybrid
-        gen = genus.pid
-        species_list = Species.objects.filter(gen=genus.pid).filter(type='species').filter(
+        specieslist = Species.objects.filter(gen=genus.pid).filter(type='species').filter(
                 cit_status__isnull=True).exclude(cit_status__exact='').order_by('species', 'infraspe', 'infraspr')
 
-        hybrid_list = Species.objects.filter(gen=genus.pid).filter(type='hybrid').order_by('species')
+        hybridlist = Species.objects.filter(gen=genus.pid).filter(type='hybrid').order_by('species')
 
         # Construct intragen list
         if genus.type == 'hybrid':
             parents = GenusRelation.objects.get(gen=genus.pid)
             if parents:
                 parents = parents.parentlist.split('|')
-                # logger.error("parents = " + parents)
                 intragen_list = Genus.objects.filter(pid__in=parents)
-                # logger.error("intragen list = " + len(intragen_list))
         else:
             intragen_list = Genus.objects.filter(description__icontains=genus).filter(type='hybrid').filter(
                 num_hybrid__gt=0)
@@ -168,10 +161,10 @@ def advanced(request):
 
     context = {
         'genus': genus, 'species': species, 'genus_list': genus_list,
-        'species_list': species_list, 'hybrid_list': hybrid_list, 'intragen_list': intragen_list,
+        'species_list': specieslist, 'hybrid_list': hybridlist, 'intragen_list': intragen_list,
         'subfamily': sf, 'tribe': t, 'subtribe': st,
         'subfamily_list': subfamily_list, 'tribe_list': tribe_list, 'subtribe_list': subtribe_list,
-        'level': 'search', 'title': 'find_orchid', 'role': role, 'namespace': 'search',
+        'level': 'search', 'title': 'find_orchid', 'role': role,
     }
     return render(request, "orchidlist/advanced.html", context)
 
@@ -290,7 +283,8 @@ def genera(request):
             genus_list = genus_list.filter(type='species').exclude(status='synonym')
             if sf_obj or t_obj or st_obj:
                 if sf_obj and t_obj and st_obj:
-                    genus_list = genus_list.filter(subfamily=sf_obj.subfamily).filter(tribe=t_obj.tribe).filter(subtribe=st_obj.subtribe)
+                    genus_list = genus_list.filter(subfamily=sf_obj.subfamily).filter(
+                        tribe=t_obj.tribe).filter(subtribe=st_obj.subtribe)
                 elif sf_obj and t_obj and not st_obj:
                     genus_list = genus_list.filter(subfamily=sf_obj.subfamily).filter(tribe=t_obj.tribe)
                 elif sf_obj and st_obj and not t_obj:
@@ -318,10 +312,10 @@ def genera(request):
         if request.GET.get('prev_sort'):
             prev_sort = request.GET['prev_sort']
         if prev_sort == sort:
-            if sort.find('-',0) >= 0:
-                sort = sort.replace('-','')
+            if sort.find('-', 0) >= 0:
+                sort = sort.replace('-', '')
             else:
-                sort = '-'+sort
+                sort = '-' + sort
         else:
             # sort = '-' + sort
             prev_sort = sort
@@ -338,7 +332,8 @@ def genera(request):
             genus_list = genus_list.order_by(sort)
 
     total = genus_list.count()
-    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(request, genus_list, page_length, num_show)
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item \
+        = mypaginator(request, genus_list, page_length, num_show)
 
     # Get Alliances
     sf_list = Subfamily.objects.all()
@@ -354,45 +349,46 @@ def genera(request):
         st_list = st_list.filter(subfamily=sf_obj.subfamily)
 
     sf_list = sf_list.order_by('subfamily')
-    t_list  = t_list.order_by('tribe')
+    t_list = t_list.order_by('tribe')
     st_list = st_list.order_by('subtribe')
     genus_lookup = Genus.objects.filter(pid__gt=0).filter(type='species')
     context = {'my_list': page_list, 'total': total, 'genus_lookup': genus_lookup,
-               'sf_obj': sf_obj,'sf_list': sf_list, 't_obj': t_obj, 't_list': t_list, 'st_obj':st_obj,'st_list':st_list,
-               'title': 'genera', 'genus': genus, 'year': year, 'genustype': genustype,'status': status,
-               'formula1': formula1, 'formula2': formula2, 'alpha':alpha, 'alpha_list': alpha_list,
+               'sf_obj': sf_obj, 'sf_list': sf_list, 't_obj': t_obj, 't_list': t_list,
+               'st_obj': st_obj, 'st_list': st_list,
+               'title': 'genera', 'genus': genus, 'year': year, 'genustype': genustype, 'status': status,
+               'formula1': formula1, 'formula2': formula2, 'alpha': alpha, 'alpha_list': alpha_list,
                'sort': sort, 'prev_sort': prev_sort, 'role': role,
                'page': page, 'page_range': page_range, 'last_page': last_page, 'next_page': next_page,
-               'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item,}
-    logger.error("orchidlist/genus_list " + str(request.user))
+               'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item, }
+    # logger.error("orchidlist/genus_list " + str(request.user))
     return render(request, 'orchidlist/genera.html', context)
 
 
 def subgenus(request):
     # -- List Genuses
     subgenus_list = Subgenus.objects.order_by('subgenus')
-    context = {'subgenus_list': subgenus_list, 'title': 'subgenus', 'namespace':'orchidlist',}
+    context = {'subgenus_list': subgenus_list, 'title': 'subgenus', }
     return render(request, 'orchidlist/subgenus.html', context)
 
 
 def section(request):
     # -- List Genuses
     section_list = Section.objects.order_by('section')
-    context = {'section_list': section_list, 'title': 'section', 'namespace': 'orchidlist',}
+    context = {'section_list': section_list, 'title': 'section', }
     return render(request, 'orchidlist/section.html', context)
 
 
 def subsection(request):
     # -- List Genuses
     subsection_list = Subsection.objects.order_by('subsection')
-    context = {'subsection_list': subsection_list, 'title': 'subsection', 'namespace': 'orchidlist',}
+    context = {'subsection_list': subsection_list, 'title': 'subsection', }
     return render(request, 'orchidlist/subsection.html', context)
 
 
 def series(request):
     # -- List Genuses
     series_list = Series.objects.order_by('series')
-    context = {'series_list': series_list, 'title': 'series', 'namespace': 'orchidlist',}
+    context = {'series_list': series_list, 'title': 'series', }
     return render(request, 'orchidlist/series.html', context)
 
 
@@ -682,7 +678,7 @@ def species_list(request):
     role = 'pub'
     if 'role' in request.GET:
         role = request.GET['role']
-    logger.error("orchidlist/species " + str(request.user) + " " + str(genus))
+    # logger.error("orchidlist/species " + str(request.user) + " " + str(genus))
     context = {'page_list': page_list, 'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'role': role, 'species': species,
                'subgenus_list': subgenus_list, 'subgenus_obj': subgenus_obj,
@@ -696,7 +692,7 @@ def species_list(request):
                'subregion_list': subregion_list, 'sort': sort, 'prev_sort': prev_sort,
                'page': page, 'page_range': page_range, 'last_page': last_page, 'next_page': next_page,
                'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item,
-               'level': 'list', 'title': 'species_list', 'namespace': 'orchidlist', 'type': 'species'
+               'level': 'list', 'title': 'species_list', 'type': 'species'
                }
     return render(request, 'orchidlist/species.html', context)
 
@@ -857,7 +853,7 @@ def hybrid_list(request):
 
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item \
         = mypaginator(request, this_species_list, page_length, num_show)
-    logger.error("orchidlist/hybrid  " + str(request.user) + " " + str(genus))
+    # logger.error("orchidlist/hybrid  " + str(request.user) + " " + str(genus))
     context = {'my_list': page_list, 'seed_genus_list': seed_genus_list, 'poll_genus_list': poll_genus_list,
                'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'genus': genus, 'year': year, 'status': status,
@@ -866,7 +862,7 @@ def hybrid_list(request):
                'sort': sort, 'prev_sort': prev_sort,
                'page': page, 'page_range': page_range, 'last_page': last_page, 'next_page': next_page,
                'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item,
-               'level': 'list', 'title': 'hybrid_list', 'namespace': 'orchidlist',
+               'level': 'list', 'title': 'hybrid_list',
                }
     return render(request, 'orchidlist/hybrid.html', context)
 
@@ -940,9 +936,9 @@ def browsegen(request):
         'page': page, 'page_range': page_range, 'last_page': last_page, 'num_show': num_show,
         'page_length': page_length, 'alpha': alpha, 'alpha_list': alpha_list, 'display': display,
         'first': first_item, 'last': last_item, 'next_page': next_page, 'prev_page': prev_page,
-        'level': 'detail', 'title': 'browsegen', 'section': 'My Collection', 'namespace': 'detail', 'role': role,
+        'level': 'detail', 'title': 'browsegen', 'section': 'My Collection', 'role': role,
                }
-    logger.error("orchidlist/browsegen   " + str(request.user) + " " + str(genus))
+    # logger.error("orchidlist/browsegen   " + str(request.user) + " " + str(genus))
     return render(request, 'orchidlist/browse_gen.html', context)
 
 
@@ -966,7 +962,6 @@ def browse(request):
             try:
                 subgenus_obj = Subgenus.objects.get(pk=orsubgenus)
             except Subgenus.DoesNotExist:
-                logger.error(">>>> subgenus = " + orsubgenus)
                 subgenus_obj = ''
     if 'section' in request.GET:
         orsection = request.GET['section']
@@ -974,7 +969,6 @@ def browse(request):
             try:
                 section_obj = Section.objects.get(pk=orsection)
             except Section.DoesNotExist:
-                logger.error(">>>> section = " + orsection)
                 section_obj = ''
     if 'subsection' in request.GET:
         orsubsection = request.GET['subsection']
@@ -982,7 +976,6 @@ def browse(request):
             try:
                 subsection_obj = Subsection.objects.get(pk=orsubsection)
             except Subsection.DoesNotExist:
-                logger.error(">>>> subsection = " + orsection)
                 subsection_obj = ''
     if 'series' in request.GET:
         orseries = request.GET['series']
@@ -990,7 +983,6 @@ def browse(request):
             try:
                 series_obj = Series.objects.get(pk=orseries)
             except Series.DoesNotExist:
-                logger.error(">>>> series = " + orseries)
                 series_obj = ''
 
     if 'genus' in request.GET:
@@ -1001,7 +993,7 @@ def browse(request):
             return HttpResponseRedirect("/orchidlist/browsegen/?display=checked")
     else:
         return HttpResponseRedirect("/orchidlist/browsegen/?display=checked")
-    logger.error("orchidlist/browse  " + str(request.user) + " " + str(genus))
+    # logger.error("orchidlist/browse  " + str(request.user) + " " + str(genus))
 
     if 'display' in request.GET:
         display = request.GET['display']
@@ -1093,7 +1085,7 @@ def browse(request):
         'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,
         'page': page, 'alpha': alpha, 'alpha_list': alpha_list, 'total': total,
         'first': first_item, 'last': last_item, 'next_page': next_page, 'prev_page': prev_page,
-        'level': 'browse', 'title': 'browse', 'section': 'list', 'namespace': 'orchidlist', 'role': role,
+        'level': 'browse', 'title': 'browse', 'section': 'list', 'role': role,
                }
     return render(request, 'orchidlist/browse.html', context)
 
@@ -1101,19 +1093,27 @@ def browse(request):
 def browsedist(request):
     dist_list = get_distlist()
     context = {'dist_list': dist_list, }
-    logger.error("orchidlist/browsedist  " + str(request.user) + " " + dist_list[0].region_name + " " +
-                 dist_list[0].regcard)
+    # logger.error("orchidlist/browsedist  " + str(request.user) + " " + dist_list[0].region_name + " " +
+    #              dist_list[0].regcard)
     return render(request, 'orchidlist/browsedist.html', context)
 
 
 # All access - at least role = pub
-def progeny(request, pid):
+def progeny(request, pid=None):
     alpha = ''
     sort = ''
     prev_sort = ''
     num_show = 5
     page_length = 30
     role = 'pub'
+
+    if not pid:
+        if 'pid' in request.GET:
+            pid = request.GET['pid']
+            pid = int(pid)
+        else:
+            pid = 0
+
     if 'role' in request.GET:
         role = request.GET['role']
 
@@ -1176,13 +1176,13 @@ def progeny(request, pid):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, des_list, page_length, num_show)
 
-    logger.error("orchidlist/progeny " + str(request.user) + " " + role + " - " + str(species))
+    # logger.error("orchidlist/progeny " + str(request.user) + " " + role + " - " + str(species))
     context = {'des_list': page_list, 'species': species, 'total': total, 'alpha': alpha, 'alpha_list': alpha_list,
                 'sort': sort, 'prev_sort': prev_sort, 'tab': 'pro', 'pro': 'active',
                'genus': genus, 'page': page,
                'page_range': page_range, 'last_page': last_page, 'next_page': next_page, 'prev_page': prev_page,
                'num_show': num_show, 'first': first_item, 'last': last_item,
-               'level': 'orchidlist', 'title': 'progeny', 'section': 'Public Area', 'role': role, 'namespace': 'detail',
+               'level': 'orchidlist', 'title': 'progeny', 'section': 'Public Area', 'role': role,
                }
     return render(request, 'orchidlist/progeny.html', context)
 
@@ -1191,6 +1191,13 @@ def progeny(request, pid):
 def progenyimg(request, pid=None):
     num_show = 5
     page_length = 30
+
+    if not pid:
+        if 'pid' in request.GET:
+            pid = request.GET['pid']
+            pid = int(pid)
+        else:
+            pid = 0
 
     try:
         species = Species.objects.get(pk=pid)
@@ -1220,11 +1227,11 @@ def progenyimg(request, pid=None):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, img_list, page_length, num_show)
 
-    logger.error("orchidlist/progenyimg" + str(request.user) + " " + role + " - " + str(species))
+    # logger.error("orchidlist/progenyimg" + str(request.user) + " " + role + " - " + str(species))
     context = {'des_list': page_list, 'species': species, 'tab': 'proimg', 'proimg': 'active',
                'genus': genus, 'total': total, 'page_range': page_range, 'last_page': last_page,
                'num_show': num_show, 'first': first_item, 'last': last_item, 'role': role,
-               'level': 'orchidlist', 'title': 'progenyimg', 'section': 'Public Area', 'namespace': 'detail',
+               'level': 'orchidlist', 'title': 'progenyimg', 'section': 'Public Area',
                }
     return render(request, 'orchidlist/progenyimg.html', context)
 
@@ -1263,9 +1270,13 @@ def mypaginator(request, full_list, page_length, num_show):
     total = len(full_list)
     if page_length > 0:
         paginator = Paginator(full_list, page_length)
-        page = int(request.GET.get('page', '1'))
+        if 'page' in request.GET:
+            page = request.GET.get('page', '1')
         if not page or page == 0:
             page = 1
+        else:
+            page = int(page)
+            
         try:
             page_list = paginator.page(page)
             last_page = paginator.num_pages

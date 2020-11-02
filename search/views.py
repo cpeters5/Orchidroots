@@ -51,7 +51,7 @@ def search_match(request, partner=None):
     else:
         search = ''
     keyword = search
-    logger.error("seasrch/search_match:  " + str(request.user) + " " + role + " - " + keyword)
+    # logger.error("seasrch/search_match:  " + str(request.user) + " " + role + " - " + keyword)
     if keyword:
         rest = keyword.split(' ', 1)
         if len(rest) > 1:
@@ -170,7 +170,7 @@ def search_fuzzy(request):
         search = request.GET['search'].strip()
     send_url = '/search/search_match/?search=' + search + "&role=" + role
     keyword = search.lower()
-    logger.error("detail/search_fuzzy: " + str(request.user) + " " + role + " - " + keyword)
+    # logger.error("detail/search_fuzzy: " + str(request.user) + " " + role + " - " + keyword)
 
     grexlist = Species.objects.exclude(status='pending')
     # Filter for partner specific list.

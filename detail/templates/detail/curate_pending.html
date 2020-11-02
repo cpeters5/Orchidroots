@@ -161,10 +161,10 @@ img{
                                         </div>
                                     </a>
                                     <div style="font-size:11px">
-                                        <a href="{% url 'detail:curate' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&action=file">{{image.pid.pid.namecasual|safe}}</a>
+                                        <a href="{% url 'detail:photos' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&action=file">{{image.pid.pid.namecasual|safe}}</a>
                                         <br>{{image.created_date.date}}
                                         <br>
-                                        <a href="{% url 'detail:curate' image.pid_id %}?rank=3&id={{image.id}}&tab=sum&gen={{species.gen.pid}}">Approve</a>
+                                        <a href="{% url 'detail:photos' image.pid_id %}?rank=3&id={{image.id}}&tab=sum&gen={{species.gen.pid}}">Approve</a>
                                         <a href="{% url 'detail:deletewebphoto' image.pid_id %}?id={{image.id}}&role={{role}}&area=allpending&page={{page}}&days={{days}}" >Delete</a>
                                     </div>
                             </div>

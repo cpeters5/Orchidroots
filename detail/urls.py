@@ -19,14 +19,18 @@ urlpatterns = [
     path('<int:pid>/species_detail/', views.information, name='information'),
     path('<int:pid>/hybrid/', views.information, name='information'),
     path('<int:pid>/hybrid_detail/', views.information, name='information'),
+    path('compare/<int:pid>/', views.compare, name='compare'),
     path('compare/', views.compare, name='compare'),
     path('createhybrid/', views.createhybrid, name='createhybrid'),
     path('information/<int:pid>/', views.information, name='information'),
     path('information/', views.information, name='information'),
 
     path('ancestor/', views.ancestor, name='ancestor'),
+    path('ancestor/<int:pid>/', views.ancestor, name='ancestor'),
     path('ancestrytree/<int:pid>/', views.ancestrytree, name='ancestrytree'),
     path('ancestrytree/', views.ancestrytree, name='ancestrytree'),
+    path('progeny/<int:pid>/', views.progeny, name='progeny'),
+    path('progenyimg/<int:pid>/', views.progenyimg, name='progenyimg'),
 
     path('comment/', views.comment, name='comment'),
     path('comments/', views.comments, name='comments'),
@@ -46,7 +50,7 @@ urlpatterns = [
     path('curate_newapproved/', views.curate_newapproved, name='curate_newapproved'),
     path('reidentify/<int:orid>/<int:pid>/', views.reidentify, name='reidentify'),
 
-    path('uploadfile/<int:pid>/', views.uploadfile, name='uploadfile'),        #Just load form
+    path('uploadfile/<int:pid>/', views.uploadfile, name='uploadfile'),
     path('uploadweb/<int:pid>/', views.uploadweb, name='uploadweb'),
     path('uploadweb/<int:pid>/<int:orid>/', views.uploadweb, name='uploadweb'),
     path('deletephoto/<int:orid>/', views.deletephoto, name='deletephoto'),

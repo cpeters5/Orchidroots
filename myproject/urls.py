@@ -17,17 +17,20 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
+from django.views.generic.base import TemplateView
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import login_page, register_page, send_email, UpdateProfileView, SetEmailView, ChangeEmailView, \
     PasswordChangeRedirect
-from myproject.views import orchid_home, home, private_home
+from myproject.views import orchid_home, home, private_home, robots_txt
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path("robots.txt", robots_txt),
     path('home/', home, name='home'),
     path('', orchid_home, name='orchid_home'),
+
     # path('index/', index, name='index'),
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
@@ -48,6 +51,7 @@ urlpatterns = [
     # old
     path('natural/', include('natural.urls')),
     path('orchid/', include('orchid.urls')),
+    path('orchidlite/', include('orchidlite.urls')),
 
     # path('sendmail/', include('sendmail.urls')),
 

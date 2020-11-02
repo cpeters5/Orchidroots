@@ -10,19 +10,21 @@ from . import views
 app_name = 'orchidlist'
 urlpatterns = [
     # Lists
-    path('family/', views.family, name='family'),  # -- All species
-    path('subfamily/', views.subfamily, name='subfamily'),  # -- All species
-    path('tribe/', views.tribe, name='tribe'),  # -- All species
-    path('subtribe/', views.subtribe, name='subtribe'),  # -- All species
-    path('genera/', views.genera, name='genera'),  # -- All species
-    path('species/', views.species_list, name='species'),  # -- All species
-    path('hybrid/', views.hybrid_list, name='hybrid'),  # -- All species
+    path('family/', views.family, name='family'),
+    path('subfamily/', views.subfamily, name='subfamily'),
+    path('tribe/', views.tribe, name='tribe'),
+    path('subtribe/', views.subtribe, name='subtribe'),
+    path('genera/', views.genera, name='genera'),
+    path('species/', views.species_list, name='species'),
+    path('hybrid/', views.hybrid_list, name='hybrid'),
     path('progeny/<int:pid>/', views.progeny, name='progeny'),
+    path('progeny/', views.progeny, name='progeny'),
     path('progenyimg/<int:pid>/', views.progenyimg, name='progenyimg'),
-    path('subgenus/', views.subgenus, name='subgenus'),  # -- All species
-    path('section/', views.section, name='section'),  # -- All species
-    path('subsection/', views.subsection, name='subsection'),  # -- All species
-    path('series/', views.series, name='series'),  # -- All species
+    path('progenyimg/', views.progenyimg, name='progenyimg'),
+    path('subgenus/', views.subgenus, name='subgenus'),
+    path('section/', views.section, name='section'),
+    path('subsection/', views.subsection, name='subsection'),
+    path('series/', views.series, name='series'),
     path('advanced/', views.advanced, name='advanced'),
 
     path('browsegen/', views.browsegen, name='browsegen'),

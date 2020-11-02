@@ -14,6 +14,8 @@ from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.template import TemplateDoesNotExist
 from django.core.mail import EmailMessage, EmailMultiAlternatives
+import logging
+logger = logging.getLogger(__name__)
 
 
 class AccountAdapter(DefaultAccountAdapter):
@@ -43,6 +45,7 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             perform_login(request, user, email_verification='none')
             raise ImmediateHttpResponse(redirect(settings.LOGIN_REDIRECT_URL))
         except Exception as e:
+            logger.error("PRE SOCIAL LOGIN FAIL " + str(request.user))
             pass
 
     def save_user(self, request, sociallogin, form=None):
@@ -57,8 +60,8 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
             if getattr(user, 'profile', None):
                 user.profile.profile_pic_url = picture_url
         user.profile.save()
+        logger.error("SAVE USER " + str(request.user))
         return user
-
 
     def populate_user(self,
                       request,
@@ -66,9 +69,17 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
                       data):
         user = super().populate_user(request, sociallogin, data)
         user.fullname = data.get('name', '')
+        logger.error("POPULATE USER " + str(request.user))
         return user
 
-
+    def authentication_error(self, request, provider_id, error, exception, extra_context):
+        your_log_function(
+            'SocialAccount authentication error!',
+            'error',
+            request,
+            extra_data = {'provider_id': provider_id, 'error': error.__str__(), 'exception': exception.__str__(), 'extra_context': extra_context},
+        )
+        logger.error("AUTHENTICATION_ERROR " + str(request.user) + " - error = " + error + " - extracontext = " + extra_context)
 
 
 

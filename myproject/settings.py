@@ -93,7 +93,7 @@ INSTALLED_APPS = [
     # old
     # 'genera',
     'orchid',
-    # 'orchidlite',
+    'orchidlite',
     'natural',
 
     # Third Party

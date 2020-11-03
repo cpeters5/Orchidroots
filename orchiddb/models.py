@@ -112,7 +112,7 @@ class Subtribe(models.Model):
 class Genus(models.Model):
     pid = models.IntegerField(primary_key=True)
     is_hybrid = models.CharField(max_length=1, null=True)
-    genus = models.CharField(max_length=50, default='')
+    genus = models.CharField(max_length=50, default='', unique=True)
     author = models.CharField(max_length=200, default='')
     citation = models.CharField(max_length=200, default='')
     cit_status = models.CharField(max_length=20, null=True)

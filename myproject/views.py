@@ -12,7 +12,7 @@ Species = apps.get_model('orchiddb', 'Species')
 SpcImages = apps.get_model('orchiddb', 'SpcImages')
 HybImages = apps.get_model('orchiddb', 'HybImages')
 Comment = apps.get_model('orchiddb', 'Comment')
-num_img = 10
+num_img = 20
 
 
 def orchid_home(request):

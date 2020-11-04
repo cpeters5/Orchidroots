@@ -882,9 +882,9 @@ def comment(request):
 def is_int(s):
     try:
         int(s)
-        return True
     except ValueError:
         return False
+    return True
 
 
 def get_client_ip(request):
@@ -909,9 +909,10 @@ def information(request, pid=None):
         if not pid or pid == '' or pid == '0':
             return HttpResponse(redirect_message)
 
-    if not is_int(pid):
-        logger.error(">>> pid = " + pid)
+    if not pid or not is_int(pid):
         print(request)
+        if pid:
+            logger.error(">>> pid = " + pid)
         logger.error(">>> user = " + str(request.user))
         logger.error(">>> method = " + request.method)
         logger.error(">>> ip = " + get_client_ip(request))

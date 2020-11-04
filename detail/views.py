@@ -886,7 +886,6 @@ def is_int(s):
         return False
     return True
 
-
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -895,6 +894,20 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
+def requestlog(request,pid=None):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    print(request)
+    if pid:
+        logger.error(">>> pid = " + str(pid))
+    logger.error(">>> user = " + str(request.user))
+    logger.error(">>> method = " + request.method)
+    logger.error(">>> ip = " + ip)
+    logger.error(">>> host = " + request.get_host())
+    logger.error(">>> url = " + request.build_absolute_uri())
 
 def information(request, pid=None):
     # -- NEW Detail page of a given species
@@ -906,30 +919,19 @@ def information(request, pid=None):
             role = request.GET['role']
     if not pid and 'pid' in request.GET:
         pid = request.GET['pid']
-        if not pid or pid == '' or pid == '0':
-            return HttpResponse(redirect_message)
 
     if not pid or not is_int(pid):
-        print(request)
-        if pid:
-            logger.error(">>> pid = " + pid)
-        logger.error(">>> user = " + str(request.user))
-        logger.error(">>> method = " + request.method)
-        logger.error(">>> ip = " + get_client_ip(request))
-        logger.error(">>> host = " + request.get_host())
-        logger.error(">>> url = " + request.build_absolute_uri())
-        return HttpResponse(redirect_message)
+        requestlog(request,pid)
+        return HttpResponseRedirect('/')
 
     try:
         species = Species.objects.get(pk=pid)
     except Species.DoesNotExist:
-        return HttpResponse(redirect_message)
+        return HttpResponseRedirect('/')
     genus = species.gen
 
-    # logger.error("detail/information " + str(request.user) + " " + role + " - " + str(species))
-
     if species.status == 'pending':
-        return HttpResponse(redirect_message)
+        return HttpResponseRedirect('/')
     if species.status == 'synonym':
         synonym = Synonym.objects.get(pk=species.pid)
         return HttpResponseRedirect("/detail/information/?pid=" + str(synonym.acc_id) + "&role=" + role)

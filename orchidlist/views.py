@@ -1272,11 +1272,13 @@ def mypaginator(request, full_list, page_length, num_show):
         paginator = Paginator(full_list, page_length)
         if 'page' in request.GET:
             page = request.GET.get('page', '1')
+        else:
+            page = 0
         if not page or page == 0:
             page = 1
         else:
             page = int(page)
-            
+
         try:
             page_list = paginator.page(page)
             last_page = paginator.num_pages

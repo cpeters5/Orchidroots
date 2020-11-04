@@ -879,6 +879,23 @@ def comment(request):
         return HttpResponseRedirect('/')
 
 
+def is_int(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 def information(request, pid=None):
     # -- NEW Detail page of a given species
     distribution_list = ()
@@ -891,6 +908,17 @@ def information(request, pid=None):
         pid = request.GET['pid']
         if not pid or pid == '' or pid == '0':
             return HttpResponse(redirect_message)
+
+    if not is_int(pid):
+        logger.error(">>> pid = " + pid)
+        print(request)
+        logger.error(">>> user = " + str(request.user))
+        logger.error(">>> method = " + request.method)
+        logger.error(">>> ip = " + get_client_ip(request))
+        logger.error(">>> host = " + request.get_host())
+        logger.error(">>> url = " + request.build_absolute_uri())
+        return HttpResponse(redirect_message)
+
     try:
         species = Species.objects.get(pk=pid)
     except Species.DoesNotExist:

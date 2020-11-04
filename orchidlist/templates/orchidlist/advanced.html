@@ -87,7 +87,7 @@ form {
                                 <h6 class="card-title" style="margin-bottom: 0"><span style="color:green;"><i>{{subfamily|title}}</i></span> Subfamilies</h6>
                                 <input type="hidden" form="subfamily" name="role" value="{{ role }}" />
                                 <input type="hidden" form="subfamily" name="genustype" value="species" />
-                                <input list="subfamily_list" name="sf" onClick="this.setSelectionRange(0, this.value.length)" value="{{subfamily|title}}" class="custom-select" placeholder="Enter a new Subfamily">
+                                <input list="subfamily_list" name="sf" onClick="this.setSelectionRange(0, this.value.length)" value="{{subfamily|title}}" class="custom-select" placeholder="Select a new Subfamily">
                                 <br>
                                 <a href="{% url 'orchidlist:subfamily' %}?role={{role}}" style="font-size:12px">Go to Subfamily List</a>
                             </form>

@@ -360,11 +360,11 @@ input {
                     {% for genus in my_list %}
                     <tr><td>
                         {% if genus.status == 'synonym' %}
-                            <i>{{genus.genus}}</i> {{genus.author}} {% if genus.year > 0 %}{{genus.year}}{% endif %}
+                            <i>{{genus.genus}}</i> {% if genus.author %}{{genus.author}}{% endif %} {% if genus.year > 0 %}{{genus.year}}{% endif %}
                         {% elif genus.type == 'species' %}
-                            <a href="{% url 'orchidlist:species' %}?genus={{genus.genus}}&genustype={{genus.type}}"><i>{{genus.genus}}</i> {{genus.author}}</a> {{genus.year}}
+                            <a href="{% url 'orchidlist:species' %}?genus={{genus.genus}}&genustype={{genus.type}}"><i>{{genus.genus}}</i> {% if genus.author %}{{genus.author}}{% endif %}</a> {{genus.year}}
                         {% elif genus.type == 'hybrid' %}
-                            <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.genus}}&genustype={{genus.type}}"><i>{{genus.genus}}</i> {{genus.author}}</a> {{genus.year}}
+                            <a href="{% url 'orchidlist:hybrid' %}?genus={{genus.genus}}&genustype={{genus.type}}"><i>{{genus.genus}}</i> {% if genus.author %}{{genus.author}}{% endif %}</a> {{genus.year}}
                         {% else %}
                             <a href="{% url 'orchidlist:species' %}?genus={{genus.genus}}&genustype={{genus.type}}"><i>{{genus.genus}}</i> {{genus.year}}</a>
                         {% endif %}

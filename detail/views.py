@@ -194,27 +194,20 @@ def createhybrid(request):
 # All access - at least role = pub
 def compare(request, pid=None):
     # TODO:  Use Species form instead
-    if not pid:
-        if 'pid' in request.GET:
-            pid = request.GET['pid']
-            pid = int(pid)
-        else:
-            pid = 0
-
     infraspr1 = infraspe1 = author1 = year1 = spc1 = gen1 = ''
     pid2 = species2 = genus2 = infraspr2 = infraspe2 = author2 = year2 = spc2 = gen2 = ''
     spcimg1_list = spcimg2_list = []
     role = 'pub'
 
     # Initial species
-    if 'pid' in request.GET:
+    if not pid and 'pid' in request.GET:
         pid = request.GET['pid']
         if pid:
             pid = int(pid)
         else:
-            return HttpResponse("Bad request!")
+            return HttpResponseRedirect("/")
     else:
-        return HttpResponse("Bad request!")
+        return HttpResponseRedirect("/")
     if pid > 0:
         try:
             species = Species.objects.get(pk=pid)
@@ -222,9 +215,9 @@ def compare(request, pid=None):
             genus = species.genus
             species1 = species
         except Species.DoesNotExist:
-            return HttpResponse("Bad request!")
+            return HttpResponseRedirect("/")
     else:
-        return HttpResponse("Bad request!")
+        return HttpResponse("/")
 
     # Handfle request. Should use SpcForm instead.
     if 'species1' in request.GET:
@@ -347,7 +340,21 @@ def compare(request, pid=None):
         genus1 = species.genus
         species1 = species
         pid1 = pid
+
+    if not genus1 and not species1 and not genus2 and not species2 and not pid1 and not pid2:
+        if pid:
+            send_url = "/detail/photos/" + str(species.pid) + "/?role=cur"
+            return HttpResponseRedirect(send_url)
+        else:
+            return HttpResponseRedirect("/")
+
+
+
+
+
+
     if species1:
+        # logger.error("species = " + str(species1) + " - pid = " + str(pid1))
         if species1.type == 'species':
             spcimg1_list = SpcImages.objects.filter(pid=pid1).filter(rank__lt=7).order_by('-rank', 'quality', '?')[0: 2]
         else:
@@ -886,31 +893,22 @@ def is_int(s):
         return False
     return True
 
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
 
-def requestlog(request,pid=None):
+def requestlog(request, pid=None):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
     print(request)
+
     if pid:
         logger.error(">>> pid = " + str(pid))
-    logger.error(">>> user = " + str(request.user))
-    logger.error(">>> method = " + request.method)
-    logger.error(">>> ip = " + ip)
-    logger.error(">>> host = " + request.get_host())
-    logger.error(">>> url = " + request.build_absolute_uri())
+    # logger.error(">>> method = " + request.method)
+    logger.error(">>> ip = " + ip + " - user = " + str(request.user) + " - url = " + request.build_absolute_uri())
+
 
 def information(request, pid=None):
-    # -- NEW Detail page of a given species
     distribution_list = ()
     ps_list = pp_list = ss_list = sp_list = seedimg_list = pollimg_list = ()
     role = 'pub'
@@ -921,7 +919,7 @@ def information(request, pid=None):
         pid = request.GET['pid']
 
     if not pid or not is_int(pid):
-        requestlog(request,pid)
+        # requestlog(request, pid)
         return HttpResponseRedirect('/')
 
     try:
@@ -1971,9 +1969,10 @@ def uploadfile(request, pid):
 
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/login/')
-    if request.user.is_authenticated and request.user.tier.tier < 2:
-        message = 'You dont have access to upload files. Please update your profile to gain access.'
+    if request.user.is_authenticated and (request.user.tier.tier < 2 or not request.user.photographer.author_id):
+        message = 'You dont have access to upload files. Please update your profile to gain access. Or contact admin@orchidroots.org'
         return HttpResponse(message)
+
     author, author_list = get_author(request)
     try:
         species = Species.objects.get(pk=pid)

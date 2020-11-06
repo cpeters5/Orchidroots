@@ -18,11 +18,11 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
 from django.views.generic.base import TemplateView
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
-from accounts.views import login_page, register_page, send_email, UpdateProfileView, SetEmailView, ChangeEmailView, \
-    PasswordChangeRedirect
+from accounts.views import  user_reset_password, login_page, register_page, send_email, UpdateProfileView, SetEmailView, ChangeEmailView, \
+    PasswordChangeRedirect, CustomPasswordResetFromKeyView
 from myproject.views import orchid_home, home, private_home, robots_txt
 
 urlpatterns = [
@@ -39,6 +39,13 @@ urlpatterns = [
     path('update_profile/', UpdateProfileView.as_view(), name='update_profile'),
     path('logout/', LogoutView.as_view(), {'next_page': '//'}, name='logout'),
     path('accounts/password/change/', PasswordChangeRedirect.as_view(), name="account_password_change"),
+    
+    path('accounts/password/user_reset_password/', user_reset_password, name="user_account_reset_password"),
+    re_path(
+        r"^accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",
+        CustomPasswordResetFromKeyView.as_view(),
+        name="account_reset_password_from_key",
+    ),
     path('accounts/', include('allauth.urls')),
     # path('password_reset/', include(password_reset.urls)),
 

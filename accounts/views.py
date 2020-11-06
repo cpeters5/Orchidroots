@@ -13,14 +13,19 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
-from allauth.account.views import PasswordChangeView
+from allauth.account.views import _ajax_response, PasswordChangeView, PasswordResetFromKeyView,app_settings, signals
+from allauth.account.forms import UserTokenForm, SetPasswordForm
 from django.conf import settings
 from datetime import datetime
 
-from .forms import LoginForm, RegisterForm, GuestForm, ProfileForm, AddEmailForm
+from .forms import LoginForm, RegisterForm, GuestForm, ProfileForm, AddEmailForm 
 from .models import User, Profile, Photographer
 
 from allauth.account.utils import perform_login
+
+
+INTERNAL_RESET_URL_KEY = "set-password"
+INTERNAL_RESET_SESSION_KEY = "_password_reset_key"
 
 def send_email(request):
     subject = request.POST.get('subject', '')
@@ -263,3 +268,75 @@ class UpdateProfileView(LoginRequiredMixin, FormView):
         return super().form_invalid(form)
 
 
+class CustomPasswordResetFromKeyView(PasswordResetFromKeyView):
+    template_name = "account/password_reset_from_key.html" 
+    success_url = reverse_lazy("account_reset_password_from_key_done")
+
+    def dispatch(self, request, uidb36, key, **kwargs):
+        self.request = request
+        self.key = key
+
+
+        if self.key == INTERNAL_RESET_URL_KEY:
+            self.key = self.request.session.get(INTERNAL_RESET_SESSION_KEY, "")
+            # (Ab)using forms here to be able to handle errors in XHR #890
+            token_form = UserTokenForm(data={"uidb36": uidb36, "key": self.key})
+
+            if token_form.is_valid():
+
+                self.reset_user = token_form.reset_user
+
+
+                # In the event someone clicks on a password reset link
+                # for one account while logged into another account,
+                # logout of the currently logged in account.
+                if (
+                    self.request.user.is_authenticated
+                    and self.request.user.pk != self.reset_user.pk
+                ):
+                    self.logout()
+                    self.request.session[INTERNAL_RESET_SESSION_KEY] = self.key
+
+                self.request.session['reset_user_id'] = self.reset_user.id
+                form = SetPasswordForm()
+                return render(request, 'account/password_set.html', {"form":form})
+        else:
+            token_form = UserTokenForm(data={"uidb36": uidb36, "key": self.key})
+            if token_form.is_valid():
+                # Store the key in the session and redirect to the
+                # password reset form at a URL without the key. That
+                # avoids the possibility of leaking the key in the
+                # HTTP Referer header.
+                self.request.session[INTERNAL_RESET_SESSION_KEY] = self.key
+                redirect_url = self.request.path.replace(
+                    self.key, INTERNAL_RESET_URL_KEY
+                )
+                return redirect(redirect_url)
+
+                print('user ',  self.reset_user)
+        self.reset_user = None
+        response = self.render_to_response(self.get_context_data(token_fail=True))
+        return _ajax_response(self.request, response, form=token_form)
+
+
+def user_reset_password(request):
+    user_id = request.session.get('reset_user_id', None)
+    error = None
+    if request.method == 'POST' and user_id is not None:
+        form = SetPasswordForm()
+        user = User.objects.filter(id=user_id).first()
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 != password2:
+            error = 'Two password must match with each other'
+        if len(password1) < 6:
+            error = 'Password must be six characters long' 
+        
+        if error is not None:
+            return render(request, "account/password_set.html", {'form':form, "error":error})
+            
+        if user:
+            user.set_password(password1)
+            user.save()
+
+    return redirect('/login')

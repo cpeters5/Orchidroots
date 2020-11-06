@@ -394,13 +394,11 @@ def series(request):
 
 @login_required
 def species_list(request):
-    species = spc = genus = gen = ''
+    spc = genus = gen = ''
     # genus = partial genus name
     mysubgenus = mysection = mysubsection = myseries = ''
     subgenus_obj = section_obj = subsection_obj = series_obj = ''
     region_obj = subregion_obj = ''
-    # region_list = subregion_list = []
-    # min_lenspecies_req = 2
     year = ''
     year_valid = 0
     status = author = dist = ''
@@ -540,7 +538,6 @@ def species_list(request):
         spc = request.GET['spc']
         if len(spc) == 1:
             alpha = ''
-        species = spc
 
     if 'author' in request.GET:
         author = request.GET['author']
@@ -574,12 +571,12 @@ def species_list(request):
     if myseries:
         this_species_list = this_species_list.filter(pid__in=temp_ser_list)
 
-    if species:
+    if spc:
         # if species[0] != '%' and species[-1] != '%':
-        if len(species) >= 2:
-            this_species_list = this_species_list.filter(species__icontains=species)
+        if len(spc) >= 2:
+            this_species_list = this_species_list.filter(species__icontains=spc)
         else:
-            this_species_list = this_species_list.filter(species__istartswith=species)
+            this_species_list = this_species_list.filter(species__istartswith=spc)
 
     elif alpha:
         if len(alpha) == 1:
@@ -680,7 +677,7 @@ def species_list(request):
         role = request.GET['role']
     # logger.error("orchidlist/species " + str(request.user) + " " + str(genus))
     context = {'page_list': page_list, 'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
-               'role': role, 'species': species,
+               'role': role,
                'subgenus_list': subgenus_list, 'subgenus_obj': subgenus_obj,
                'section_list': section_list, 'section_obj': section_obj, 'genus': genus,
                'subsection_list': subsection_list, 'subsection_obj': subsection_obj,
@@ -699,7 +696,6 @@ def species_list(request):
 
 @login_required
 def hybrid_list(request):
-    species = ''
     spc = ''
     genus = ''
     # min_lenspecies_req = 2
@@ -759,7 +755,6 @@ def hybrid_list(request):
         spc = request.GET['spc']
         if len(spc) == 1:
             alpha = ''
-        species = spc
 
     if 'author' in request.GET:
         author = request.GET['author']
@@ -803,12 +798,12 @@ def hybrid_list(request):
             # sort = '-' + sort
             prev_sort = sort
 
-    if species:
+    if spc:
         # if species[0] != '%' and species[-1] != '%':
-        if len(species) >= 2:
-            this_species_list = this_species_list.filter(species__icontains=species)
+        if len(spc) >= 2:
+            this_species_list = this_species_list.filter(species__icontains=spc)
         else:
-            this_species_list = this_species_list.filter(species__istartswith=species)
+            this_species_list = this_species_list.filter(species__istartswith=spc)
 
     elif alpha:
         if len(alpha) == 1:

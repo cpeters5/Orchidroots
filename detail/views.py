@@ -129,7 +129,6 @@ def createhybrid(request):
 
     import datetime
     # Now create the new species objects
-    # Same genus
     # # Get nothogenus
     # # First, find all genus ancestors of both
     gen1 = species1.gen.pid
@@ -277,10 +276,6 @@ def compare(request, pid=None):
                        'message1': message,
                        'title': 'compare', 'tab': 'sbs', 'sbs': 'active', 'role': role}
             return render(request, 'detail/compare.html', context)
-        #
-        # message = "The first species, " + gen1 + " " + spc1
-        # if infraspe1:
-        #     message += "  " + infraspr1 + " " + infraspe1
         if spc1:
             species1 = Species.objects.filter(species__iexact=spc1).filter(genus__iexact=gen1)
             if infraspe1:
@@ -342,16 +337,8 @@ def compare(request, pid=None):
         pid1 = pid
 
     if not genus1 and not species1 and not genus2 and not species2 and not pid1 and not pid2:
-        if pid:
-            send_url = "/detail/photos/" + str(species.pid) + "/?role=cur"
-            return HttpResponseRedirect(send_url)
-        else:
-            return HttpResponseRedirect("/")
-
-
-
-
-
+        send_url = "/detail/photos/" + str(species.pid) + "/?role=cur"
+        return HttpResponseRedirect(send_url)
 
     if species1:
         # logger.error("species = " + str(species1) + " - pid = " + str(pid1))
@@ -1824,8 +1811,6 @@ def deletephoto(request, orid):
 
 @login_required
 def deletewebphoto(request, pid):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('/login/')
     species = Species.objects.get(pk=pid)
     if species.status == 'synonym':
         synonym = Synonym.objects.get(pk=pid)
@@ -1870,7 +1855,10 @@ def deletewebphoto(request, pid):
     role = 'cur'
     if 'role' in request.GET:
         role = request.GET['role']
-
+    if 'area' in request.GET:
+        area = request.GET['area']
+    if 'days' in request.GET:
+        days = request.GET['days']
     if area == 'allpending':  # from curate_pending (all rank 0)
         url = "%s?role=%s&page=%s&type=%s&days=%s" % (reverse('detail:curate_pending'), role, page, type, days)
     else:
@@ -1970,7 +1958,8 @@ def uploadfile(request, pid):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/login/')
     if request.user.is_authenticated and (request.user.tier.tier < 2 or not request.user.photographer.author_id):
-        message = 'You dont have access to upload files. Please update your profile to gain access. Or contact admin@orchidroots.org'
+        message = 'You dont have access to upload files. Please update your profile to gain access. ' \
+                  'Or contact admin@orchidroots.org'
         return HttpResponse(message)
 
     author, author_list = get_author(request)

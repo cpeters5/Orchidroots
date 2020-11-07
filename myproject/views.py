@@ -27,8 +27,8 @@ def orchid_home(request):
         if len(randimages) >= num_img:
             break
         if SpcImages.objects.filter(gen=e):
-            randimages.append(SpcImages.objects.filter(gen=e).filter(rank__gt=0).filter(rank__lt=9
-                                                                                        ).order_by('?')[0:1][0])
+            randimages.append(SpcImages.objects.filter(gen=e).filter(rank__gt=0).filter(rank__lt=7
+                                                                    ).order_by('-rank','quality','?')[0:1][0])
 
     random.shuffle(randimages)
     role = 'pub'

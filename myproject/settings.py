@@ -380,6 +380,9 @@ PAYPAL_SECRET =  env('PAYPAL_SECRET', default='')
 # DJANGO_MAILBOX_MAX_MESSAGE_SIZE = False
 # DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = False
 
+# Setup support for proxy headers
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 try:
     from .local_settings import * # NOQA

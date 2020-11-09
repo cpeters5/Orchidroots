@@ -63,6 +63,11 @@ table {
 
         <div class="" style="width:90%;margin:0 auto;padding:0; border: 0 solid blue;">
             <br>
+            <b>Note:</b> To add an external link, please only use single quote, and use the following format:
+            <br>
+            &lt;a href='url' target='_blank'&gt;Name of the link&lt;/a&gt;
+            <br>
+            <br>
             <form method="post" action="{% url 'detail:curateinfohyb' species.pid %}">
             {% csrf_token %}
                 <input type="hidden" name="pid" value="{{ species.pid }}" />

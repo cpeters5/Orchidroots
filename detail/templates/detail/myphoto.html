@@ -247,7 +247,7 @@ div.text-br {
                                     {{image.author.displayname }}
                                 {% endif %}
                             {% endif %}
-
+                            - <a href="{% url 'detail:deletewebphoto' image.pid_id %}?id={{image.id}}&role={{role}}" >Delete</a>
                         </div>
 
                     </div>

@@ -23,6 +23,8 @@ from .models import User, Profile, Photographer
 
 from allauth.account.utils import perform_login
 
+import logging
+logger = logging.getLogger(__name__)
 
 INTERNAL_RESET_URL_KEY = "set-password"
 INTERNAL_RESET_SESSION_KEY = "_password_reset_key"
@@ -98,7 +100,7 @@ def login_page(request):
                 # return redirect("dashboard/")
         else:
             # Return an 'invalid login' error message.
-            print("LOGIN FAIL:  Someone is trying to login and failed!")
+            logger.error("LOGIN FAIL:  Someone is trying to login and failed!")
             print("LOGIN FAIL:  Username: {} and password: {}".format(username, password))
             form.add_error(None, 'invalid username or password')
             context['form'] = form
@@ -134,7 +136,7 @@ def register_page(request):
                 settings.ACCOUNT_EMAIL_VERIFICATION,
                 reverse_lazy('login'))
         else:
-            print(user_form.errors, profile_form.errors)
+            logger.error(user_form.errors + " - " + profile_form.errors)
 
     else:
         user_form = RegisterForm()
@@ -151,7 +153,7 @@ def update_user_details(request):
     user = request.user
     new_email = request.POST.get('new_email')
     user.custom_user.add_email_address(request, new_email)
-    
+
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -313,7 +315,6 @@ class CustomPasswordResetFromKeyView(PasswordResetFromKeyView):
                 )
                 return redirect(redirect_url)
 
-                print('user ',  self.reset_user)
         self.reset_user = None
         response = self.render_to_response(self.get_context_data(token_fail=True))
         return _ajax_response(self.request, response, form=token_form)

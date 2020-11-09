@@ -6,14 +6,14 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, FormView
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url, url_has_allowed_host_and_scheme
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
-from allauth.account.views import _ajax_response, PasswordChangeView, PasswordResetFromKeyView,app_settings, signals
+from allauth.account.views import _ajax_response, PasswordChangeView, PasswordResetFromKeyView, app_settings, signals
 from allauth.account.forms import UserTokenForm, SetPasswordForm
 from django.conf import settings
 from datetime import datetime
@@ -29,28 +29,11 @@ logger = logging.getLogger(__name__)
 INTERNAL_RESET_URL_KEY = "set-password"
 INTERNAL_RESET_SESSION_KEY = "_password_reset_key"
 
-def send_email(request):
-    subject = request.POST.get('subject', '')
-    message = request.POST.get('message', '')
-    # from_email = request.POST.get('from_email', '')
-    # if subject and message and from_email:
-    #     try:
-    #         send_mail(subject, message, from_email, ['admin@example.com'])
-    #     except BadHeaderError:
-    #         return HttpResponse('Invalid header found.')
-    #     return HttpResponseRedirect('/contact/thanks/')
-    # else:
-    #     # In reality we'd use a form class
-    #     # to get proper validation errors.
-    #     return HttpResponse('Make sure all fields are entered and valid.')
-    return HttpResponse('Make sure all fields are entered and valid.')
-
 
 @login_required
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect(reverse('/'))
-
 
 
 # Will be replaced by the classbase LoginView when the bug is fixed
@@ -63,18 +46,16 @@ def login_page(request):
 
     form = LoginForm(request.POST or None)
     context = {
-        "form": form, 'namespace':'accounts',
+        "form": form, 'namespace': 'accounts',
         # 'site_key': settings.RECAPTCHA_SITE_KEY,
     }
     next_ = request.GET.get('next')
     next_post = request.POST.get('next')
     redirect_path = next_ or next_post or None
-    # if redirect_path == '/': redirect_path = '/dashboard/'
 
     if form.is_valid():
-        username  = form.cleaned_data.get("username")
-        password  = form.cleaned_data.get("password")
-        token_id = request.POST.get('token_id')
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
@@ -110,27 +91,18 @@ def login_page(request):
 
 
 def register_page(request):
-    registered = False
     if request.method == "POST":
         user_form = RegisterForm(request.POST or None)
         profile_form = ProfileForm(request.POST or None)
-        # context = {
-        #     "user_form": user_form,
-        #     "profile_form": profile_form,
-        #     "registered":registered, 'namespace':'accounts',
-        # }
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
-            # user.set_password(user.password)
             user.save()
-
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.created_date = timezone.now()
             # if 'profile_pic' in request.FILES:
             #     profile.profile_pic = request.FILES['profile_pic']
             profile.save()
-            registered = True
             return complete_signup(
                 request, user,
                 settings.ACCOUNT_EMAIL_VERIFICATION,
@@ -143,16 +115,16 @@ def register_page(request):
         profile_form = ProfileForm()
 
     context = {
-        "user_form": user_form,
-        "profile_form": profile_form,
-        "registered": registered, 'namespace':'accounts',
+        "user_form": user_form, "profile_form": profile_form, 'namespace': 'accounts',
     }
     return render(request, "accounts/register.html", context)
+
 
 def update_user_details(request):
     user = request.user
     new_email = request.POST.get('new_email')
     user.custom_user.add_email_address(request, new_email)
+
 
 def change_password(request):
     if request.method == 'POST':
@@ -167,8 +139,9 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'accounts/change_password.html', {
-        'form': form, 'namespace':'accounts',
+        'form': form, 'namespace': 'accounts',
     })
+
 
 class SetEmailView(FormView):
     template_name = 'account/set_email.html'
@@ -201,6 +174,7 @@ class SetEmailView(FormView):
                                  email_address=email_address)
         return super().form_valid(form)
 
+
 class ChangeEmailView(FormView):
     template_name = 'account/change_email.html'
     form_class = AddEmailForm
@@ -229,6 +203,7 @@ class ChangeEmailView(FormView):
                                  user=user,
                                  email_address=email_address)
         return super().form_valid(form)
+
 
 class PasswordChangeRedirect(LoginRequiredMixin, PasswordChangeView):
     success_url = reverse_lazy('login')
@@ -277,17 +252,13 @@ class CustomPasswordResetFromKeyView(PasswordResetFromKeyView):
     def dispatch(self, request, uidb36, key, **kwargs):
         self.request = request
         self.key = key
-
-
         if self.key == INTERNAL_RESET_URL_KEY:
             self.key = self.request.session.get(INTERNAL_RESET_SESSION_KEY, "")
             # (Ab)using forms here to be able to handle errors in XHR #890
             token_form = UserTokenForm(data={"uidb36": uidb36, "key": self.key})
 
             if token_form.is_valid():
-
                 self.reset_user = token_form.reset_user
-
 
                 # In the event someone clicks on a password reset link
                 # for one account while logged into another account,
@@ -301,7 +272,7 @@ class CustomPasswordResetFromKeyView(PasswordResetFromKeyView):
 
                 self.request.session['reset_user_id'] = self.reset_user.id
                 form = SetPasswordForm()
-                return render(request, 'account/password_set.html', {"form":form})
+                return render(request, 'account/password_set.html', {"form": form})
         else:
             token_form = UserTokenForm(data={"uidb36": uidb36, "key": self.key})
             if token_form.is_valid():

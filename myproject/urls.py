@@ -21,8 +21,8 @@ from django.views.generic.base import TemplateView
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
-from accounts.views import  user_reset_password, login_page, register_page, send_email, UpdateProfileView, SetEmailView, ChangeEmailView, \
-    PasswordChangeRedirect, CustomPasswordResetFromKeyView
+from accounts.views import  user_reset_password, login_page, register_page, UpdateProfileView, SetEmailView,\
+    ChangeEmailView, PasswordChangeRedirect, CustomPasswordResetFromKeyView
 from myproject.views import orchid_home, robots_txt
 
 urlpatterns = [

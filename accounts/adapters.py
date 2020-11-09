@@ -72,14 +72,5 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
         logger.error("POPULATE USER " + str(request.user))
         return user
 
-    def authentication_error(self, request, provider_id, error, exception, extra_context):
-        your_log_function(
-            'SocialAccount authentication error!',
-            'error',
-            request,
-            extra_data = {'provider_id': provider_id, 'error': error.__str__(), 'exception': exception.__str__(), 'extra_context': extra_context},
-        )
-        logger.error("AUTHENTICATION_ERROR " + str(request.user) + " - error = " + error + " - extracontext = " + extra_context)
-
 
 

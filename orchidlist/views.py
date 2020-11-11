@@ -7,8 +7,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 import string
 from itertools import chain
-import random
+from utils.views import write_output
 import logging
+import random
 
 # Create your views here.
 from django.apps import apps
@@ -100,7 +101,6 @@ def subtribe(request):
 @login_required
 def advanced(request):
     sf = t = st = ''
-    species = ''
     specieslist = []
     hybridlist = []
     intragen_list = []
@@ -155,12 +155,9 @@ def advanced(request):
             intragen_list = Genus.objects.filter(description__icontains=genus).filter(type='hybrid').filter(
                 num_hybrid__gt=0)
 
-    if species and isinstance(species, Species):
-        send_url = "/detail/information/" + str(species.pid) + "/?role=cur"
-        return HttpResponseRedirect(send_url)
-
+    write_output(request, str(genus))
     context = {
-        'genus': genus, 'species': species, 'genus_list': genus_list,
+        'genus': genus, 'genus_list': genus_list,
         'species_list': specieslist, 'hybrid_list': hybridlist, 'intragen_list': intragen_list,
         'subfamily': sf, 'tribe': t, 'subtribe': st,
         'subfamily_list': subfamily_list, 'tribe_list': tribe_list, 'subtribe_list': subtribe_list,
@@ -360,7 +357,7 @@ def genera(request):
                'sort': sort, 'prev_sort': prev_sort, 'role': role,
                'page': page, 'page_range': page_range, 'last_page': last_page, 'next_page': next_page,
                'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item, }
-    # logger.error("orchidlist/genus_list " + str(request.user))
+    write_output(request)
     return render(request, 'orchidlist/genera.html', context)
 
 
@@ -675,7 +672,7 @@ def species_list(request):
     role = 'pub'
     if 'role' in request.GET:
         role = request.GET['role']
-    # logger.error("orchidlist/species " + str(request.user) + " " + str(genus))
+    write_output(request, str(genus))
     context = {'page_list': page_list, 'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'role': role,
                'subgenus_list': subgenus_list, 'subgenus_obj': subgenus_obj,
@@ -848,7 +845,7 @@ def hybrid_list(request):
 
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item \
         = mypaginator(request, this_species_list, page_length, num_show)
-    # logger.error("orchidlist/hybrid  " + str(request.user) + " " + str(genus))
+    write_output(request, str(genus))
     context = {'my_list': page_list, 'seed_genus_list': seed_genus_list, 'poll_genus_list': poll_genus_list,
                'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'genus': genus, 'year': year, 'status': status,
@@ -933,7 +930,7 @@ def browsegen(request):
         'first': first_item, 'last': last_item, 'next_page': next_page, 'prev_page': prev_page,
         'level': 'detail', 'title': 'browsegen', 'section': 'My Collection', 'role': role,
                }
-    # logger.error("orchidlist/browsegen   " + str(request.user) + " " + str(genus))
+    write_output(request)
     return render(request, 'orchidlist/browse_gen.html', context)
 
 
@@ -988,7 +985,7 @@ def browse(request):
             return HttpResponseRedirect("/orchidlist/browsegen/?display=checked")
     else:
         return HttpResponseRedirect("/orchidlist/browsegen/?display=checked")
-    # logger.error("orchidlist/browse  " + str(request.user) + " " + str(genus))
+    write_output(request, str(genus))
 
     if 'display' in request.GET:
         display = request.GET['display']
@@ -1088,8 +1085,6 @@ def browse(request):
 def browsedist(request):
     dist_list = get_distlist()
     context = {'dist_list': dist_list, }
-    # logger.error("orchidlist/browsedist  " + str(request.user) + " " + dist_list[0].region_name + " " +
-    #              dist_list[0].regcard)
     return render(request, 'orchidlist/browsedist.html', context)
 
 
@@ -1171,7 +1166,7 @@ def progeny(request, pid=None):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, des_list, page_length, num_show)
 
-    # logger.error("orchidlist/progeny " + str(request.user) + " " + role + " - " + str(species))
+    write_output(request, species.textname())
     context = {'des_list': page_list, 'species': species, 'total': total, 'alpha': alpha, 'alpha_list': alpha_list,
                 'sort': sort, 'prev_sort': prev_sort, 'tab': 'pro', 'pro': 'active',
                'genus': genus, 'page': page,
@@ -1222,7 +1217,7 @@ def progenyimg(request, pid=None):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, img_list, page_length, num_show)
 
-    # logger.error("orchidlist/progenyimg" + str(request.user) + " " + role + " - " + str(species))
+    write_output(request, species.textname())
     context = {'des_list': page_list, 'species': species, 'tab': 'proimg', 'proimg': 'active',
                'genus': genus, 'total': total, 'page_range': page_range, 'last_page': last_page,
                'num_show': num_show, 'first': first_item, 'last': last_item, 'role': role,

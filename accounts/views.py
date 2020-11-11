@@ -17,6 +17,7 @@ from allauth.account.views import _ajax_response, PasswordChangeView, PasswordRe
 from allauth.account.forms import UserTokenForm, SetPasswordForm
 from django.conf import settings
 from datetime import datetime
+from utils.views import write_output
 
 from .forms import LoginForm, RegisterForm, GuestForm, ProfileForm, AddEmailForm 
 from .models import User, Profile, Photographer
@@ -73,6 +74,7 @@ def login_page(request):
                     return redirect('set_email')
 
             if is_safe_url(redirect_path, request.get_host()):
+                write_output(request)
             # if url_has_allowed_host_and_scheme(redirect_path, request.get_host()):
                 return redirect("/detail/myphoto_browse_spc/?role=pri&display=checked")
                 # return redirect(redirect_path)
@@ -80,9 +82,8 @@ def login_page(request):
                 return redirect("/?role=pri")
                 # return redirect("dashboard/")
         else:
-            # Return an 'invalid login' error message.
-            logger.error("LOGIN FAIL:  Someone is trying to login and failed!")
-            print("LOGIN FAIL:  Username: {} and password: {}".format(username, password))
+            message = "LOGIN FAIL:  Username: {} / password: {}".format(username, password)
+            logger.error(message)
             form.add_error(None, 'invalid username or password')
             context['form'] = form
             return render(request, "accounts/login.html", context)
@@ -103,12 +104,13 @@ def register_page(request):
             # if 'profile_pic' in request.FILES:
             #     profile.profile_pic = request.FILES['profile_pic']
             profile.save()
+            write_output(request)
             return complete_signup(
                 request, user,
                 settings.ACCOUNT_EMAIL_VERIFICATION,
                 reverse_lazy('login'))
         else:
-            logger.error(user_form.errors + " - " + profile_form.errors)
+            print(user_form.errors + " - " + profile_form.errors)
 
     else:
         user_form = RegisterForm()

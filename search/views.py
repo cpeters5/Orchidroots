@@ -9,6 +9,7 @@ from itertools import chain
 import django.shortcuts
 from django.apps import apps
 from fuzzywuzzy import fuzz, process
+from utils.views import write_output
 
 Genus = apps.get_model('orchiddb', 'Genus')
 GenusRelation = apps.get_model('orchiddb', 'GenusRelation')
@@ -19,8 +20,6 @@ Hybrid = apps.get_model('orchiddb', 'Hybrid')
 Synonym = apps.get_model('orchiddb', 'Synonym')
 epoch = 1740
 alpha_list = string.ascii_uppercase
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -51,7 +50,7 @@ def search_match(request, partner=None):
     else:
         search = ''
     keyword = search
-    # logger.error("seasrch/search_match:  " + str(request.user) + " " + role + " - " + keyword)
+    write_output(request, keyword)
     if keyword:
         rest = keyword.split(' ', 1)
         if len(rest) > 1:
@@ -170,7 +169,7 @@ def search_fuzzy(request):
         search = request.GET['search'].strip()
     send_url = '/search/search_match/?search=' + search + "&role=" + role
     keyword = search.lower()
-    # logger.error("detail/search_fuzzy: " + str(request.user) + " " + role + " - " + keyword)
+    write_output(request, keyword)
 
     grexlist = Species.objects.exclude(status='pending')
     # Filter for partner specific list.
@@ -260,4 +259,3 @@ def search_fuzzy(request):
 
                }
     return django.shortcuts.render(request, "search/search_fuzzy.html", context)
-

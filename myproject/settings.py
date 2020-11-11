@@ -337,7 +337,6 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
-
 # mail settings
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
@@ -348,8 +347,6 @@ ANYMAIL = {
 }
 DEFAULT_FROM_EMAIL = "admin@mail.orchidroots.org"  # if you don't already have this in settings
 SERVER_EMAIL = "admin@mail.orchidroots.org"
-
-
 
 STRIPE_SECRET_KEY = env.str('STRIPE_SECRET_KEY', default='')
 STRIPE_PUBLISHABLE_KEY = env.str('STRIPE_PUBLISHABLE_KEY', default='')

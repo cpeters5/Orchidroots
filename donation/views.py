@@ -136,7 +136,6 @@ def donate(request,donateamt=None): # new
             donor_display_name = request.POST.get('donor_display_name', '')
             donor_name = ''
 
-            logger.error("donateamt = " + str(donateamt))
             charge = stripe.Charge.create(
                 amount=donateamt,
                 currency='usd',
@@ -146,7 +145,6 @@ def donate(request,donateamt=None): # new
 
             if charge.get('customer', None):
                 donor_name = charge['customer'].get('name', '')
-                logger.error("donor_display_name = " + donor_name)
 
             payload = {
                 'donor_display_name': donor_display_name,
@@ -158,6 +156,7 @@ def donate(request,donateamt=None): # new
                 'country_code': charge['billing_details']['address']['country']
             }
             Donation.objects.create(**payload)
+            logger.error(">>> donate/donate   " + str(request.user) + " " + donateamt_display)
             return redirect(reverse_lazy('donation:thankyou', kwargs={'donateamt': int(donateamt)}))
         except Exception as e:
             print(e)

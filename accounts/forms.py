@@ -139,7 +139,7 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError('username must not contain blank space!')
 
         if username and User.objects.filter(username__iexact=username).count():
-            raise forms.ValidationError('This username has already been taken!')
+            raise forms.ValidationError('This username ' + username + ' has already been taken!')
         return username
 
 

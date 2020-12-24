@@ -99,21 +99,21 @@ class SpeciesForm(ModelForm):
     def clean_species(self):
         new_species = self.cleaned_data['species'].strip()
         new_genus = self.clean_genus()
-        print("1. genus = ",new_genus)
+        # print("1. genus = ",new_genus)
 
         species_obj = Species.objects.filter(genus=new_genus).filter(species=new_species).exclude(status='synonym')
         if not self['infraspr'].value():
-            print("2. no infraspr")
+            # print("2. no infraspr")
             species_obj = species_obj.exclude(infraspr__isnull=False)
         else:
-            print("3. has infraspr")
+            # print("3. has infraspr")
             species_obj = species_obj.filter(infraspe=self['infraspe'].value()).filter(infraspr=self['infraspr'].value())
 
         if not self['infraspe'].value():
-            print("4. no infraspe")
+            # print("4. no infraspe")
             species_obj = species_obj.exclude(infraspe__isnull=False)
         else:
-            print("5. has infraspe")
+            # print("5. has infraspe")
             species_obj = species_obj.filter(infraspe=self['infraspe'].value())
 
         if self['year'].value():

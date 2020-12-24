@@ -26,6 +26,7 @@ urlpatterns = [
     path('subsection/', views.subsection, name='subsection'),
     path('series/', views.series, name='series'),
     path('advanced/', views.advanced, name='advanced'),
+    path('advancedx/', views.advancedx, name='advancedx'),
 
     path('browsegen/', views.browsegen, name='browsegen'),
     path('browse/', views.browse, name='browse'),

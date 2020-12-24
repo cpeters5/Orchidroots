@@ -72,7 +72,8 @@ label {
     color: #0b51af;
     height: 20px;
     overflow: hidden;
-    margin:3px;
+    margin:2px;
+    text-align:center;
 }
 
 .text-n {
@@ -89,8 +90,8 @@ label {
    height: 15vw;
    width : 15vw;
    /*padding:2px;*/
-   padding:2px 1px 2px 1px;
-    margin-bottom:4px;
+   padding:4px 1px 2px 1px;
+   margin:2px 0;
 }
 
 .imageitem {
@@ -375,13 +376,13 @@ img{
                         <div style="float:left">
                             <ul class="pagination pagination-xs" style="clear:left">
                                 {% if page > 1 %}
-                                    <li class="page-item"><a class="page-link" href="?page=1&role={{role}}&genus={{genus}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-double-left" ></span></a></li>
+                                    <li class="page-item"><a class="page-link" href="?page=1&role={{role}}&genus={{genus}}&type={{type}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-double-left" ></span></a></li>
                                 {% else %}
                                     <li class="page-item"><a class="page-link" href="#"><span class="fa fa-angle-double-left"></span></a></li>
                                 {% endif %}
 
                                 {% if page > 1 %}
-                                    <li class="page-item"><a class="page-link" href="?page={{prev_page}}&role={{role}}&genus={{genus}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-left"></span></a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{prev_page}}&role={{role}}&genus={{genus}}&type={{type}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-left"></span></a></li>
                                 {% else %}
                                     <li class="page-item"><a class="page-link" href="#"><span class="fa fa-angle-left"></span></a></li>
                                 {% endif %}
@@ -390,20 +391,20 @@ img{
                                     {% if pg == page %}
                                         <li class="page-item active"><a class="page-link" href="#">{{pg}}</a></li>
                                     {% else %}
-                                        <li class="page-item"><a class="page-link" href="?page={{pg}}&role={{role}}&genus={{genus}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}">{{pg}}</a></li>
+                                        <li class="page-item"><a class="page-link" href="?page={{pg}}&role={{role}}&genus={{genus}}&type={{type}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}">{{pg}}</a></li>
                                     {% endif %}
                                 {% endfor %}
 
                                 {% if page == last_page %}
                                     <li class="page-item"><a class="page-link" href="#"><span class="fa fa-angle-right"></span></a></li>
                                 {% else %}
-                                    <li class="page-item"><a class="page-link" href="?page={{next_page}}&role={{role}}&genus={{genus}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-right"></span></a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{next_page}}&role={{role}}&genus={{genus}}&type={{type}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-right"></span></a></li>
                                 {% endif %}
 
                                 {% if page == last_page %}
                                     <li class="page-item"><a class="page-link" href="#"><span class="fa fa-angle-double-right"></span></a></li>
                                 {% else %}
-                                    <li class="page-item"><a class="page-link" href="?page={{last_page}}&role={{role}}&genus={{genus}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-double-right"></span></a></li>
+                                    <li class="page-item"><a class="page-link" href="?page={{last_page}}&role={{role}}&genus={{genus}}&type={{type}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&alpha={{alpha}}&display={{display}}"><span class="fa fa-angle-double-right"></span></a></li>
                                 {% endif %}
                           </ul>
 
@@ -419,8 +420,7 @@ img{
         {% if page_list %}
             <div class="container justify-content-left align-items-center" style="clear:left;margin:0 auto; padding:0; text-align: left;">
             {% for x in page_list %}
-                <div class="imageitem m-1 border" style="display:inline-block; text-align:center;">
-                    <div class="imgcaption_top">{{x.namecasual|safe}}</div>
+                <div class="imageitem m-1 border">
                     {% if role == 'cur' %}
                     <a href="{% url 'detail:photos' x.pid %}?tab=sum&role={{role}}">
                         <img class="thumbnails" alt="" src="{% static x.image_file %}" class="img-fluid fullimg">
@@ -430,6 +430,7 @@ img{
                         <img class="thumbnails" alt="" src="{% static x.image_file %}" class="img-fluid fullimg">
                     </a>
                     {% endif %}
+                    <div class="imgcaption_top">{{x.namecasual|safe}}</div>
                 </div>
             {% endfor %}
             </div>

@@ -90,6 +90,7 @@ redirect_message = "<br><br>Species does not exist! <br>You may try <a href='/or
 @login_required
 # Curator only - role = cur
 def createhybrid(request):
+    genus1 = genus2 = species1 = species2 = ''
     if 'pid1' in request.GET:
         pid1 = request.GET['pid1']
         try:
@@ -188,7 +189,10 @@ def createhybrid(request):
     else:
         hybobj.pollen_id = species2
     hybobj.save()
-    write_output(request, str(genus1) + " " + str(species1) + " vs " + str(genus2) + " " + str(species2))
+    if genus1 and genus2:
+        write_output(request, str(genus1) + " " + str(species1) + " vs " + str(genus2) + " " + str(species2))
+    else:
+        write_output(request)
     return HttpResponseRedirect("/detail/" + str(spcobj.pid) + "/photos/?role=" + role + "&genus2=" + species2.genus)
 
 

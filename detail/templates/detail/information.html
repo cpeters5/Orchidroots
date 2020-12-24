@@ -322,9 +322,9 @@ seedparent, pollparent {
         <!--Classification-->
             <!--Taxonomy-->
                 <!--  Top section -->
-        <div class="d-flex p-2 justify-content-center" style="width:100%; max-height:9999px;border:0 solid pink; margin:0 auto;">
+        <div class="d-flex p-2 justify-content-center">
             <!--Left panel-->
-            <div class="p-2 list-group  bg-light" style="border:1px solid lightgrey">
+            <div class="d-none d-sm-block col-sm-3 col-lg-3 p-2 list-group  bg-light" style="border:1px solid lightgrey">
                 <div style="padding-left:10px;">
                     {% if species.gen.subfamily %}
                         <br><b>Subfamily:</b>
@@ -392,11 +392,8 @@ seedparent, pollparent {
 <!--                <hr>-->
                 </div>
             </div>
-
             <!--Right panel-->
-            <div class="p-2 list-group flex-fill" style="border:1px solid lightgrey;">
-<!--            <div class="p-2 list-group flex-fill justify-content-center align-items-center" style="border:1px solid lightgrey;">-->
-
+            <div class="col-sm-9 col-lg-9 p-2 list-group  bg-light flex-fill" style="border:1px solid lightgrey">
                 <div id="accordion">
                     <!-- Update button for curators-->
                     {% if user.tier.tier > 2 and role == 'cur' %}

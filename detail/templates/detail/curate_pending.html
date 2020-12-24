@@ -1,67 +1,29 @@
 {% load static %}
 {% include "base.html" %}
 {% block body %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'utils/css/lightbox.css' %}">
+    <script type="text/javascript" src="{% static 'utils/js/lightbox.js' %}"></script>
+</head>
 
 <style>
-    .mybtn {
-        font-size:13px;
-        width:200px;
-        background-color: white;
-        border: 1px solid grey;
-        margin: 3px;
-    }
-    .mymenu {
-        max-height:400px;
-        overflow-y: auto;
-        font-size:12px;
-    }
+
+.imageitem {
+    display:inline-block;
+    border:1px solid grey;
+    margin:0 2px;
+    width : 22vw !important;
+    background-color: #f7f7f7;
+    border:1px solid lightgrey;
+    text-align:center;
+}
 .thumbnails {
    object-fit: cover;
    overflow: hidden;
-   height: 12vw;
-   width : 12vw;
+   height: 20vw;
+   width : 20vw;
    padding:2px 1px 3px 1px;
 }
-
-div.text-c {
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 13px;
-}
-
-.left-p {
-    width:100%;
-    min-width:200px;
-    border: 0 solid lightgrey;
-    max-height:600px;
-    font-size: 13px;
-    overflow-y:auto;
-}
-
-@media only screen and (max-width: 830px) {
-    .left-p {
-        width:100%;
-        min-width:80px;
-        max-height:400px;
-        font-size: 12px;
-        overflow-y:auto;
-    }
-
-    div.text-c {
-        font-size: 10px;
-    }
-    .thumbnails {
-       height: 22vw;
-       width : 22vw;
-       padding:2px 1px 3px 1px;
-    }
-}
-
-@media only screen and (max-width: 580px) {
-}
-
 .box {
     position: relative;
     display: inline-block;
@@ -70,14 +32,57 @@ div.text-c {
     margin: 0;
 }
 
+.imgcaption {
+    font-size: 9px;
+    height: 30px;
+    overflow: hidden;
+    padding:0 6px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 830px) {
+    .imageitem {
+        width: 40vw !important;
+    }
+    .thumbnails {
+       height: 36vw;
+       width : 36vw;
+       padding:2px 1px 3px 1px;
+    }
+    .imgcaption {
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-width: 580px) {
+
+    .imageitem {
+        width: 36vw;
+        /*height : 170px;*/
+    }
+    .thumbnails {
+       height: 35vw;
+       width : 35vw;
+       padding:2px 1px 3px 1px;
+    }
+
+    .imgcaption {
+        width: 36vw;
+        height: 35px;
+        font-size: 8px;
+    }
+
+}
 img{
     width:100%;
 }
 
-.mybtn{
-    border:1px solid lightblue;
-    font-size:13px;
-    height:30px;
+div.text-br {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+    font-size:12px;
+    color: white;
 }
 
 .btn-group-xs > .btn, .btn-xs {
@@ -86,6 +91,18 @@ img{
     font-size  : .8rem;
     line-height  : .65;
     border-radius : .2rem;
+}
+
+/*style for lightroom*/
+.lb-dataContainer {
+    background-color:white;
+}
+.lb-caption {
+    color:black;
+}
+
+.lb-closeContainer {
+    color: black;
 }
 
 </style>
@@ -153,20 +170,24 @@ img{
                         {% if last_page > 1 %}
                             {% include "detail/paginator_upl.html" %}
                         {% endif %}
+
                         {% for image in file_list %}
-                            <div style="display:inline-block">
-                                    <a href="{% static image.image_dir %}{{image.image_file}}" data-lightbox="uploadfile">
-                                        <div class="box">
-                                            <img class="thumbnails" alt="" src="{% static image.image_dir %}{{image.image_file}}">
-                                        </div>
+                            <div class="imageitem p-1 justify-content-center">
+                                <div class="box">
+                                    <a class=myCarousel" href="{% static image.image_dir %}{{image.image_file}}" data-lightbox="gallery">
+                                        <img class="thumbnails" alt="" src="{% static image.image_dir %}{{image.image_file}}">
+                                        <div class="text text-br">{{image.id}}</div>
                                     </a>
-                                    <div style="font-size:11px">
-                                        <a href="{% url 'detail:photos' image.pid_id %}?&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&action=file">{{image.pid.pid.namecasual|safe}}</a>
-                                        <br>{{image.created_date.date}}
-                                        <br>
-                                        <a href="{% url 'detail:photos' image.pid_id %}?rank=3&id={{image.id}}&tab=sum&gen={{species.gen.pid}}">Approve</a>
-                                        <a href="{% url 'detail:deletewebphoto' image.pid_id %}?id={{image.id}}&role={{role}}&area=allpending&page={{page}}&days={{days}}" >Delete</a>
-                                    </div>
+                                </div>
+                                <div class="imgcaption">
+                                    <a href="{% url 'detail:photos' image.pid_id %}?role=cur&id={{image.id}}&tab=sum&gen={{species.gen.pid}}&action=file">{{image.pid.pid.name|safe}}</a>
+                                    <br>Approved by {{image.user_id}}, {{image.created_date.date}}
+                                    {% if image.source_url %}
+                                        <a href="{{image.source_url}}" target="_blank">{{image.author.displayname }}</a>
+                                    {% else %}
+                                        {{image.author.displayname }}
+                                    {% endif %}
+                                </div>
                             </div>
                         {% endfor %}
                     {% else %}
@@ -182,6 +203,14 @@ img{
 </div>
 
 
+
+<script type="text/javascript">
+
+$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });
+</script>
 
 
 {% endblock %}

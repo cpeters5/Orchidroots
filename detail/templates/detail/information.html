@@ -485,7 +485,7 @@ seedparent, pollparent {
                                     {% endif %}
                                     {% if accepted.bloom_month %}
                                         <br>
-                                        <b>bloom_month:</b>
+                                        <b>bloom_month (local):</b>
                                         {{accepted.bloom_month|safe}}
                                     {% endif %}
                                     {% if accepted.history %}
@@ -815,21 +815,25 @@ seedparent, pollparent {
                                     {% if p.text_data %}{{p.text_data|safe}}{% endif %}</small></h6>">
                                         <img class="thumbnails thumbnails3"  alt="" src="/static/utils/images/species/{{p.img}}">
                                 </a>
-                            {% else %}
+                            {% elif  p.aid.pid > 0 %}
                                 <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>
                             {% endif %}
-                            <br>
                             <div style="clear:left;font-size:9px;line-height:10px; height:40px"><br>
-                                    <a href="{% url 'detail:information' %}?pid={{p.aid.pid}}&role={{role}}">
-                                {% if p.aid.pid > 0 %}{{p.aid.abrevname|safe}}
-                                {% else %}no data
+                                {% if p.aid.pid > 0 %}
+                                   <br>
+                                    <a href="{% url 'detail:information' %}?pid={{p.aid.pid}}&role={{role}}">{{p.aid.abrevname|safe}}</a>
+                                    {{p.pct}}%
+                                {% else %}
+                                    <span style="font-size: 14px;">No data</span>
                                 {% endif %}
-                                </a>
                                 <br>
-                                {{p.pct}}%
                             </div>
                         </div>
                     {% endfor %}
+                {% else %}
+                    No data
+                <br>
+                <br>
                 {% endif %}
             </div>
             </div>

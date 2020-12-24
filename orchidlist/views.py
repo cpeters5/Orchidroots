@@ -167,6 +167,81 @@ def advanced(request):
 
 
 @login_required
+def advancedx(request):
+    sf = t = st = ''
+    specieslist = []
+    hybridlist = []
+    related_list = []
+    subgenus_list = section_list = subsection_list = series_list = []
+
+    subfamily_list = Subfamily.objects.all()
+    if 'sf' in request.GET:
+        sf = request.GET['sf']
+    if sf:
+        tribe_list = Tribe.objects.filter(subfamily=sf)
+    else:
+        tribe_list = Tribe.objects.all()
+    if 't' in request.GET:
+        t = request.GET['t']
+    if t:
+        subtribe_list = Subtribe.objects.filter(tribe=t)
+    else:
+        subtribe_list = Subtribe.objects.all()
+    if 'st' in request.GET:
+        st = request.GET['st']
+
+    genus_list = Genus.objects.filter(cit_status__isnull=True).exclude(cit_status__exact='').order_by('genus')
+
+    if 'role' in request.GET:
+        role = request.GET['role']
+    else:
+        role = 'pub'
+
+    if 'genus' in request.GET:
+        genus = request.GET['genus']
+        if genus:
+            try:
+                genus = Genus.objects.get(genus=genus)
+            except Genus.DoesNotExist:
+                genus = ''
+    else:
+        genus = ''
+
+    if genus:
+        # new genus has been selected. Now select new species/hybrid
+        specieslist = Species.objects.filter(gen=genus.pid).filter(type='species').filter(
+                cit_status__isnull=True).exclude(cit_status__exact='').order_by('species', 'infraspe', 'infraspr')
+
+        hybridlist = Species.objects.filter(gen=genus.pid).filter(type='hybrid').order_by('species')
+
+        subgenus_list = Intragen.objects.filter(gen=genus.pid).filter(subgenus__isnull=False).distinct().values_list('subgenus', flat=True)
+        section_list = Intragen.objects.filter(gen=genus.pid).filter(section__isnull=False).distinct().values_list('section', flat=True)
+        subsection_list = Intragen.objects.filter(gen=genus.pid).filter(subsection__isnull=False).distinct().values_list('subsection', flat=True)
+        series_list = Intragen.objects.filter(gen=genus.pid).filter(series__isnull=False).distinct().values_list('series', flat=True)
+        # Construct intragen list
+        if genus.type == 'hybrid':
+            parents = GenusRelation.objects.get(gen=genus.pid)
+            if parents:
+                parents = parents.parentlist.split('|')
+                related_list = Genus.objects.filter(pid__in=parents)
+        else:
+            related_list = Genus.objects.filter(description__icontains=genus).filter(type='hybrid').filter(
+                num_hybrid__gt=0)
+
+    write_output(request, str(genus))
+    context = {
+        'genus': genus, 'genus_list': genus_list,
+        'species_list': specieslist, 'hybrid_list': hybridlist, 'related_list': related_list,
+        'subgenus_list': subgenus_list, 'section_list': section_list, 'subsection_list': subsection_list,
+        'series_list': series_list,
+        'subfamily': sf, 'tribe': t, 'subtribe': st,
+        'subfamily_list': subfamily_list, 'tribe_list': tribe_list, 'subtribe_list': subtribe_list,
+        'level': 'search', 'title': 'find_orchid', 'role': role,
+    }
+    return render(request, "orchidlist/advancedx.html", context)
+
+
+@login_required
 def genera(request):
     genus = ''
     min_lengenus_req = 2
@@ -732,21 +807,29 @@ def hybrid_list(request):
 
     if 'genus' in request.GET:
         genus = request.GET['genus']
+    if 'seed_genus' in request.GET:
+        seed_genus = request.GET['seed_genus']
+    if seed_genus == 'clear':
+        seed_genus = ''
+
+    if 'pollen_genus' in request.GET:
+        pollen_genus = request.GET['pollen_genus']
+    if pollen_genus == 'clear':
+        pollen_genus = ''
+
+    genus_list = list(Genus.objects.exclude(status='synonym').values_list('genus', flat=True))
+    genus_list.sort()
 
     if genus:
-        if genus[0] != '%' and genus[-1] != '%':
-            this_species_list = this_species_list.filter(genus__icontains=genus)
-
-        elif genus[0] == '%' and genus[-1] != '%':
-            mygenus = genus[1:]
-            this_species_list = this_species_list.filter(genus__iendswith=mygenus)
-
-        elif genus[0] != '%' and genus[-1] == '%':
-            mygenus = genus[:-1]
-            this_species_list = this_species_list.filter(genus__istartswith=mygenus)
-        elif genus[0] == '%' and genus[-1] == '%':
-            mygenus = genus[1:-1]
-            this_species_list = this_species_list.filter(genus__icontains=mygenus)
+        if not seed_genus and not pollen_genus:
+            if genus[0] == '*' or genus[-1] == '*':
+                genus = genus.replace('*','')
+                this_species_list = this_species_list.filter(genus__icontains=genus)
+            else:
+                this_species_list = this_species_list.filter(genus=genus)
+        else:
+            # If user request one or both parent genus, then reset genus to ''
+            genus = ''
 
     if 'spc' in request.GET:
         spc = request.GET['spc']
@@ -764,18 +847,6 @@ def hybrid_list(request):
     if 'pollen' in request.GET:
         pollen = request.GET['pollen']
 
-    if 'seed_genus' in request.GET:
-        seed_genus = request.GET['seed_genus']
-    if seed_genus == 'clear':
-        seed_genus = ''
-
-    if 'pollen_genus' in request.GET:
-        pollen_genus = request.GET['pollen_genus']
-    if pollen_genus == 'clear':
-        pollen_genus = ''
-
-    seed_genus_list = list(Hybrid.objects.filter(genus=genus).distinct().values_list('seed_genus', flat=True))
-    poll_genus_list = list(Hybrid.objects.filter(genus=genus).distinct().values_list('pollen_genus', flat=True))
 
     if alpha != 'ALL':
         alpha = alpha[0:1]
@@ -846,7 +917,7 @@ def hybrid_list(request):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item \
         = mypaginator(request, this_species_list, page_length, num_show)
     write_output(request, str(genus))
-    context = {'my_list': page_list, 'seed_genus_list': seed_genus_list, 'poll_genus_list': poll_genus_list,
+    context = {'my_list': page_list, 'genus_list': genus_list,
                'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'genus': genus, 'year': year, 'status': status,
                'author': author, 'originator': originator, 'seed': seed, 'pollen': pollen, 'seed_genus': seed_genus,
@@ -1006,11 +1077,11 @@ def browse(request):
         gen=genus.pid).distinct().values('subsection').order_by('subsection')
     series_list = intragen_list.exclude(series__isnull=True).exclude(series__exact='').filter(
         gen=genus.pid).distinct().values('series').order_by('series')
-    if subgenus:
+    if orsubgenus:
         section_list = section_list.filter(subgenus=orsubgenus)
         subsection_list = subsection_list.filter(subgenus=orsubgenus)
         series_list = series_list.filter(subgenus=orsubgenus)
-    if section:
+    if orsection:
         subsection_list = subsection_list.filter(section=orsection)
         series_list = series_list.filter(section=orsection)
     pid_list = ()
@@ -1019,11 +1090,11 @@ def browse(request):
         if pid_list:
             if orsubgenus:
                 pid_list = pid_list.filter(subgenus=orsubgenus)
-            if section:
+            if orsection:
                 pid_list = pid_list.filter(section=orsection)
-            if subsection:
+            if orsubsection:
                 pid_list = pid_list.filter(subsection=orsubsection)
-            if series:
+            if orseries:
                 pid_list = pid_list.filter(series=orseries)
 
     img_list = Species.objects.filter(genus=genus).exclude(status='synonym')

@@ -1644,7 +1644,7 @@ def myphoto(request, pid):
 
 @login_required
 def myphoto_browse_spc(request):
-    author_list = Photographer.objects.exclude(user_id__isnull=True).order_by('fullname')
+    author, author_list = get_author(request)
 
     if request.user.tier.tier > 2 and 'author' in request.GET:
         author = request.GET['author']
@@ -1693,7 +1693,7 @@ def myphoto_browse_hyb(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/login/')
 
-    author_list = Photographer.objects.exclude(user_id__isnull=True).order_by('fullname')
+    author, author_list = get_author(request)
     if request.user.tier.tier > 2 and 'author' in request.GET:
         author = request.GET['author']
         author = Photographer.objects.get(pk=author)
@@ -2015,7 +2015,7 @@ def get_author(request):
     if not request.user.is_authenticated or request.user.tier.tier < 2:
         return None, None
 
-    author_list = Photographer.objects.exclude(user_id__isnull=True).order_by('fullname')
+    author_list = Photographer.objects.exclude(user_id__isnull=True).order_by('displayname')
     author = None
     if request.user.tier.tier > 2 and 'author' in request.GET:
         author = request.GET['author']

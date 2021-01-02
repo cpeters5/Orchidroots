@@ -54,7 +54,8 @@ a:hover {
     width: 150px;
     border:1px solid #857f7f;
     padding-top:3px;
-    color: #322d2d;
+    color: #222d2d;
+    background-color: white;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -116,14 +117,17 @@ input {
     width:150px;
     height:30px;
     margin:0;
-    border:1px solid #857f7f;
+    border:1px solid #768070;
     padding:0;
-    /*background-color:white;*/
+    background-color:white;
 }
 .card-body {
     padding: 10px;
 }
 
+.dropdown {
+    display: inline-block;
+}
 </style>
 <br>
 <br>
@@ -165,85 +169,68 @@ input {
             {% if spc == '' %}
                 <!--Subgenus Filter-->
                 {% if subgenus_list.count > 1 or subgenus_obj %}
-                <div class="p-1 dropdown" data-toggle="tooltip" data-placement="top" title="Subgenus">
-                    <button class="dropdown-toggle button select-p2" type="button" data-toggle="dropdown">
-                        {% if subgenus_obj %}<span style="color:black">{{subgenus_obj.subgenus}}</span>{% else %}Subgenus{% endif %}
-                    </button>
-                    <ul class="dropdown-menu scrollable-menu ">
-                        <li><a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section=&subsection=&series=&type=species&genus={{genus}}">None</a>
-                        </li>
-                        {% for subgenus in subgenus_list %}
-                        <li>{% if subgenus.0 != subgenus_obj.subgenus %}<a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus.0}}&section=&subsection=&series=&type=species&genus={{genus}}">{{subgenus.1}}</a>
-                            {% else %}<a href="#">{{subgenus_obj.1}}</a>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+
+                    <div class="p-1 dropdown">
+                        <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                            {% if subgenus_obj %}<span style="color:black">Subgen. {{subgenus_obj.subgenus}}</span>{% else %}Subgenus{% endif %}
+                        </button>
+                        <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                            <a class="dropdown-item" href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section=&subsection=&series=&type=species&genus={{genus}}">All subgenus</a>
+                            {% for subgenus in subgenus_list %}
+                                <a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus.0}}&section=&subsection=&series=&type=species&genus={{genus}}">{{subgenus.1}}</a>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endif %}
 
                 <!--Sections Filter-->
                 {% if section_list.count > 1 or section_obj %}
-                <div class="p-1 dropdown" data-toggle="tooltip" data-placement="top" title="Section">
-                    <button class="dropdown-toggle button select-p2 " type="button" data-toggle="dropdown">
-                        {% if section_obj %}<span style="color:black">{{section_obj.section}}</span>{% else %}Section{% endif %}
-                    </button>
-                    <ul class="dropdown-menu scrollable-menu">
-                        <li>{% if section_obj %}<a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus_obj.subgenus}}&section=&subsection=&series=&type=species&genus={{genus}}">None</a>
-                            {% else %}<a href="#">&nbsp;None</a>
-                            {% endif %}
-                        </li>
-                        {% for section in section_list %}
-                        <li>{% if section.0 != section_obj.section %}<a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus_obj.subgenus}}&section={{section.0}}&subsection=&series=&type=species&genus={{genus}}">{{section.1}}</a>
-                            {% else %}<a href="#">{{section.1}}</a>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                    <div class="p-1 dropdown">
+                        <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                            {% if section_obj %}<span style="color:black">Sec. {{section_obj.section}}</span>{% else %}Section{% endif %}
+                        </button>
+                        <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                            <a class="dropdown-item" href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section=&subsection=&series=&type=species&genus={{genus}}">All section</a>
+                            {% for section in section_list %}
+                                <a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section={{section.0}}&subsection=&series=&type=species&genus={{genus}}">{{section.1}}</a>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endif %}
 
                  <!--Subections Filter-->
                 {% if subsection_list.count > 1 %}
-                <div class="p-1 dropdown" data-toggle="tooltip" data-placement="top" title="Subsection">
-                    <button class="dropdown-toggle button select-p2" type="button" data-toggle="dropdown">
-                        {% if subsection_obj %}<span style="color:black">{{subsection_obj.subsection}}</span>{% else %}Subsection{% endif %}
-                    </button>
-                    <ul class="dropdown-menu scrollable-menu" >
-                        <li>{% if subsection_obj %}<a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection=&series=&type=species&genus={{genus}}"></a>
-                            {% else %}<a href="#"></a>
-                            {% endif %}
-                        </li>
-                        {% for subsection in subsection_list %}
-                        <li>{% if subsection.0 != subsection_obj.subsection %}<a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection.0}}&series={{series_obj.series}}&type=species&genus={{genus}}">{{subsection.1}}</a>
-                            {% else %}<a href="#">{{subsection.1}}</a>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                    <div class="p-1 dropdown">
+                        <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                            {% if subsection_obj %}<span style="color:black">Subsec. {{subsection_obj.subsection}}</span>{% else %}Subsection{% endif %}
+                        </button>
+                        <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                            <a class="dropdown-item" href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section=&subsection=&series=&type=species&genus={{genus}}">All section</a>
+                            {% for subsection in subsection_list %}
+                                <a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section=&subsection={{subsection.0}}&series=&type=species&genus={{genus}}">{{subsection.1}}</a>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endif %}
 
                  <!--series Filter-->
                 {% if series_list.count > 1 or series_obj %}
-                <div class="p-1 dropdown" data-toggle="tooltip" data-placement="top" title="Series">
-                    <button class="dropdown-toggle button select-p2" type="button" data-toggle="dropdown">
-                        {% if series_obj %}<span style="color:black">{{series_obj.series}}</span>{% else %}Series{% endif %}
-                    </button>
-                    <ul class="dropdown-menu scrollable-menu" style="font-size: 11px;padding:5px;width:80px;">
-                        <li>{% if series %}<a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series=&type=species&genus={{genus}}">None</a>
-                            {% else %}<a href="#">&nbsp;None</a>
-                            {% endif %}
-                        </li>
-                        {% for series in series_list %}
-                        <li>{% if series.0 != series_obj.series %}<a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series.0}}&type=species&genus={{genus}}">&nbsp;{{series.1}}</a>
-                            {% else %}<a href="#">{{series.1}}</a>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
+                    <div class="p-1 dropdown">
+                        <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                            {% if series_obj %}<span style="color:black">Ser. {{series_obj.series}}</span>{% else %}Series{% endif %}
+                        </button>
+                        <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
+                            <a class="dropdown-item" href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section=&subsection=&series=&type=species&genus={{genus}}">All series</a>
+                            {% for series in series_list %}
+                                <a href="?alpha={{ alpha }}&sort={{ sort }}&region={{region_obj.id}}&subregion={{subregion_obj.code}}&subgenus=&section=&subsection=&series={{series.0}}&type=species&genus={{genus}}">{{series.1}}</a>
+                                <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+               {% endif %}
             {% endif %}
 
             <!--            Select type-->

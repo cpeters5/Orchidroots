@@ -148,7 +148,7 @@ form {
     <div class="card m-2">
         <div class="card-header">
             <h4>{% if genus %}{{genus}}{% endif %} Hybrid List ({{total|intcomma}})
-            <a class="btn btn-xs btn-primary p-2 m-2 custom-link border" href="{% url 'orchidlist:species' %}?role={{role}}&alpha=A">Go to Species List</a>
+            <a class="btn btn-xs btn-primary p-2 m-2 custom-link border" href="{% url 'orchidlist:species' %}?role={{role}}&alpha=A&genus={{genus}}">Go to Species List</a>
             </h4>
         </div>
         <!--Filter-->

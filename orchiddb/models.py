@@ -1047,13 +1047,13 @@ class Hybrid(models.Model):
     def registered_seed_name_long(self):
         name = self.seed_id.name()
         if self.seed_id.textspeciesnamefull() != self.seed_species or self.seed_id.genus != self.seed_genus:
-            name = self.seed_genus + ' ' + self.seed_species + ' ' + '(syn ' + self.seed_id.textname() + ')'
+            name = self.seed_id.textname() + ' ' + '(syn ' + self.seed_genus + ' ' + self.seed_species + ')'
         return name
 
     def registered_pollen_name_long(self):
         name = self.pollen_id.name()
         if self.pollen_id.textspeciesnamefull() != self.pollen_species or self.pollen_id.genus != self.pollen_genus:
-            name = self.pollen_genus + ' ' + self.pollen_species + ' ' + '(syn ' + self.pollen_id.textname() + ')'
+            name = self.pollen_id.textname() + ' ' + '(syn ' + self.pollen_genus + ' ' + self.pollen_species + ')'
         return name
 
 

@@ -15,4 +15,6 @@ myproject.sock
 base.html
 *_test*
 *-test*
-
+node_modules/
+package-lock.json
+core/

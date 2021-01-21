@@ -391,7 +391,7 @@ def series(request):
 
 @login_required
 def species_list(request):
-    spc = genus = gen = ''
+    spc = genus = gen = reqgenus = ''
     # genus = partial genus name
     mysubgenus = mysection = mysubsection = myseries = ''
     subgenus_obj = section_obj = subsection_obj = series_obj = ''
@@ -440,39 +440,39 @@ def species_list(request):
     # Get list for display
     if 'status' in request.GET:
         status = request.GET['status']
-    this_species_list = Species.objects.exclude(status='pending').filter(type='species')
+    this_species_list = Species.objects.filter(type='species')
     if status == 'synonym':
         this_species_list = this_species_list.filter(status='synonym')
     elif status == 'accepted':
         this_species_list = this_species_list.exclude(status='synonym')
 
-    if 'genus' in request.GET:
-        genus = request.GET['genus']
-        try:
-            gen = Genus.objects.get(genus=genus).pid
-        except Genus.DoesNotExist:
-            gen = ''
-
     intragen_list = Intragen.objects.all()
+    if 'genus' in request.GET:
+        reqgenus = request.GET['genus']
 
-    if genus:
-        if genus[0] != '%' and genus[-1] != '%':
-            this_species_list = this_species_list.filter(genus__icontains=genus)
-            intragen_list = intragen_list.filter(genus__icontains=genus)
+    if reqgenus:
+        if reqgenus[0] != '*' and reqgenus[-1] != '*':
+            try:
+                genus = Genus.objects.get(genus=reqgenus)
+            except Genus.DoesNotExist:
+                genus = ''
+            if genus:
+                this_species_list = this_species_list.filter(genus=genus)
+                intragen_list = intragen_list.filter(genus__icontains=genus)
 
-        elif genus[0] == '%' and genus[-1] != '%':
-            mygenus = genus[1:]
+        elif reqgenus[0] == '*' and reqgenus[-1] != '*':
+            mygenus = reqgenus[1:]
             this_species_list = this_species_list.filter(genus__iendswith=mygenus)
-            intragen_list = intragen_list.filter(genus__iendswith=genus)
+            intragen_list = intragen_list.filter(genus__iendswith=mygenus)
 
-        elif genus[0] != '%' and genus[-1] == '%':
-            mygenus = genus[:-1]
+        elif reqgenus[0] != '*' and reqgenus[-1] == '*':
+            mygenus = reqgenus[:-1]
             this_species_list = this_species_list.filter(genus__istartswith=mygenus)
-            intragen_list = intragen_list.filter(genus__istartswith=genus)
-        elif genus[0] == '%' and genus[-1] == '%':
-            mygenus = genus[1:-1]
+            intragen_list = intragen_list.filter(genus__istartswith=mygenus)
+        elif reqgenus[0] == '*' and reqgenus[-1] == '*':
+            mygenus = reqgenus[1:-1]
             this_species_list = this_species_list.filter(genus__icontains=mygenus)
-            intragen_list = intragen_list.filter(genus__icontains=genus)
+            intragen_list = intragen_list.filter(genus__icontains=mygenus)
 
     temp_subgen_list = []
     if 'subgenus' in request.GET:
@@ -676,7 +676,7 @@ def species_list(request):
     context = {'page_list': page_list, 'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'role': role,
                'subgenus_list': subgenus_list, 'subgenus_obj': subgenus_obj,
-               'section_list': section_list, 'section_obj': section_obj, 'genus': genus,
+               'section_list': section_list, 'section_obj': section_obj, 'genus': reqgenus,
                'subsection_list': subsection_list, 'subsection_obj': subsection_obj,
                'series_list': series_list, 'series_obj': series_obj,
                'classtitle': classtitle,
@@ -705,7 +705,7 @@ def hybrid_list(request):
     pollen_genus = ''
     seed = ''
     pollen = ''
-
+    reqgenus = ''
     alpha = ''
     sort = ''
     prev_sort = ''
@@ -724,14 +724,12 @@ def hybrid_list(request):
     if 'status' in request.GET:
         status = request.GET['status']
 
-    this_species_list = Species.objects.exclude(status='pending').filter(type='hybrid')
+    this_species_list = Species.objects.filter(type='hybrid')
     if status == 'synonym':
         this_species_list = this_species_list.filter(status='synonym')
     elif status == 'accepted':
         this_species_list = this_species_list.exclude(status='synonym')
 
-    if 'genus' in request.GET:
-        genus = request.GET['genus']
     if 'seed_genus' in request.GET:
         seed_genus = request.GET['seed_genus']
     if seed_genus == 'clear':
@@ -745,16 +743,28 @@ def hybrid_list(request):
     genus_list = list(Genus.objects.exclude(status='synonym').values_list('genus', flat=True))
     genus_list.sort()
 
-    if genus:
-        if not seed_genus and not pollen_genus:
-            if genus[0] == '*' or genus[-1] == '*':
-                genus = genus.replace('*','')
-                this_species_list = this_species_list.filter(genus__icontains=genus)
-            else:
+    if 'genus' in request.GET:
+        reqgenus = request.GET['genus']
+
+    if reqgenus:
+        if reqgenus[0] != '*' and reqgenus[-1] != '*':
+            try:
+                genus = Genus.objects.get(genus=reqgenus)
+            except Genus.DoesNotExist:
+                genus = ''
+            if genus:
                 this_species_list = this_species_list.filter(genus=genus)
-        else:
-            # If user request one or both parent genus, then reset genus to ''
-            genus = ''
+
+        elif reqgenus[0] == '*' and reqgenus[-1] != '*':
+            mygenus = reqgenus[1:]
+            this_species_list = this_species_list.filter(genus__iendswith=mygenus)
+
+        elif reqgenus[0] != '*' and reqgenus[-1] == '*':
+            mygenus = reqgenus[:-1]
+            this_species_list = this_species_list.filter(genus__istartswith=mygenus)
+        elif reqgenus[0] == '*' and reqgenus[-1] == '*':
+            mygenus = reqgenus[1:-1]
+            this_species_list = this_species_list.filter(genus__icontains=mygenus)
 
     if 'spc' in request.GET:
         spc = request.GET['spc']
@@ -765,13 +775,6 @@ def hybrid_list(request):
         author = request.GET['author']
     if 'originator' in request.GET:
         originator = request.GET['originator']
-
-    if 'seed' in request.GET:
-        seed = request.GET['seed']
-
-    if 'pollen' in request.GET:
-        pollen = request.GET['pollen']
-
 
     if alpha != 'ALL':
         alpha = alpha[0:1]
@@ -815,15 +818,12 @@ def hybrid_list(request):
     if pollen_genus:
         this_species_list = this_species_list.filter(Q(hybrid__seed_genus=pollen_genus)
                                                      | Q(hybrid__pollen_genus=pollen_genus))
-
     if seed:
         this_species_list = this_species_list.filter(Q(hybrid__seed_species__icontains=seed)
                                                      | Q(hybrid__pollen_species__icontains=seed))
-
     if pollen:
         this_species_list = this_species_list.filter(Q(hybrid__seed_species__icontains=pollen)
                                                      | Q(hybrid__pollen_species__icontains=pollen))
-
     if year_valid:
         year = int(year)
         this_species_list = this_species_list.filter(year=year)
@@ -839,14 +839,15 @@ def hybrid_list(request):
         this_species_list = this_species_list.order_by('genus', 'species')
     total = this_species_list.count()
 
+
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item \
         = mypaginator(request, this_species_list, page_length, num_show)
-    write_output(request, str(genus))
+    write_output(request, str(reqgenus))
     context = {'my_list': page_list, 'genus_list': genus_list,
                'total': total, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
-               'genus': genus, 'year': year, 'status': status,
-               'author': author, 'originator': originator, 'seed': seed, 'pollen': pollen, 'seed_genus': seed_genus,
-               'pollen_genus': pollen_genus,
+               'genus': reqgenus, 'year': year, 'status': status,
+               'author': author, 'originator': originator, 'seed': seed, 'pollen': pollen,
+               'seed_genus': seed_genus, 'pollen_genus': pollen_genus,
                'sort': sort, 'prev_sort': prev_sort,
                'page': page, 'page_range': page_range, 'last_page': last_page, 'next_page': next_page,
                'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item,
@@ -931,6 +932,216 @@ def browsegen(request):
 
 
 def browse(request):
+    import collections
+    reqsubgenus = ''
+    reqsection = ''
+    reqsubsection = ''
+    reqseries = ''
+    subgenus_obj = ''
+    section_obj = ''
+    subsection_obj = ''
+    series_obj = ''
+    subgenus_list = section_list = subsection_list = series_list = []
+    page_range = page_list = last_page = next_page = prev_page = page = first_item = last_item = alpha = total = ''
+    display = ''
+    role = 'pub'
+    seed_genus = ''
+    pollen_genus = ''
+    seed = ''
+    pollen = ''
+    genus = ''
+    reqgenus = ''
+    img_list = []
+    my_full_list = []
+
+    if 'role' in request.GET:
+        role = request.GET['role']
+    if 'subgenus' in request.GET:
+        reqsubgenus = request.GET['subgenus']
+        if reqsubgenus:
+            try:
+                subgenus_obj = Subgenus.objects.get(pk=reqsubgenus)
+            except Subgenus.DoesNotExist:
+                subgenus_obj = ''
+    if 'section' in request.GET:
+        reqsection = request.GET['section']
+        if reqsection:
+            try:
+                section_obj = Section.objects.get(pk=reqsection)
+            except Section.DoesNotExist:
+                section_obj = ''
+    if 'subsection' in request.GET:
+        reqsubsection = request.GET['subsection']
+        if reqsubsection:
+            try:
+                subsection_obj = Subsection.objects.get(pk=reqsubsection)
+            except Subsection.DoesNotExist:
+                subsection_obj = ''
+    if 'series' in request.GET:
+        reqseries = request.GET['series']
+        if reqseries:
+            try:
+                series_obj = Series.objects.get(pk=reqseries)
+            except Series.DoesNotExist:
+                series_obj = ''
+
+    if 'seed_genus' in request.GET:
+        seed_genus = request.GET['seed_genus']
+    if seed_genus == 'clear':
+        seed_genus = ''
+
+    if 'pollen_genus' in request.GET:
+        pollen_genus = request.GET['pollen_genus']
+    if pollen_genus == 'clear':
+        pollen_genus = ''
+    if 'seed' in request.GET:
+        seed = request.GET['seed']
+    if 'pollen' in request.GET:
+        pollen = request.GET['pollen']
+
+    if 'display' in request.GET:
+        display = request.GET['display']
+    if not display:
+        display = ''
+
+    if 'type' in request.GET:
+        reqtype = request.GET['type']
+    else:
+        reqtype = 'species'
+
+    pid_list = ()
+
+    if 'genus' in request.GET:
+        reqgenus = request.GET['genus']
+
+    intragen_list = Intragen.objects.all()
+    pid_list = Species.objects.exclude(status='synonym')
+    if reqgenus:
+        if reqgenus[0] != '*' and reqgenus[-1] != '*':
+            try:
+                genus = Genus.objects.get(genus=reqgenus)
+            except Genus.DoesNotExist:
+                genus = ''
+            if genus:
+                pid_list = pid_list.filter(genus=genus)
+                if reqtype == 'species':
+                   intragen_list = intragen_list.filter(genus=genus)
+
+        elif reqgenus[0] == '*' and reqgenus[-1] != '*':
+            mygenus = reqgenus[1:]
+            pid_list = this_species_list.filter(genus__iendswith=mygenus)
+            if reqtype == 'species':
+                intragen_list = intragen_list.filter(genus__iendswith=mygenus)
+
+        elif reqgenus[0] != '*' and reqgenus[-1] == '*':
+            mygenus = reqgenus[:-1]
+            pid_list = this_species_list.filter(genus__istartswith=mygenus)
+            if reqtype == 'species':
+                intragen_list = intragen_list.filter(genus__istartswith=mygenus)
+        elif reqgenus[0] == '*' and reqgenus[-1] == '*':
+            mygenus = reqgenus[1:-1]
+            pid_list = this_species_list.filter(genus__icontains=mygenus)
+            if reqtype == 'species':
+                intragen_list = intragen_list.filter(genus__icontains=mygenus)
+
+    num_show = 5
+    page_length = 20
+    if pid_list:
+        img_list = Species.objects.filter(type=reqtype).exclude(status='synonym')
+        if display == 'checked':
+            img_list = img_list.filter(num_image__gt=0)
+        if reqtype == 'species':
+            # intragen_list = Intragen.objects.filter(genus__icontains=genus)
+            subgenus_list = intragen_list.exclude(subgenus__isnull=True).exclude(subgenus__exact='').distinct().values(
+                'subgenus').order_by('subgenus')
+            section_list = intragen_list.exclude(section__isnull=True).exclude(section__exact='').distinct().values(
+                'section').order_by('section')
+            subsection_list = intragen_list.exclude(subsection__isnull=True).exclude(subsection__exact='').distinct().values(
+                'subsection').order_by('subsection')
+            series_list = intragen_list.exclude(series__isnull=True).exclude(series__exact='').distinct().values(
+                'series').order_by('series')
+            if reqsubgenus:
+                section_list = section_list.filter(subgenus=reqsubgenus)
+                subsection_list = subsection_list.filter(subgenus=reqsubgenus)
+                series_list = series_list.filter(subgenus=reqsubgenus)
+            if reqsection:
+                subsection_list = subsection_list.filter(section=reqsection)
+                series_list = series_list.filter(section=reqsection)
+            pid_list = pid_list.filter(type='species')
+            if reqsubgenus:
+                pid_list = pid_list.filter(accepted__subgenus=reqsubgenus)
+            if reqsection:
+                pid_list = pid_list.filter(accepted__section=reqsection)
+            if reqsubsection:
+                pid_list = pid_list.filter(accepted__subsection=reqsubsection)
+            if reqseries:
+                pid_list = pid_list.filter(accepted__series=reqseries)
+            pid_list = pid_list.distinct().values_list('pid',flat=True)
+
+            img_list = img_list.filter(pid__in=pid_list)
+
+        elif reqtype == 'hybrid':
+            pid_list = pid_list.filter(type='hybrid').distinct().values_list('pid',flat=True)
+            img_list = img_list.filter(pid__in=pid_list)
+            if seed_genus:
+                img_list = img_list.filter(Q(hybrid__seed_genus=seed_genus) | Q(hybrid__pollen_genus=seed_genus))
+            if pollen_genus:
+                img_list = img_list.filter(Q(hybrid__seed_genus=pollen_genus) | Q(hybrid__pollen_genus=pollen_genus))
+            if seed:
+                img_list = img_list.filter(Q(hybrid__seed_species=seed) | Q(hybrid__pollen_species=seed))
+            if pollen:
+                img_list = img_list.filter(Q(hybrid__seed_species=pollen) | Q(hybrid__pollen_species=pollen))
+        my_full_list = []
+        if 'alpha' in request.GET:
+            alpha = request.GET['alpha']
+            if alpha == 'ALL':
+                alpha = ''
+        if img_list:
+            if reqtype == 'species':
+                ordir = 'utils/images/species/'
+                # img_list = img_list.filter(type__iexact='species')
+            else:
+                ordir = 'utils/images/hybrid/'
+                # img_list = img_list.filter(type__iexact='hybrid')
+            if display == "checked":
+                img_list = img_list.filter(num_image__gt=0)
+            if alpha:
+                img_list = img_list.filter(species__istartswith=alpha)
+
+            img_list = img_list.order_by('genus', 'species')
+            for x in img_list:
+                if x.get_best_img():
+                    x.image_file = ordir + x.get_best_img().image_file
+                    my_full_list.append(x)
+                else:
+                    x.image_file = ordir + 'noimage_light.jpg'
+                    my_full_list.append(x)
+        total = len(my_full_list)
+        page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item \
+            = mypaginator(request, my_full_list, page_length, num_show)
+    genus_list = Genus.objects.all()
+    write_output(request, reqgenus)
+    context = {
+        'page_list': page_list, 'type': reqtype, 'genus': reqgenus, 'display': display, 'genus_list': genus_list,
+        'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,
+        'page': page, 'alpha': alpha, 'alpha_list': alpha_list, 'total': total,
+        'first': first_item, 'last': last_item, 'next_page': next_page, 'prev_page': prev_page,
+        'level': 'browse', 'title': 'browse', 'section': 'list', 'role': role,
+    }
+    if reqtype == 'species':
+        context.update({'subgenus_list': subgenus_list, 'subgenus_obj': subgenus_obj,
+        'section_list': section_list, 'section_obj': section_obj,
+        'subsection_list': subsection_list, 'subsection_obj': subsection_obj,
+        'series_list': series_list, 'series_obj': series_obj,
+                    })
+
+    else:
+        context.update({'seed_genus': seed_genus, 'pollen_genus': pollen_genus,'seed': seed, 'pollen': pollen,})
+
+    return render(request, 'orchidlist/browse.html', context)
+
+
+def xbrowse(request):
     import collections
     orsubgenus = ''
     orsection = ''

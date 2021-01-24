@@ -145,7 +145,7 @@ td {
             {% if section_obj %}Section {{section_obj.section}}{% endif %}
             {% if subsection_obj %}Subsection {{subsection_obj.subsection}}{% endif %}
             {% if series_obj %}Series {{series_obj.series}}{% endif %}
-                 ({% if status %}{{status}} species only {% endif %}{{subtotal|intcomma}} of {{total|intcomma}})
+                 ({% if status %}{{status}} only {% endif %}{{subtotal|intcomma}} of {{total|intcomma}})
             <a class="btn btn-xs btn-primary p-2 m-2 custom-link border" href="{% url 'orchidlist:hybrid' %}?role={{role}}&alpha=A&genus={{genus}}&status={{status}}">Go to Hybrid List</a>
             </h4>
         </div>
@@ -327,9 +327,7 @@ td {
                         {% endif %}
                         </th>
 
-                        {% if status != 'synonym' %}
-                            <th class="text-center">Distribution</th>
-                        {% endif %}
+                        <th class="text-center">Distribution</th>
 
                         {% if sort == 'num_descendant' %}
                             <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_descendant&prev_sort={{sort}}">   <b>#descendants&uarr;</b></a></th>
@@ -392,13 +390,11 @@ td {
                                 {% endif %}
                             {% endif %}
                         </td>
-                        {% if status != 'synonym' %}
                         <td class="d-none d-sm-table-cell text-center">
                             {% if species.num_descendant %}
                                 <a href="{% url 'orchidlist:progeny' species.pid %}?pid={{species.pid}}&role={{role}}">{{species.num_descendant}}</a>
                             {% endif %}
                         </td>
-                        {% endif %}
                         <td class="d-none d-sm-table-cell text-center">{% if species.num_image %}{{species.num_image}}{% endif %}</td>
                     </tr>
                 {% endfor %}

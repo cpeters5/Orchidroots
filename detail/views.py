@@ -190,9 +190,11 @@ def createhybrid(request):
         hybobj.pollen_id = species2
     hybobj.save()
     if genus1 and genus2:
-        write_output(request, str(genus1) + " " + str(species1) + " vs " + str(genus2) + " " + str(species2))
+        # write_output(request, str(genus1) + " " + str(species1) + " vs " + str(genus2) + " " + str(species2))
+        logger.warning(">>> " + request.path + str(request.user) + ": " + str(genus1) + " " + str(species1) + " vs " + str(genus2) + " " + str(species2))
     else:
-        write_output(request)
+        # write_output(request)
+        logger.warning(">>> " + request.path + str(request.user))
     return HttpResponseRedirect("/detail/" + str(spcobj.pid) + "/photos/?role=" + role + "&genus2=" + species2.genus)
 
 
@@ -447,7 +449,10 @@ def compare(request, pid=None):
     if 'msgnogenus' in request.GET:
         msgnogenus = request.GET['msgnogenus']
 
-    write_output(request, str(genus1) + " " + str(species1) + " vs " + str(genus2) + " " + str(species2))
+    # write_output(request, str(genus1) + " " + str(species1) + " vs " + str(genus2) + " " + str(species2))
+    logger.warning(
+        ">>> " + request.path + str(request.user) + ": " + str(genus1) + " " + str(species1)
+        + " vs " + str(genus2) + " " + str(species2))
     context = {'pid': pid, 'genus': genus, 'species': species,
                'pid1': pid1, 'pid2': pid2, 'accepted1': accepted1, 'accepted2': accepted2,  # pid of accepted species
                'genus1': genus1, 'species1': species1, 'spcimg1_list': spcimg1_list,
@@ -575,6 +580,7 @@ def ancestor(request, pid=None):
                'level': 'detail', 'title': 'ancestor', 'role': role, 'namespace': 'detail', 'state': state,
                }
     write_output(request, species.textname())
+    logger.warning(">>> " + request.path + str(request.user) + ": " + str(species.textname()))
     return render(request, 'detail/ancestor.html', context)
 
 
@@ -828,6 +834,7 @@ def ancestrytree(request, pid=None):
                'level': 'detail', 'title': 'ancestrytree', 'role': role, 'namespace': 'detail',
                }
     write_output(request, species.textname())
+    logger.warning(">>> " + request.path + str(request.user) + ": " + str(species.textname()))
     return render(request, 'detail/ancestrytree.html', context)
 
 
@@ -1082,6 +1089,7 @@ def comments(request):
         role = 'pub'
 
     write_output(request)
+    logger.warning(">>> " + request.path)
     context = {'comment_list': comment_list, 'sort': sort, 'role': role, 'namespace': 'detail', }
     return render(request, 'detail/comments.html', context)
 
@@ -1108,6 +1116,7 @@ def curate_newupload(request):
     role = 'cur'
 
     write_output(request)
+    logger.warning(">>> " + request.path + str(request.user))
     context = {'file_list': page_list,
                'tab': 'upl', 'role': role, 'upl': 'active', 'days': days,
                'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,
@@ -1155,6 +1164,7 @@ def curate_pending(request):
     if 'role' in request.GET:
         role = request.GET['role']
     write_output(request)
+    logger.warning(">>> " + request.path + str(request.user))
     title = 'curate_pending'
     context = {'file_list': page_list, 'type': ortype,
                'tab': 'pen', 'role': role, 'pen': 'active', 'days': days,
@@ -1218,6 +1228,7 @@ def curate_newapproved(request):
     if 'role' in request.GET:
         role = request.GET['role']
     write_output(request)
+    logger.warning(">>> " + request.path + str(request.user))
     context = {'file_list': page_list, 'type': ortype,
                'tab': 'pen', 'role': role, 'pen': 'active', 'days': days,
                'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,
@@ -1350,6 +1361,7 @@ def photos(request, pid=None):
             private_list = private_list.order_by('created_date')
 
     write_output(request, species.textname())
+    logger.warning(">>> " + request.path + str(request.user) + ": " + str(species.textname()))
     if role == 'pri':
         author = Photographer.objects.get(user_id=request.user)
         if author:
@@ -1603,6 +1615,7 @@ def reidentify(request, orid, pid):
             old_img.delete()
 
             write_output(request, old_species.textname() + " ==> " + new_species.textname())
+            logger.warning(">>> " + request.path + str(request.user) + ": " + old_species.textname() + " ==> " + new_species.textname())
             url = "%s?role=%s" % (reverse('detail:photos', args=(new_species.pid,)), role)
             return HttpResponseRedirect(url)
     context = {'form': form, 'species': old_species, 'img': old_img, 'role': 'cur', 'namespace': 'detail', }
@@ -1639,6 +1652,7 @@ def myphoto(request, pid):
                'level': 'detail', 'title': 'myphoto', 'namespace': 'detail',
                }
     write_output(request, str(species.textname()))
+    logger.warning(">>> " + request.path + str(request.user) + ": " + species.textname())
     return render(request, 'detail/myphoto.html', context)
 
 
@@ -1682,6 +1696,7 @@ def myphoto_browse_spc(request):
                'level': 'detail', 'title': 'myphoto_browse', 'namespace': 'detail',
                }
     write_output(request)
+    logger.warning(">>> " + request.path + str(request.user))
     return render(request, 'detail/myphoto_browse_spc.html', context)
 
 
@@ -1730,6 +1745,7 @@ def myphoto_browse_hyb(request):
                'level': 'detail', 'title': 'myphoto_browse', 'namespace': 'detail',
                }
     write_output(request)
+    logger.warning(">>> " + request.path + str(request.user))
     return render(request, 'detail/myphoto_browse_hyb.html', context)
 
 
@@ -1894,6 +1910,7 @@ def approvemediaphoto(request, pid):
         upl = UploadFile.objects.get(pk=orid)
     except UploadFile.DoesNotExist:
         write_output(request, ">>> approvemediaphoto FAIL: " + species.textname() + "-" + str(orid))
+        logger.warning(">>> " + request.path + str(request.user) + ": >>> approvemediaphoto FAIL: " + species.textname() + "-" + str(orid))
         msg = "uploaded file #" + str(orid) + "does not exist"
         url = "%s?role=%s&msg=%s" % (reverse('detail:photos', args=(species.pid,)), role, msg)
         return HttpResponseRedirect(url)
@@ -1953,6 +1970,7 @@ def approvemediaphoto(request, pid):
     upl.delete(0)
     # logger.error(">>> Status changed to approved")
     write_output(request, species.textname() + "-" + str(orid))
+    logger.warning(">>> " + request.path + str(request.user) + ": " + species.textname() + "-" + str(orid))
     url = "%s?role=%s" % (reverse('detail:photos', args=(species.pid,)), role)
     return HttpResponseRedirect(url)
 
@@ -1988,6 +2006,7 @@ def uploadfile(request, pid):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             write_output(request, species.textname())
+            logger.warning(">>> " + request.path + str(request.user) + ": " + species.textname())
             role = request.POST['role']
             spc = form.save(commit=False)
             spc.pid = species
@@ -2097,6 +2116,7 @@ def uploadweb(request, pid, orid=None):
                 # Public role shouldn't get to this '
                 url = "%s?role=pub" % (reverse('detail:myphoto', args=(species.pid,)))
             write_output(request, species.textname())
+            logger.warning(">>> " + request.path + str(request.user) + ": " + species.textname())
             return HttpResponseRedirect(url)
 
     if not orid:  # upload, initialize author. Get image count

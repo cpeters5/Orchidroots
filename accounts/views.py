@@ -74,7 +74,8 @@ def login_page(request):
                     return redirect('set_email')
 
             if is_safe_url(redirect_path, request.get_host()):
-                write_output(request)
+                logger.warning(">>> " + request.path + str(request.user))
+                # write_output(request)
             # if url_has_allowed_host_and_scheme(redirect_path, request.get_host()):
                 return redirect("/detail/myphoto_browse_spc/?role=pri&display=checked")
                 # return redirect(redirect_path)
@@ -104,7 +105,8 @@ def register_page(request):
             # if 'profile_pic' in request.FILES:
             #     profile.profile_pic = request.FILES['profile_pic']
             profile.save()
-            write_output(request)
+            # write_output(request)
+            logger.warning(">>> " + request.path + str(request.user))
             return complete_signup(
                 request, user,
                 settings.ACCOUNT_EMAIL_VERIFICATION,
@@ -140,6 +142,7 @@ def change_password(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
+    logger.warning(">>> " + request.path + str(request.user))
     return render(request, 'accounts/change_password.html', {
         'form': form, 'namespace': 'accounts',
     })
@@ -204,6 +207,7 @@ class ChangeEmailView(FormView):
                                  request=self.request,
                                  user=user,
                                  email_address=email_address)
+        logger.warning(">>> " + request.path + str(request.user))
         return super().form_valid(form)
 
 

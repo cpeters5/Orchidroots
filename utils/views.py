@@ -7,7 +7,7 @@ def write_output(request, detail=None):
         message = ">>> " + request.path + str(request.user)
         if detail:
             message += ": " + detail
-        logger.error(message)
+        logger.warning(message)
         pass
 
 # Create your views here.

@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.apps import apps
+from django.views.decorators.http import require_GET
+
 import random
 import string
 
@@ -13,6 +15,16 @@ SpcImages = apps.get_model('orchiddb', 'SpcImages')
 HybImages = apps.get_model('orchiddb', 'HybImages')
 Comment = apps.get_model('orchiddb', 'Comment')
 num_img = 20
+
+
+
+@require_GET
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /orchidlist/",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
 
 
 def orchid_home(request):
@@ -39,22 +51,22 @@ def orchid_home(request):
     return render(request, 'orchid_home.html', context)
 
 
-def require_get(view_func):
-    def wrap(request, *args, **kwargs):
-        if request.method != "GET":
-            return HttpResponseBadRequest("Expecting GET request")
-        return view_func(request, *args, **kwargs)
-    wrap.__doc__ = view_func.__doc__
-    wrap.__dict__ = view_func.__dict__
-    wrap.__name__ = view_func.__name__
-    return wrap
-
-
-@require_get
-def robots_txt(request):
-    lines = [
-        "User-Agent: *",
-        "Disallow: /private/",
-        "Disallow: /junk/",
-    ]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
+# def require_get(view_func):
+#     def wrap(request, *args, **kwargs):
+#         if request.method != "GET":
+#             return HttpResponseBadRequest("Expecting GET request")
+#         return view_func(request, *args, **kwargs)
+#     wrap.__doc__ = view_func.__doc__
+#     wrap.__dict__ = view_func.__dict__
+#     wrap.__name__ = view_func.__name__
+#     return wrap
+#
+#
+# @require_get
+# def robots_txt(request):
+#     lines = [
+#         "User-Agent: *",
+#         "Disallow: /private/",
+#         "Disallow: /junk/",
+#     ]
+#     return HttpResponse("\n".join(lines), content_type="text/plain")

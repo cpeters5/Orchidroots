@@ -23,15 +23,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import  user_reset_password, login_page, register_page, UpdateProfileView, SetEmailView,\
     ChangeEmailView, PasswordChangeRedirect, CustomPasswordResetFromKeyView
-from myproject.views import orchid_home, robots_txt
+from myproject.views import orchid_home
+from myproject.views import robots_txt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
-    path("robots.txt", robots_txt),
+    path("robots.txt", include('robots.urls')),
     path('', orchid_home, name='orchid_home'),
 
-    # path('index/', index, name='index'),
     path('login/', login_page, name='login'),
     path('register/', register_page, name='register'),
     path('set_email/', SetEmailView.as_view(), name='set_email'),

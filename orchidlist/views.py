@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
+from django.views.decorators.http import require_GET
 import string
 from itertools import chain
 from utils.views import write_output
@@ -43,6 +44,15 @@ AncestorDescendant = apps.get_model('orchiddb', 'AncestorDescendant')
 User = get_user_model()
 alpha_list = string.ascii_uppercase
 logger = logging.getLogger(__name__)
+
+#
+# @require_GET
+# def robots_txt(request):
+#     lines = [
+#         "User-Agent: *",
+#         "Disallow: /orchidlist/",
+#     ]
+#     return HttpResponse("\n".join(lines), content_type="text/plain")
 
 
 # High level lists

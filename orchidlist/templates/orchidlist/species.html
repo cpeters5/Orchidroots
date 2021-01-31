@@ -259,7 +259,6 @@ td {
                             </div>
                        {% endif %}
 
-                       {% if region_obj %}
                         <div class="p-1 dropdown" data-toggle="tooltip" data-placement="top" title="Region">
                             <button class="dropdown-toggle button select-p2" type="button" data-toggle="dropdown">
                                 {% if region_obj and region_obj.region != 0 and region_obj.region != 1 %}<span style="color:black">{{region_obj.name}}</span>{% else %}Region{% endif %}
@@ -272,9 +271,7 @@ td {
                                 {% endfor %}
                             </ul>
                         </div>
-                        {% endif %}
 
-                        {% if subregion_obj %}
                         <div class="p-1 dropdown">
                             <button class="dropdown-toggle button select-p2" type="button" data-toggle="dropdown">
                                 {% if subregion_obj and subregion_obj.subregion != "All subregions" %}<span style="color:black">{{subregion_obj.name}}</span>{% else %}Subregion{% endif %}
@@ -287,7 +284,6 @@ td {
                                 {% endfor %}
                             </ul>
                         </div>
-                        {% endif %}
                        <!--Submit-->
                         <button class="submit" form="filter">Submit</button>
                     {% endif %}

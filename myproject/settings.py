@@ -39,7 +39,7 @@ SECRET_KEY =  env.str('DJANGO_SECRET_KEY', default=''),
 SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 PYTHONUNBUFFERED=True
 
 ALLOWED_HOSTS = [
@@ -72,7 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'session_cleanup',
     'django_crontab',
-    'robots',
+    # 'robots',
     # 'rest_framework',
 
     #local

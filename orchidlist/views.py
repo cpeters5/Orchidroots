@@ -43,7 +43,7 @@ UploadFile = apps.get_model('orchiddb', 'UploadFile')
 AncestorDescendant = apps.get_model('orchiddb', 'AncestorDescendant')
 User = get_user_model()
 alpha_list = string.ascii_uppercase
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 #
 # @require_GET
@@ -166,7 +166,6 @@ def advanced(request):
                 num_hybrid__gt=0)
 
     write_output(request, str(genus))
-    logger.warning(">>> " + request.path + str(request.user) + ": " + str(genus))
     context = {
         'genus': genus, 'genus_list': genus_list,
         'species_list': specieslist, 'hybrid_list': hybridlist, 'intragen_list': intragen_list,
@@ -369,7 +368,6 @@ def genera(request):
                'page': page, 'page_range': page_range, 'last_page': last_page, 'next_page': next_page,
                'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item, }
     write_output(request)
-    logger.warning(">>> " + request.path + str(request.user))
     return render(request, 'orchidlist/genera.html', context)
 
 
@@ -636,6 +634,7 @@ def species_list(request):
 
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = \
         mypaginator(request, this_species_list, page_length, num_show)
+
     if status == 'accepted':
         region_list = Region.objects.exclude(id=0)
         if region_obj:
@@ -704,7 +703,6 @@ def species_list(request):
     if 'role' in request.GET:
         role = request.GET['role']
     write_output(request, str(genus))
-    logger.warning(">>> " + request.path + str(request.user))
     context = {'page_list': page_list, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'role': role, 'total': total, 'subtotal': subtotal,
                'subgenus_list': subgenus_list, 'subgenus_obj': subgenus_obj,
@@ -860,7 +858,6 @@ def hybrid_list(request):
     genus_list = list(Genus.objects.exclude(status='synonym').values_list('genus', flat=True))
     genus_list.sort()
     write_output(request, str(reqgenus))
-    logger.warning(">>> " + request.path + str(request.user) + ": " + str(reqgenus))
     context = {'my_list': page_list, 'genus_list': genus_list,
                'total': total, 'subtotal': subtotal, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
                'genus': reqgenus, 'year': year, 'status': status,
@@ -946,7 +943,6 @@ def browsegen(request):
         'level': 'detail', 'title': 'browsegen', 'section': 'My Collection', 'role': role,
                }
     write_output(request)
-    logger.warning(">>> " + request.path + str(request.user))
     return render(request, 'orchidlist/browse_gen.html', context)
 
 
@@ -1102,7 +1098,6 @@ def browse(request):
             = mypaginator(request, my_full_list, page_length, num_show)
     genus_list = Genus.objects.all()
     write_output(request, reqgenus)
-    logger.warning(">>> " + request.path + str(request.user) + ": " + str(reqgenus))
     context = {
         'page_list': page_list, 'type': type, 'genus': reqgenus, 'display': display, 'genus_list': genus_list,
         'page_range': page_range, 'last_page': last_page, 'num_show': num_show, 'page_length': page_length,
@@ -1208,7 +1203,6 @@ def progeny(request, pid=None):
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, des_list, page_length, num_show)
     write_output(request, species.textname())
-    logger.warning(">>> " + request.path + str(request.user) + ": " + str(species.textname()))
     context = {'des_list': page_list, 'species': species, 'total': total, 'alpha': alpha, 'alpha_list': alpha_list,
                 'sort': sort, 'prev_sort': prev_sort, 'tab': 'pro', 'pro': 'active',
                'genus': genus, 'page': page,
@@ -1261,7 +1255,6 @@ def progenyimg(request, pid=None):
             request, img_list, page_length, num_show)
 
     write_output(request, species.textname())
-    logger.warning(">>> " + request.path + str(request.user) + ": " + str(species.textname()))
     context = {'des_list': page_list, 'species': species, 'tab': 'proimg', 'proimg': 'active',
                'genus': genus, 'total': total, 'page_range': page_range, 'last_page': last_page,
                'num_show': num_show, 'first': first_item, 'last': last_item, 'role': role,

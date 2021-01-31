@@ -50,7 +50,8 @@ def search_match(request, partner=None):
     else:
         search = ''
     keyword = search
-    write_output(request, keyword)
+    if request.user.is_authenticated:
+        write_output(request, keyword)
     if keyword:
         rest = keyword.split(' ', 1)
         if len(rest) > 1:

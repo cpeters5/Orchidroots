@@ -28,7 +28,8 @@ from myproject.views import robots_txt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("robots.txt", include('robots.urls')),
+    path("robots.txt", robots_txt),
+    # path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
     path('', orchid_home, name='orchid_home'),
 
     path('login/', login_page, name='login'),

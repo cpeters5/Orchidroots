@@ -22,7 +22,15 @@ num_img = 20
 def robots_txt(request):
     lines = [
         "User-Agent: *",
+        "Disallow: /accounts/",
+        "Disallow: /detail/photos/",
+        "Disallow: /documents/",
+        "Disallow: /natural/",
+        "Disallow: /orchid/",
         "Disallow: /orchidlist/",
+        "Disallow: /orchidlight/",
+        "Disallow: /orchiddb/",
+        "Disallow: /search/",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 

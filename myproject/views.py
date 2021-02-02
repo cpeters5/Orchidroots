@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.apps import apps
 from django.views.decorators.http import require_GET
-
+from detail.views import getRole
 import random
 import string
 
@@ -52,7 +52,7 @@ def orchid_home(request):
                 randimages.append(img[0])
 
     random.shuffle(randimages)
-    role = 'pub'
+    role = getRole(request)
     if 'role' in request.GET:
         role = request.GET['role']
     context = {'title': 'orchid_home', 'role': role, 'randimages': randimages, 'level': 'detail', 'tab': 'sum', }

@@ -87,6 +87,19 @@ redirect_message = "<br><br>Species does not exist! <br>You may try <a href='/or
                    "search species list</a> or <a href='/orchidlist/browsegen/?type=species'>browse species images.</a>"
 
 
+def getRole(request):
+    if request.user.is_authenticated:
+        if request.user.tier.tier < 2:
+            role = 'pub'
+        elif request.user.tier.tier == 2:
+            role = 'pri'
+        else:
+            role = 'cur'
+        if 'role' in request.GET:
+            role = request.GET['role']
+        return role
+
+
 @login_required
 # Curator only - role = cur
 def createhybrid(request):

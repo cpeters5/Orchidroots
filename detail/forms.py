@@ -342,7 +342,8 @@ class UploadFileForm(forms.ModelForm):
         super(UploadFileForm, self).__init__(*args, **kwargs)
         # Making UploadForm required
         # self.fields['image_file_path'].required = True
-        self.fields['author'].required = True
+        # self.fields['author'].required = True
+        self.fields['author'].widget.is_localized = True
         # role = forms.CharField(required=True)
     class Meta:
         model = UploadFile

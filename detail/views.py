@@ -1308,7 +1308,7 @@ def photos(request, pid=None):
         species = Species.objects.get(pk=pid)
     except Species.DoesNotExist:
         return HttpResponse(redirect_message)
-
+    role = getRole(request)
     if 'role' in request.GET:
         role = request.GET['role']
     elif 'role' in request.POST:
@@ -1940,8 +1940,11 @@ def approvemediaphoto(request, pid):
         return HttpResponseRedirect(url)
 
     old_name = os.path.join(settings.MEDIA_ROOT, str(upl.image_file_path))
-
+    tmp_name = os.path.join("/webapps/static/tmp/", str(upl.image_file_path))
+    logger.warning(">>>>> Old name = " + old_name)
+    logger.warning(">>>>> Tmp name = " + tmp_name)
     filename, ext = os.path.splitext(str(upl.image_file_path))
+    logger.warning(">>>>> ext = " + ext)
     # imgdir, filename = os.path.split(filename)
     if species.type == 'species':
         spc = SpcImages(pid=species.accepted, author=upl.author, user_id=upl.user_id, name=upl.name, awards=upl.awards,
@@ -1965,6 +1968,8 @@ def approvemediaphoto(request, pid):
     new_name = os.path.join(newdir, image_file)
     if not os.path.exists(new_name + ext):
         try:
+            # shutil.move(old_name, new_name + ext)
+            shutil.copy(old_name, tmp_name)
             shutil.move(old_name, new_name + ext)
         except shutil.Error:
             # upl.delete()
@@ -1979,8 +1984,11 @@ def approvemediaphoto(request, pid):
             x = os.path.join(newdir, image_file)
             if not os.path.exists(x):
                 try:
+                    shutil.copy(old_name, tmp_name)
                     shutil.move(old_name, x)
+                    # shutil.move(old_name, x)
                 except shutil.Error:
+                    logger.error(">>>> Upload approve FAILED! " + newdir + "oldname = " + old_name)
                     upl.delete()
                     url = "%s?role=%s" % (reverse('detail:photos', args=(species.pid,)), role)
                     return HttpResponseRedirect(url)

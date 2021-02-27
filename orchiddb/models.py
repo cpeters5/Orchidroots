@@ -19,6 +19,7 @@ from accounts.models import User, Photographer
 import re
 import math
 RANK_CHOICES = [(i,str(i)) for i in range(0,10)]
+RELATION_CHOICES = [('direct','direct'),('reverse','reverse')]
 QUALITY = (
     (1, 'Top'),
     (2, 'High'),
@@ -1087,6 +1088,86 @@ class Hybrid(models.Model):
             return 'natural'
         else:
             return 'artificial'
+
+
+class Hybsynonym(models.Model):
+    # pid                 = models.IntegerField(db_column='pid',primary_key=True)
+    pid = models.OneToOneField(
+        Species,
+        db_column='pid',
+        on_delete=models.DO_NOTHING,
+        primary_key=True)
+    seed_genus = models.CharField(max_length=50, null=True, blank=True)
+    seed_species = models.CharField(max_length=50, null=True, blank=True)
+    seed_type = models.CharField(max_length=10, null=True, blank=True)
+    seed_id = models.ForeignKey(Species,db_column='seed_id',related_name='synseed_id',null=True, blank=True,on_delete=models.DO_NOTHING)
+    pollen_genus = models.CharField(max_length=50, null=True, blank=True)
+    pollen_species = models.CharField(max_length=50, null=True, blank=True)
+    pollen_type = models.CharField(max_length=10, null=True, blank=True)
+    pollen_id = models.ForeignKey(Species,db_column='pollen_id',related_name='synpollen_id',null=True, blank=True,on_delete=models.DO_NOTHING)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return self.pid.name()
+
+
+class Grexrelation(models.Model):
+    class Meta:
+        unique_together = (("pid1", "pid2"),)
+    pid1 = models.ForeignKey(Hybrid,db_column='pid1', related_name='pid1',on_delete=models.CASCADE)
+    pid2 = models.ForeignKey(Hybrid,db_column='pid2', related_name='pid2',on_delete=models.CASCADE)
+    description = models.TextField(null=True, blank=True)
+    relation = models.CharField(max_length=20,choices=RELATION_CHOICES,default='')
+    comment = models.TextField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return self.spid.name()
+
+    def get_shortname(self):
+        if self.sis_hybrid:
+            if self.sinfraspe:
+                return '%s %s %s %s %s' % (self.sgenus, self.sis_hybrid, self.sspecies,
+                                           self.sinfraspr, self.sinfraspe)
+            else:
+                return '%s %s %s' % (self.sgenus, self.sis_hybrid, self.sspecies)
+        else:
+            if self.sinfraspe:
+                return '%s %s %s %s' % (self.sgenus, self.sspecies,
+                                        self.sinfraspr, self.sinfraspe)
+            else:
+                return '%s %s' % (self.sgenus, self.sspecies)
+
+    def get_abrevname(self):
+        abrev = self.sgen.abrev
+        if not abrev:
+            abrev = self.sgen.genus
+        if self.sis_hybrid:
+            if self.sinfraspe:
+                return '%s %s %s %s %s' % (abrev, self.sis_hybrid, self.sspecies,
+                                           self.sinfraspr, self.sinfraspe)
+            else:
+                return '%s %s %s' % (abrev, self.sis_hybrid, self.sspecies)
+        else:
+            if self.sinfraspe:
+                return '%s %s %s %s' % (abrev, self.sspecies,
+                                        self.sinfraspr, self.sinfraspe)
+            else:
+                return '%s %s' % (abrev, self.sspecies)
+
+    def get_shortaccepted(self):
+        if self.is_hybrid:
+            if self.infraspe:
+                return '%s %s %s %s %s' % (self.genus, self.is_hybrid, self.species, self.infraspr, self.infraspe)
+            else:
+                return '%s %s %s' % (self.genus, self.is_hybrid, self.species)
+        else:
+            if self.infraspe:
+                return '%s %s %s %s' % (self.genus, self.species, self.infraspr, self.infraspe)
+            else:
+                return '%s %s' % (self.genus, self.species)
 
 
 class InfragenHybrid(models.Model):

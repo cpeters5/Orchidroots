@@ -47,8 +47,28 @@ The name is always to be cited from its original place of valid publication, and
     </li>
 
     <li>
-        Hybrid:
-        - If seed or pollen parent is a synonym, then keep the parent's name as is, but put accepted pid as partent's pid.
+        Hybrid: Policy - If seed or pollen parent is a synonym, then keep the parent's name as is, but put accepted pid as partent's pid.
+        <ul>
+            <li>Monthly Update:
+                <ul>
+                    <li>Run RHS/extractRHS.pl with start and end parameters. This script is untested.  If in error, compare with extract_synonym.pl or extract_missing.pl.
+                        Or run the old well tested script grabRHS3.pl
+                    </li>
+                    <li>Check output file and replaced illformed utf8 characters.</li>
+                    <li>Load to the (empty) orchid_hybrid_xfer table</li>
+                    <li>Process the loaded data step by step following RHS update.sql </li>
+                    <li>Run consistency SQL scripts, generate ancestordescendant data, etc</li>
+                </ul>
+            </li>
+            <li>Total refresh:
+                <ul>
+                    <li>Run RHS/extract_missing.pl to get missing records</li>
+                    <li>Run RHS/extract_synonym.pl to extract synonym records. (The RHS/extractRHS.pl should have already generated them)</li>
+                    <li>Load data and process as in monthly update</li>
+                </ul>
+            </li>
+        </ul>
+
     </li>
     <li>Suprageneric
         Currently we only record Subfamily, Tribe and Subtribe

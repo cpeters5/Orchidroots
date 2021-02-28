@@ -580,13 +580,13 @@ seedparent, pollparent {
                                 {% if image.image_file %}
                                     <div class="box">
                                     <a href="{% static image.image_dir %}{{image.image_file}}" data-lightbox="gallery" data-title="<h6><small>{{image.id}}: {{image.imgname}} <br> {{image.get_displayname}} <br>{% if image.text_data %}{{image.text_data|safe}}{% endif %}</small></h6>">
-                                        <img  class="thumbnails" alt="" src="{% static image.image_dir %}{{image.image_file}}">
+                                        <img  class="thumbnails" alt="{{image.pid.pid.textname}}" src="{% static image.image_dir %}{{image.image_file}}">
                                         <div class="text text-br" ><span style="color:white">{{image.id}}</span></div>
                                     </a>
                                     </div>
                                 {% else %}
                                     <div class="box">
-                                        <img  class="thumbnails" alt="" src="{{image.image_url}}">
+                                        <img  class="thumbnails" alt="{{image.get_displayname}}" src="{{image.image_url}}">
                                         <div class="text text-br" ><span style="color:white">{{image.id}}</span></div>
                                     </div>
                                 {% endif %}
@@ -627,14 +627,14 @@ seedparent, pollparent {
                             {% if seedimg_list %}
                                 {% for seed in seedimg_list %}
                                     {% if forloop.last and seedimg_list.count > 1 %}
-                                    <a href="{% static seed.image_dir %}{{seed.image_file}}" data-lightbox="seed" data-title="<h6><small>{{image.id}}: {{seed.imgname}}
+                                    <a href="{% static seed.image_dir %}{{seed.image_file}}" data-lightbox="seed" data-title="<h6><small>{{seed.id}}: {{seed.imgname}}
                                         {% if seed.text_data %}{{seed.text_data|safe}}{% endif %}</small></h6>">
-                                            <img  class="d-none d-md-block thumbnails thumbnails2" alt="" src="{% static seed.image_dir %}{{seed.image_file}}">
+                                            <img  class="d-none d-md-block thumbnails thumbnails2" alt="{{seed.pid.pid.textname}}" src="{% static seed.image_dir %}{{seed.image_file}}">
                                     </a>
                                     {% else %}
-                                    <a href="{% static seed.image_dir %}{{seed.image_file}}" data-lightbox="seed" data-title="<h6><small>{{image.id}}: {{seed.imgname}}
+                                    <a href="{% static seed.image_dir %}{{seed.image_file}}" data-lightbox="seed" data-title="<h6><small>{{seed.id}}: {{seed.imgname}}
                                         {% if seed.text_data %}{{seed.text_data|safe}}{% endif %}</small></h6>">
-                                            <img  class="thumbnails thumbnails2" alt="" src="{% static seed.image_dir %}{{seed.image_file}}">
+                                            <img  class="thumbnails thumbnails2" alt="{{seed.pid.pid.textname}}" src="{% static seed.image_dir %}{{seed.image_file}}">
                                     </a>
                                     {% endif %}
                                 {% endfor %}
@@ -662,12 +662,12 @@ seedparent, pollparent {
                                     {% if forloop.last and pollimg_list.count > 1  %}
                                     <a class="d-none d-md-block" href="{% static pol.image_dir %}{{pol.image_file}}" data-lightbox="pol" data-title="<h6><small>{{image.id}}: {{pol.imgname}}
                                                 {% if pol.text_data %}{{pol.text_data|safe}}{% endif %}</small></h6>">
-                                        <img  class="thumbnails thumbnails2" alt="" src="{% static pol.image_dir %}{{pol.image_file}}">
+                                        <img  class="thumbnails thumbnails2" alt="{{pol.pid.pid.textname}}" src="{% static pol.image_dir %}{{pol.image_file}}">
                                     </a>
                                     {% else %}
                                     <a href="{% static pol.image_dir %}{{pol.image_file}}" data-lightbox="pol" data-title="<h6><small>{{image.id}}: {{pol.imgname}}
                                                 {% if pol.text_data %}{{pol.text_data|safe}}{% endif %}</small></h6>">
-                                        <img  class="thumbnails thumbnails2" alt="" src="{% static pol.image_dir %}{{pol.image_file}}">
+                                        <img  class="thumbnails thumbnails2" alt="{{pol.pid.pid.textname}}" src="{% static pol.image_dir %}{{pol.image_file}}">
                                     </a>
                                     {% endif %}
                                 {% endfor %}
@@ -699,7 +699,7 @@ seedparent, pollparent {
                                                 <a href="{% static seedseed.image_dir %}{{seedseed.image_file}}" data-lightbox="seedseed" data-title="
                                                     <h6><small>{{image.id}}: {{seedseed.imgname}}
                                                     {% if seedseed.text_data %}{{seedseed.text_data|safe}}{% endif %}</small></h6>">
-                                                    <img  class="thumbnails thumbnails2" alt="" src="{% static seedseed.image_dir %}{{seedseed.image_file}}">
+                                                    <img  class="thumbnails thumbnails2" alt="{{seedseed.pid.pid.textname}}" src="{% static seedseed.image_dir %}{{seedseed.image_file}}">
                                                 </a>
                                         {% endfor %}
                                     {% else %}
@@ -721,7 +721,7 @@ seedparent, pollparent {
                                             <a href="{% static seedpol.image_dir %}{{seedpol.image_file}}" data-lightbox="seedpol" data-title="
                                                 <h6><small>{{image.id}}: {{seedpol.imgname}}
                                                 {% if seedpol.text_data %}{{seedpol.text_data|safe}}{% endif %}</small</h6>">
-                                                <img  class="thumbnails thumbnails2" alt="" src="{% static seedpol.image_dir %}{{seedpol.image_file}}">
+                                                <img  class="thumbnails thumbnails2" alt="{{seedpol.pid.pid.textname}}" src="{% static seedpol.image_dir %}{{seedpol.image_file}}">
                                             </a>
                                         {% endfor %}
                                     {% else %}
@@ -753,7 +753,7 @@ seedparent, pollparent {
                                         <h6><small>{{image.id}}: {{polseed.imgname}}
                                             {% if polseed.text_data %}{{polseed.text_data|safe}}{% endif %}
                                             </small></h6>">
-                                            <img class="thumbnails thumbnails2"  alt="" src="{% static polseed.image_dir %}{{polseed.image_file}}">
+                                            <img class="thumbnails thumbnails2"  alt="{{polseed.pid.pid.textname}}" src="{% static polseed.image_dir %}{{polseed.image_file}}">
                                         </a>
                                         {% endfor %}
                                     {% else %} <!-- if seed_list -->
@@ -776,7 +776,7 @@ seedparent, pollparent {
                                                 <h6><small>{{image.id}}: {{polpol.imgname}}
                                                 {% if polpol.text_data %}{{polpol.text_data|safe}}{% endif %}
                                                 </small></h6>">
-                                                    <img class="thumbnails thumbnails2" alt="" src="{% static polpol.image_dir %}{{polpol.image_file}}">
+                                                    <img class="thumbnails thumbnails2" alt="{{polpol.pid.pid.textname}}" src="{% static polpol.image_dir %}{{polpol.image_file}}">
                                             </a>
                                         {% endfor %}
                                     {% else %} <!-- if seed_list -->
@@ -810,7 +810,7 @@ seedparent, pollparent {
                                 <a href="/static/utils/images/species/{{p.img}}" data-lightbox="anc" data-title="
                                     <h6><small>{{image.id}}: {{p.aid.abrevname|safe}}
                                     {% if p.text_data %}{{p.text_data|safe}}{% endif %}</small></h6>">
-                                        <img class="thumbnails thumbnails3"  alt="" src="/static/utils/images/species/{{p.img}}">
+                                        <img class="thumbnails thumbnails3"  alt="{{p.aid.textname}}" src="/static/utils/images/species/{{p.img}}">
                                 </a>
                             {% elif  p.aid.pid > 0 %}
                                 <img class="thumbnails thumbnails3" src="{% static 'utils/images/noimage_light.jpg' %}" style="border:0"/>

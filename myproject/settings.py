@@ -72,7 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'session_cleanup',
     'django_crontab',
-    # 'robots',
+    # 'robots',     # Use robots_txt method instead
     # 'rest_framework',
 
     #local

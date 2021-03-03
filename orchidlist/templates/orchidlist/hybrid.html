@@ -149,9 +149,21 @@ td {
                     <a class="btn btn-xs btn-primary p-2 m-2 custom-link border" href="{% url 'orchidlist:browse' %}?type=hybrid&genus={{genus}}&display=checked&seed_genus={{seed_genus}}&pollen_genus={{pollen_genus}}&seed={{seed}}&pollen={{pollen}}">Show images</a>
                 {% endif %}
             </h4>
-            {% if genus %} genus = {{genus}},{% endif %}
-            {% if seed_genus or seed %} parent #1 = {{seed_genus}} {{seed}}, {%endif %}
-            {% if pollen_genus or pollen %} parent #2 = {{pollen_genus}} {{pollen}} {%endif %}
+                    {% if seed_genus or seed or pollen_genus or pollen %}
+                        {% if seed_genus or seed %}
+                            ({{seed_genus}} {{seed}}
+                        {% else %}
+                            ( ?
+                        {% endif %}
+                                ×
+                        {% if pollen_genus or pollen %}
+                            {{pollen_genus}} {{pollen}})
+                        {% else %}
+                            ? )
+                        {% endif %}
+                    {% elif genus %}
+                        {{genus}}
+                    {% endif %}
         </div>
 
         <!--Filter-->

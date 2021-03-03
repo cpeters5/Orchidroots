@@ -213,56 +213,15 @@ td {
                 <input class="p-2 m-1" form="filter" name="author" value='{{author}}' placeholder="Registrant" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Registrant name match string"/>
                 <!--Originator-->
                 <input class="p-2 m-1" form="filter" name="originator" value='{{originator}}' placeholder="Originator" onfocus="this.select()" data-toggle="tooltip"  data-placement="bottom"  title="Originator name match string"/>
-
-                <input  class="p-2 m-1" form="seedgenus" list="genus_list" name="seed_genus" onClick="this.setSelectionRange(0, this.value.length)" value="{{seed_genus}}" class="custom-select" placeholder="Select a parent genus" style="text-align:center" data-toggle="tooltip"  data-placement="bottom"  title="Select a parent genus">
-                    <datalist id="genus_list">
-                        {% for g in genus_list %}
-                            <option value="{{g}}">{{g}}</option>
-                        {% endfor %}
-                    </datalist>
+                <input  class="p-2 m-1" form="seedgenus" list="genus_list" name="seed_genus" onClick="this.setSelectionRange(0, this.value.length)" value="{{seed_genus}}" class="custom-select" placeholder="Parent genus#1" style="text-align:center" data-toggle="tooltip"  data-placement="bottom"  title="Select a parent genus">
                 <input class="p-2 m-1" form="filter" name="seed" value='{{seed}}' data-toggle="tooltip" data-placement="bottom"  title="a parent species" placeholder="Parent sp. #1" onfocus="this.select()"/>
-                <input  class="p-2 m-1" form="pollengenus" list="genus_list" name="pollen_genus" onClick="this.setSelectionRange(0, this.value.length)" value="{{pollen_genus}}" class="custom-select" placeholder="Select a parent genus" style="text-align:center" data-toggle="tooltip"  data-placement="bottom"  title="Select another parent genus">
-                    <datalist id="genus_list">
-                        {% for g in genus_list %}
-                            <option value="{{g}}">{{g}}</option>
-                        {% endfor %}
-                    </datalist>
+                <input  class="p-2 m-1" form="pollengenus" list="genus_list" name="pollen_genus" onClick="this.setSelectionRange(0, this.value.length)" value="{{pollen_genus}}" class="custom-select" placeholder="Parent genus#2" style="text-align:center" data-toggle="tooltip"  data-placement="bottom"  title="Select another parent genus">
                 <input class="p-2 m-1" form="filter" name="pollen" value='{{pollen}}' data-toggle="tooltip" data-placement="bottom"  title="another parent species"  placeholder="Parent sp. #2" onfocus="this.select()"/>
-<!--                &lt;!&ndash;Seed genus&ndash;&gt;-->
-<!--                <select class="select-p2 m-1" form="filter" name="seed_genus" class="form-control" tabindex="-1" aria-hidden="true" data-toggle="tooltip"  data-placement="bottom"  title="Select a parent genus from list">-->
-<!--                    {% if not seed_genus %}-->
-<!--                        <option selected disabled>Parent genus #1</option>-->
-<!--                    {% endif %}-->
-<!--                    <option>clear</option>-->
-
-<!--                    {% for g in genus_list %}}-->
-<!--                        {% if seed_genus == g %}-->
-<!--                            <option selected="selected"><span style="color:red">{{g}}</span></option>-->
-<!--                        {% else %}-->
-<!--                            <option>{{g}}</option>-->
-<!--                        {% endif %}-->
-<!--                    {% endfor %}-->
-<!--                </select>-->
-<!--                &lt;!&ndash;Seed Parents&ndash;&gt;-->
-<!--                <input class="p-2 m-1" form="filter" name="seed" value='{{seed}}' data-toggle="tooltip" data-placement="bottom"  title="a parent species" placeholder="Parent sp. #1" onfocus="this.select()"/>-->
-
-<!--                &lt;!&ndash;Pollen Genus&ndash;&gt;-->
-<!--                <select class="select-p2 m-1" form="filter" name="pollen_genus" class="form-control" tabindex="-1" aria-hidden="true" data-toggle="tooltip"  data-placement="bottom"  title="Select another parent genus from list">-->
-<!--                    {% if not pollen_genus %}-->
-<!--                    <option selected disabled><span style="color:grey">Parent genus #2</span></option>-->
-<!--                    {% endif %}-->
-<!--                    <option value="">clear</option>-->
-<!--                    <option value="">clear</option>-->
-<!--                    {% for g in genus_list %}-->
-<!--                        {% if pollen_genus == g %}-->
-<!--                            <option selected="selected" style="color:black">{{g}}</option>-->
-<!--                        {% else %}-->
-<!--                            <option>{{g}}</option>-->
-<!--                        {% endif %}-->
-<!--                    {% endfor %}-->
-<!--                </select>-->
-<!--                &lt;!&ndash;Pollen Parents&ndash;&gt;-->
-<!--                <input class="p-2 m-1" form="filter" name="pollen" value='{{pollen}}' data-toggle="tooltip" data-placement="bottom"  title="another parent species"  placeholder="Parent sp. #2" onfocus="this.select()"/>-->
+                <datalist id="genus_list">
+                    {% for g in genus_list %}
+                        <option value="{{g}}">{{g}}</option>
+                    {% endfor %}
+                </datalist>
 
                 <!--Submit-->
                 <button class="submit" form="filter" >Submit</button>

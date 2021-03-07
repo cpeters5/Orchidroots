@@ -608,7 +608,7 @@ seedparent, pollparent {
                     </div>
                 <span style="text-align:center;font-size:18px;"><a href="{% url 'detail:photos'  species.pid %}"><b>more ... </b></a></span>
                 {% else %}
-                    <div style="width: 100%; font-size:12px;border:0 solid lightgrey; margin:0 auto; text-align: center; padding:10px">
+                    <div style="width: 100%; font-size:12px;min-height: 150px; margin:0 auto; text-align: center; padding:10px">
                         No image available. if you have one please consider uploading it
                         <a href="{% url 'detail:uploadfile' species.pid %}?tab=sum">here</a>.  You must login to upload a photo.  You could also post it in our facebook group
                             <a href="https://www.facebook.com/groups/BlueNanta/?ref=br_rs">Blue Nanta, OrchidRoots User's Group</a>.

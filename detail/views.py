@@ -86,18 +86,23 @@ logger = logging.getLogger(__name__)
 redirect_message = "<br><br>Species does not exist! <br>You may try <a href='/orchidlist/species/'>" \
                    "search species list</a> or <a href='/orchidlist/browsegen/?type=species'>browse species images.</a>"
 
-
 def getRole(request):
+    role = ''
     if request.user.is_authenticated:
-        if request.user.tier.tier < 2:
-            role = 'pub'
-        elif request.user.tier.tier == 2:
-            role = 'pri'
-        else:
-            role = 'cur'
         if 'role' in request.GET:
             role = request.GET['role']
+        elif 'role' in request.POST:
+            role = request.POST['role']
+
+        if not role:
+            if request.user.tier.tier < 2:
+                role = 'pub'
+            elif request.user.tier.tier == 2:
+                role = 'pri'
+            else:
+                role = 'cur'
         return role
+    return role
 
 
 @login_required
@@ -171,7 +176,7 @@ def createhybrid(request):
         genus1 = species1.genus
         genus2 = species2.genus
         send_url = '/detail/compare/?pid=' + str(pid1) + '&msgnogenus=' + msgnogenus + '&genus1=' + genus1 + \
-                   '&genus2=' + genus2 + '&species1=' + species1 + '&species2=' + species2
+                   '&genus2=' + genus2 + '&species1=' + str(species1) + '&species2=' + str(species2)
         return HttpResponseRedirect(send_url)
     # Create Species instance
     spcobj = Species()
@@ -922,10 +927,7 @@ def requestlog(request, pid=None):
 def information(request, pid=None):
     distribution_list = ()
     ps_list = pp_list = ss_list = sp_list = seedimg_list = pollimg_list = ()
-    role = 'pub'
-    if request.user.is_authenticated:
-        if 'role' in request.GET:
-            role = request.GET['role']
+    role = getRole(request)
     if not pid and 'pid' in request.GET:
         pid = request.GET['pid']
 
@@ -1309,10 +1311,6 @@ def photos(request, pid=None):
     except Species.DoesNotExist:
         return HttpResponse(redirect_message)
     role = getRole(request)
-    if 'role' in request.GET:
-        role = request.GET['role']
-    elif 'role' in request.POST:
-        role = request.POST['role']
 
     if species.status == 'synonym':
         synonym = Synonym.objects.get(pk=pid)

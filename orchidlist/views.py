@@ -721,8 +721,150 @@ def species_list(request):
     return render(request, 'orchidlist/species.html', context)
 
 
+def getPrev(request,arg, prev):
+    if arg in request.GET:
+        arg = request.GET[arg]
+    if prev in request.GET:
+        prev = request.GET[prev]
+    return arg, prev
+
+
 @login_required
 def hybrid_list(request):
+    type = 'hybrid'
+    # min_lenspecies_req = 2
+    year = ''
+    year_valid = 0
+    status = ''
+    author = originator = ''
+    seed_genus = seed = pollen_genus = pollen = ''
+    seed = pollen = ''
+    alpha = ''
+    sort = prev_sort = ''
+    spc = ''
+    num_show = 5
+    page_length = 200
+    reqgenus, prev_genus = getPrev(request,'genus', 'prev_genus')
+    genus, this_species_list, intragen_list = getPartialPid(reqgenus, 'hybrid', status)
+
+    if (reqgenus == prev_genus):
+        seed_genus, prev_seed_genus = getPrev(request,'seed_genus', 'prev_seed_genus')
+        pollen_genus, prev_pollen_genus = getPrev(request,'pollen_genus', 'prev_pollen_genus')
+
+        # Initialization
+        if 'seed' in request.GET:
+            seed = request.GET['seed']
+        if 'pollen' in request.GET:
+            pollen = request.GET['pollen']
+        if 'status' in request.GET:
+            status = request.GET['status']
+        if not status:
+            status = 'accepted'
+        if 'spc' in request.GET:
+            spc = request.GET['spc']
+            if len(spc) == 1:
+                alpha = ''
+        if seed_genus and pollen_genus:
+            this_species_list = this_species_list.filter(
+                Q(hybrid__seed_genus=seed_genus) & Q(hybrid__pollen_genus=pollen_genus) | Q(
+                    hybrid__seed_genus=pollen_genus) & Q(hybrid__pollen_genus=seed_genus))
+        elif seed_genus:
+            this_species_list = this_species_list.filter(
+                Q(hybrid__seed_genus=seed_genus) | Q(hybrid__pollen_genus=seed_genus))
+        elif pollen_genus:
+            this_species_list = this_species_list.filter(Q(hybrid__seed_genus=pollen_genus)
+                                                         | Q(hybrid__pollen_genus=pollen_genus))
+        if seed:
+            this_species_list = this_species_list.filter(Q(hybrid__seed_species__icontains=seed)
+                                                         | Q(hybrid__pollen_species__icontains=seed))
+        if pollen:
+            this_species_list = this_species_list.filter(Q(hybrid__seed_species__icontains=pollen)
+                                                         | Q(hybrid__pollen_species__icontains=pollen))
+
+    if 'author' in request.GET:
+        author = request.GET['author']
+    if 'originator' in request.GET:
+        originator = request.GET['originator']
+    if 'alpha' in request.GET:
+        alpha = request.GET['alpha']
+    if 'year' in request.GET:
+        year = request.GET['year']
+        if valid_year(year):
+            year_valid = 1
+    if alpha != 'ALL':
+        alpha = alpha[0:1]
+    if request.GET.get('sort'):
+        sort = request.GET['sort']
+        sort.lower()
+    if sort:
+        if request.GET.get('prev_sort'):
+            prev_sort = request.GET['prev_sort']
+        if prev_sort == sort:
+            if sort.find('-', 0) >= 0:
+                sort = sort.replace('-', '')
+            else:
+                sort = '-' + sort
+        else:
+            # sort = '-' + sort
+            prev_sort = sort
+    # Building pid ;list
+    total = len(this_species_list)
+
+
+
+    if spc:
+        if len(spc) >= 2:
+            this_species_list = this_species_list.filter(species__icontains=spc)
+        else:
+            this_species_list = this_species_list.filter(species__istartswith=spc)
+
+    elif alpha:
+        if len(alpha) == 1:
+            this_species_list = this_species_list.filter(species__istartswith=alpha)
+    if author and not originator:
+        this_species_list = this_species_list.filter(author__icontains=author)
+    if author and originator:
+        this_species_list = this_species_list.filter(Q(author__icontains=author) | Q(originator__icontains=originator))
+    if originator and not author:
+        this_species_list = this_species_list.filter(originator__icontains=originator)
+
+    if year_valid:
+        year = int(year)
+        this_species_list = this_species_list.filter(year=year)
+
+    # # Add the following to clear the list if no filter given
+    # if not genus and not spc and not seed and not pollen and not year and not author and not originator and not dist \
+    #         and not ancestor and not subgenus and not section and not subsection and not series:
+    #     this_species_list = Species.objects.none()
+
+    if sort:
+        this_species_list = this_species_list.order_by(sort)
+    else:
+        this_species_list = this_species_list.order_by('genus', 'species')
+    subtotal = this_species_list.count()
+
+    page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item \
+        = mypaginator(request, this_species_list, page_length, num_show)
+
+    genus_list = list(Genus.objects.exclude(status='synonym').values_list('genus', flat=True))
+    genus_list.sort()
+    role = getRole(request)
+    write_output(request, str(reqgenus))
+    logger.warning(">>> " + request.path + str(request.user) + ": " + str(reqgenus))
+    context = {'my_list': page_list, 'genus_list': genus_list,
+               'total': total, 'subtotal': subtotal, 'alpha_list': alpha_list, 'alpha': alpha, 'spc': spc,
+               'genus': reqgenus, 'year': year, 'status': status,
+               'author': author, 'originator': originator, 'seed': seed, 'pollen': pollen,
+               'seed_genus': seed_genus, 'pollen_genus': pollen_genus,
+               'sort': sort, 'prev_sort': prev_sort,
+               'page': page, 'page_range': page_range, 'last_page': last_page, 'next_page': next_page,
+               'prev_page': prev_page, 'num_show': num_show, 'first': first_item, 'last': last_item,
+               'role': role, 'level': 'list', 'title': 'hybrid_list',
+               }
+    return render(request, 'orchidaceae/hybrid.html', context)
+
+
+def xhybrid_list(request):
     spc = ''
     genus = ''
     type = 'hybrid'

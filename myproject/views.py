@@ -31,6 +31,9 @@ def robots_txt(request):
         "Disallow: /orchidlight/",
         "Disallow: /orchiddb/",
         "Disallow: /search/",
+        "User-Agent: PetalBot",
+        "Disallow: /",
+
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 

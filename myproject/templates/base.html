@@ -20,9 +20,11 @@
 <!--        gtag('config', 'UA-128957305-1');-->
 <!--    </script>-->
     {% if species %}
-        {% if not frompage or frompage != 'progeny' %}
-            <title>{{species.genus}} {{species.species}}</title>
-        {% endif %}
+        <title>{{species.genus}} {{species.species}}</title>
+    {% elif genus %}
+        <title>{{genus}}</title>
+    {% else %}
+        <title>OrchidRoots</title>
     {% endif %}
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">

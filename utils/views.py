@@ -11,3 +11,21 @@ def write_output(request, detail=None):
         pass
 
 # Create your views here.
+
+def getRole(request):
+    role = ''
+    if request.user.is_authenticated:
+        if 'role' in request.GET:
+            role = request.GET['role']
+        elif 'role' in request.POST:
+            role = request.POST['role']
+
+        if not role:
+            if request.user.tier.tier < 2:
+                role = 'pub'
+            elif request.user.tier.tier == 2:
+                role = 'pri'
+            else:
+                role = 'cur'
+        return role
+    return role

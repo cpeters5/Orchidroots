@@ -327,9 +327,13 @@ class AcceptedInfoForm(forms.ModelForm):
         error_messages = {
         }
 
-    def clean_description(self):
-        description = self.cleaned_data.get("description")
-        return description.replace("\"", "\'\'")
+    # def clean_etymology(self):
+    #     etymology = self.cleaned_data.get("etymology")
+    #     return etymology.replace("\"", "\'\'")
+
+    # def clean_description(self):
+    #     description = self.cleaned_data.get("description")
+    #     return description.replace("\"", "\'\'")
 
 
 class UploadFileForm(forms.ModelForm):

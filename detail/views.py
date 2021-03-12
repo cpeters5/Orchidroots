@@ -1440,11 +1440,12 @@ def curateinfospc(request, pid):
                 spc.comment = spc.comment.replace("\"", "\'\'")
                 spc.comment = spc.comment.replace("\r", "<br>")
             if spc.history:
-                spc.history = spc.culture.replace("<br>", "")
+                spc.history = spc.history.replace("<br>", "")
                 spc.history = spc.history.replace("\"", "\'\'")
                 spc.history = spc.history.replace("\r", "<br>")
             if spc.etymology:
-                spc.etymology = spc.culture.replace("<br>", "")
+                logger.error("--- Etymology = " + spc.etymology)
+                spc.etymology = spc.etymology.replace("<br>", "")
                 spc.etymology = spc.etymology.replace("\"", "\'\'")
                 spc.etymology = spc.etymology.replace("\r", "<br>")
             spc.operator = request.user

@@ -225,7 +225,7 @@ form {
                     <div class="card m-3">
                         <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">Species</h6></div>
                         <div class="card-body border-top">
-                            <a class="btn btn-xs p-2 m-2 custom-link border" href="{% url 'orchidlist:species' %}?role={{role}}">All Species List</a>
+                            <a class="btn btn-xs p-2 m-2 custom-link border" href="{% url 'orchidlist:species' %}?role={{role}}&status=accepted&alpha=A">All Species List</a>
                             <a class="btn btn-xs p-2 m-2 custom-link border" href="{% url 'orchidlist:browse' %}?role={{role}}&type=species&display=checked">Sample Images</a>
                         </div>
                     </div>
@@ -233,7 +233,7 @@ form {
                     <div class="card m-3">
                         <div class="card-header"><h6 class="card-title" style="margin-bottom: 0">Hybrids</h6></div>
                         <div class="card-body border-top">
-                            <a class="btn btn-xs p-2 m-2 custom-link border" href="{% url 'orchidlist:hybrid' %}?role={{role}}">All Hybrid List</a>
+                            <a class="btn btn-xs p-2 m-2 custom-link border" href="{% url 'orchidlist:hybrid' %}?role={{role}}&status=accepted&alpha=A">All Hybrid List</a>
                             <a class="btn btn-xs p-2 m-2 custom-link border" href="{% url 'orchidlist:browse' %}?role={{role}}&type=hybrid&display=checked">Sample Images</a>
                         </div>
                     </div>

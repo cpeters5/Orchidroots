@@ -1136,7 +1136,6 @@ def browsedist(request):
     return render(request, 'orchidlist/browsedist.html', context)
 
 
-# All access - at least role = pub
 @login_required
 def progeny(request, pid=None):
     alpha = ''
@@ -1225,7 +1224,6 @@ def progeny(request, pid=None):
     return render(request, 'orchidlist/progeny.html', context)
 
 
-# All access - at least role = pub
 @login_required
 def progenyimg(request, pid=None):
     num_show = 5
@@ -1237,16 +1235,13 @@ def progenyimg(request, pid=None):
             pid = int(pid)
         else:
             pid = 0
-
     try:
         species = Species.objects.get(pk=pid)
     except Species.DoesNotExist:
         message = 'This hybrid does not exist! Use arrow key to go back to previous page.'
         return HttpResponse(message)
     genus = species.genus
-    role = 'pub'
-    if 'role' in request.GET:
-        role = request.GET['role']
+    role = getRole(request)
 
     des_list = AncestorDescendant.objects.filter(aid=pid).filter(pct__gt=20)
     des_list = des_list.order_by('-pct')
@@ -1254,22 +1249,30 @@ def progenyimg(request, pid=None):
     img_list = []
     for x in des_list:
         offspring = Hybrid.objects.get(pk=x.did.pid_id)
-        offimg = HybImages.objects.filter(pid=x.did.pid_id).filter(rank__gt=3).order_by('?')
-        if offimg:
-            x.img = offimg[:1][0]
-            x.offspring = offspring
-            x.pollen = offspring.pollen_id
-            x.seed = offspring.seed_id
-            img_list.append(x)
+        y = x.did.pid.get_best_img()
+        if y:
+            y.name = offspring.pid.namecasual()
+            y.pct = x.pct
+            y.image_dir = y.image_dir()
+            y.image_file = y.image_file
+            y.author = y.author
+            y.source_url = y.source_url
+            y.pollen = offspring.pollen_id.pid
+            y.seed = offspring.seed_id.pid
+            y.seed_name = offspring.seed_id.namecasual()
+            y.pollen_name = offspring.pollen_id.namecasual()
+            img_list.append(y)
 
     total = len(img_list)
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, img_list, page_length, num_show)
+
     write_output(request, species.textname())
-    context = {'des_list': page_list, 'species': species, 'tab': 'proimg', 'proimg': 'active',
-               'genus': genus, 'total': total, 'page': page,
-               'page_range': page_range, 'last_page': last_page, 'next_page': next_page, 'prev_page': prev_page,
+    context = {'img_list': page_list, 'species': species, 'tab': 'proimg', 'proimg': 'active',
+               'total': total,
                'num_show': num_show, 'first': first_item, 'last': last_item, 'role': role,
+               'genus': genus, 'page': page,
+               'page_range': page_range, 'last_page': last_page, 'next_page': next_page, 'prev_page': prev_page,
                'level': 'orchidlist', 'title': 'progenyimg', 'section': 'Public Area',
                }
     return render(request, 'orchidlist/progenyimg.html', context)

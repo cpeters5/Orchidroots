@@ -1265,7 +1265,6 @@ def progenyimg(request, pid=None):
     total = len(img_list)
     page_range, page_list, last_page, next_page, prev_page, page_length, page, first_item, last_item = mypaginator(
             request, img_list, page_length, num_show)
-    logger.error("page = " + str(page))
     write_output(request, species.textname())
     context = {'des_list': page_list, 'species': species, 'tab': 'proimg', 'proimg': 'active',
                'genus': genus, 'total': total, 'page': page,

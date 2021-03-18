@@ -126,6 +126,7 @@ img{
                 </div>
             {% endfor %}
             </div>
+            {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
     {% else %}
         <div class="container" style="width:100%;text-align:center;padding:30px;">
             <h5><small>{{species.name|safe}} has no offspring with images</small></h5>

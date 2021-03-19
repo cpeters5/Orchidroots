@@ -59,7 +59,7 @@ django-sortedm2m==3.0.0
 django-static-jquery==2.1.4
 django-stronghold==0.4.0
 django-templatetag-sugar==1.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 djangorestframework-simplejwt==4.4.0
 dnspython==1.16.0
 docutils==0.16

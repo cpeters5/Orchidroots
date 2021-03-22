@@ -1,0 +1,31 @@
+
+<ul>
+    <li>Run python manage.py clearsessions once a month!!!</li>
+    <li>Clean up django migrations</li>
+    <li>Monitor Upload traffic and file growth</li>
+    <li>Monitor comments</li>
+    <li>Monitor new accounts and create profile, photographer</li>
+    <li>Monitor user upload</li>
+    <li>monitor total file and directory size</li>
+    <li>monitor historical update (approve, reject, reidentify, delete)</li>
+    <li>Cron
+        <ul>
+            <li>every 20 mins: download_hyb and download_spc.py</li>
+            <li>every 5 mins process net upload images</li>
+            <li>every 5 mins synchronize new users</li>
+            <li>every 10 mins update anc/desc  for new hybrids</li>
+            <li>daily: cleanup_images.pl</li>
+            <li>daily: refresh genus / species images stat</li>
+            <li>daily: refresh anc/desc count for genus</li>
+        </ul>
+    <li>TODO: generate statistics</li>
+    <li>a python scripts to compute stats and store in a new database (in core app)</li>
+    <li>Update Kew (monthly)</li>
+    <li>Update RHS (monthly)</li>
+    <li>Update RHS changes (yearly)</li>
+    <li>Update IPNI (monthly)</li>
+    <li>Update GenusRelation (yearly or each time a new genus is created)</li>
+    <li>Update Taxonomy (yearly or each time there is a change in Genus related to subfamily/tribe/subtribe)</li>
+    <li>Update IOSPE</li>
+    <li>Update Distribution code (yearly)</li>
+</ul>

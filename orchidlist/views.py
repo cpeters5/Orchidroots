@@ -469,7 +469,7 @@ def species_list(request):
     if 'alpha' in request.GET:
         alpha = request.GET['alpha']
     else:
-        alpha = ''
+        alpha = 'A'
 
     if 'year' in request.GET:
         year = request.GET['year']
@@ -787,6 +787,8 @@ def hybrid_list(request):
         originator = request.GET['originator']
     if 'alpha' in request.GET:
         alpha = request.GET['alpha']
+    else:
+        alpha='A'
     if 'year' in request.GET:
         year = request.GET['year']
         if valid_year(year):

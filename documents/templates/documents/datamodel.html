@@ -107,3 +107,17 @@ The name is always to be cited from its original place of valid publication, and
         <br>Images in family tree nodes are selected randomly from trank 8 or 5
     </li>
 </ul>
+
+<h3>Data Acquisition</h3>
+There are a number of data sources we use.
+<ul>
+    <li>WCSP:  We use WCSP when ever we could.  To acquire a new family from WCSP (assuming the family is not too big).
+        <ul>
+            <li>Update family/subfamily/tribe/subtribe tables in the core app.  we use Wikipedia, but there are several other sources (often inconsistent)</li>
+            <li>Run the perl script "getKewbyFamilyforALLgenus.pl <family name>"</li>
+            <li>Load output files (data/results/genus, gensyn, gendist, species, accepted, synonym, distribution) to database and compare data with current tables (use "ALLFamilies check status.sql" script)</li>
+            <li>Follow the steps in the sql script and insert ignore into tables</li>
+        </ul>
+    </li>
+
+</ul>

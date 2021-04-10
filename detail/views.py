@@ -592,7 +592,7 @@ def ancestor(request, pid=None):
 
     context = {'species': species, 'anc_list': anc_list,
                'genus': genus,
-               'anc': 'active',
+               'anc': 'active', 'tab':'anc',
                'sort': sort, 'prev_sort': prev_sort,
                'level': 'detail', 'title': 'ancestor', 'role': role, 'namespace': 'detail', 'state': state,
                }
@@ -842,7 +842,7 @@ def ancestrytree(request, pid=None):
                     # tree_list = tree_list + (spp,)
 
     context = {'species': species,
-               'spc': spc, 'tree': 'active',
+               'spc': spc, 'tree': 'active', 'tab': 'tree',
                's': s, 'ss': ss, 'sp': sp, 'sss': sss, 'ssp': ssp, 'sps': sps, 'spp': spp,
                'ssss': ssss, 'sssp': sssp, 'ssps': ssps, 'sspp': sspp, 'spss': spss, 'spsp': spsp, 'spps': spps,
                'sppp': sppp,

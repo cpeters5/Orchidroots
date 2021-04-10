@@ -4,11 +4,17 @@
 {% block body %}
 
 <style>
-
-@media only screen and (max-width: 1200px) {
-}
-
-@media only screen and (max-width: 400px) {
+.custom-select{
+    margin:1px 1px 1px 3px !important;
+    /*margin-right:200px;*/
+    /*background-color: #f9f9f9;*/
+    color: #100d0d;
+    /*margin-left:3px;*/
+    /*width:200px;*/
+    /*height:50px;*/
+    font-size:13px;
+    background: none;
+    display: inline-block;
 }
 
 .tooltip {
@@ -204,7 +210,7 @@ td {
                         <!--Subgenus Filter-->
                         {% if subgenus_list.count > 1 or subgenus_obj %}
                             <div class="p-1 dropdown">
-                                <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                                <button class=" btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
                                     {% if subgenus_obj %}<span style="color:black">Subgen. {{subgenus_obj.subgenus}}</span>{% else %}Subgenus{% endif %}
                                 </button>
                                 <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
@@ -220,7 +226,7 @@ td {
                         <!--Sections Filter-->
                         {% if section_list.count > 1 or section_obj %}
                             <div class="p-1 dropdown">
-                                <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                                <button class="btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
                                     {% if section_obj %}<span style="color:black">Sec. {{section_obj.section}}</span>{% else %}Section{% endif %}
                                 </button>
                                 <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
@@ -236,7 +242,7 @@ td {
                         <!--Subections Filter-->
                        {% if subsection_list.count > 1 %}
                             <div class="p-1 dropdown">
-                                <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                                <button class="btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
                                     {% if subsection_obj %}<span style="color:black">Subsec. {{subsection_obj.subsection}}</span>{% else %}Subsection{% endif %}
                                 </button>
                                 <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
@@ -252,7 +258,7 @@ td {
                         <!--series Filter-->
                        {% if series_list.count > 1 or series_obj %}
                             <div class="p-1 dropdown">
-                                <button class="custom-select btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
+                                <button class="btn-outline-primary btn-xs select-p2" data-toggle="dropdown">
                                     {% if series_obj %}<span style="color:black">Ser. {{series_obj.series}}</span>{% else %}Series{% endif %}
                                 </button>
                                 <div class="dropdown-menu scrollable-menu" style="font-size: 11px;max-height:300px;overflow:auto;">
@@ -295,132 +301,134 @@ td {
                     {% endif %}
                 </form>
 
-            {% else %}
-                <div style="margin: 10px 0 0 10px;">No <i>{{genus|title}}</i> {{status}} species! Please try {% if status == 'accepted' %}synonym{% else %}accepted{% endif %} status, or go to hybrid, or select a different genus.</div>
             {% endif %}
         </div>
     </div>
 
             <!--Main table-->
-    <div class="card m-2">
-
+    <div class="card m-2" style="clear: left;">
     <!--Pagination        -->
-    {% if total > 0 %}
+        {% if msg %}
+        &nbsp;&nbsp;{{msg}}
+        {% elif msg2 %}
+            &nbsp;&nbsp;{{msg2}}
+        {% elif subtotal == 0 %}
+            No results. Please modify your search criteria
+        {% endif %}
         {% include "orchidlist/alpha_list.html" %}
-    {% endif %}
-    {% if page_list %}
-        {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
-        <div style="float:left; width:100%;">
+        {% if page_list %}
+            {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
+            <div style="float:left; width:100%;">
         <!--main table-->
 
-            <table class="table table-bordered table-sm table-condensed table-hover" id="myTable">
-                <thead  class="thead-light">
-    {#                First column - All options#}
-                    <tr class="center" bgcolor="#e3e3e3">
-                        <th class="text-center">
-                        {% if sort == 'genus' %}
-                            <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=genus&prev_sort={{sort}}"><b>Genus&uarr;</b></a>
-                        {% elif sort == '-genus' %}
-                            <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=genus&prev_sort={{sort}}"><b>Genus&darr;</b></a>
-                        {% else %}
-                            <a data-toggle="tooltip" title="Click to sort by Genus" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=genus&prev_sort={{sort}}">Genus </a>
-                        {% endif %}
-                        -
-                        {% if sort == 'species' %}
-                            <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=species&prev_sort={{sort}}"><b>Species&uarr;</b></a>
-                        {% elif sort == '-species' %}
-                            <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=species&prev_sort={{sort}}"><b>Species&darr;</b></a>
-                        {% else %}
-                            <a data-toggle="tooltip" title="Click to sort by species" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=species&prev_sort={{sort}}">Species</a>
-                        {% endif %}
-                        -
-    <!--                        <i >Author</i>-->
-                        -
-                        {% if sort == 'year' %}
-                            <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=year&prev_sort={{sort}}"><b>Year&uarr;</b></a>
-                        {% elif sort == '-year' %}
-                            <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=year&prev_sort={{sort}}"><b>Year&darr;</b></a>
-                        {% else %}
-                            <a data-toggle="tooltip" title="Click to sort by year" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=year&prev_sort={{sort}}">Year</a>
-                        {% endif %}
-                        </th>
+                <table class="table table-bordered table-sm table-condensed table-hover" id="myTable">
+                    <thead  class="thead-light">
+        {#                First column - All options#}
+                        <tr class="center" bgcolor="#e3e3e3">
+                            <th class="text-center">
+                            {% if sort == 'genus' %}
+                                <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=genus&prev_sort={{sort}}"><b>Genus&uarr;</b></a>
+                            {% elif sort == '-genus' %}
+                                <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=genus&prev_sort={{sort}}"><b>Genus&darr;</b></a>
+                            {% else %}
+                                <a data-toggle="tooltip" title="Click to sort by Genus" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=genus&prev_sort={{sort}}">Genus </a>
+                            {% endif %}
+                            -
+                            {% if sort == 'species' %}
+                                <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=species&prev_sort={{sort}}"><b>Species&uarr;</b></a>
+                            {% elif sort == '-species' %}
+                                <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=species&prev_sort={{sort}}"><b>Species&darr;</b></a>
+                            {% else %}
+                                <a data-toggle="tooltip" title="Click to sort by species" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=species&prev_sort={{sort}}">Species</a>
+                            {% endif %}
+                            -
+        <!--                        <i >Author</i>-->
+                            -
+                            {% if sort == 'year' %}
+                                <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=year&prev_sort={{sort}}"><b>Year&uarr;</b></a>
+                            {% elif sort == '-year' %}
+                                <a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=year&prev_sort={{sort}}"><b>Year&darr;</b></a>
+                            {% else %}
+                                <a data-toggle="tooltip" title="Click to sort by year" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=year&prev_sort={{sort}}">Year</a>
+                            {% endif %}
+                            </th>
 
-                        <th class="text-center">Distribution</th>
+                            <th class="text-center">Distribution</th>
 
-                        {% if sort == 'num_descendant' %}
-                            <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_descendant&prev_sort={{sort}}">   <b>#descendants&uarr;</b></a></th>
-                        {% elif sort == '-num_descendant' %}
-                            <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_descendant&prev_sort={{sort}}"><b>#descendants&darr;</b></a></th>
-                        {% else %}
-                            <th class="d-none d-sm-table-cell"><a data-toggle="tooltip" title="Click to sort by number of descendants" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=-num_descendant&prev_sort={{sort}}">#descendants</a></th>
-                        {% endif %}
-                        {% if sort == 'num_image' %}
-                            <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_image&prev_sort={{sort}}"><b>#photos&uarr;</b></a></th>
-                        {% elif sort == '-num_image' %}
-                            <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_image&prev_sort={{sort}}"><b>#photos&darr;</b></a></th>
-                        {% else %}
-                            <th class="d-none d-sm-table-cell"><a data-toggle="tooltip" title="Click to sort by number of images" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=-num_image&prev_sort={{sort}}">#photos</a></th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                {% for species in page_list %}
-                    <tr>
-                        <td align="left">
-                            {% if species.status == 'synonym' %}
-                                <i>{{species.genus}} {{species.get_species}}</i>
-                                {% if species.author %} {{species.author}}{% endif %}
-                                {% if species.year > 0 %}<span  style="font-size: 12px;"> {{species.year}}</span>{% endif %}
-                                {% if role == 'cur' %}
-                                    (syn. <a href="{% url 'detail:photos' species.getAccepted.pid %}?role={{role}}">{{species.getAccepted.name|safe}}</a>)
+                            {% if sort == 'num_descendant' %}
+                                <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_descendant&prev_sort={{sort}}">   <b>#descendants&uarr;</b></a></th>
+                            {% elif sort == '-num_descendant' %}
+                                <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_descendant&prev_sort={{sort}}"><b>#descendants&darr;</b></a></th>
+                            {% else %}
+                                <th class="d-none d-sm-table-cell"><a data-toggle="tooltip" title="Click to sort by number of descendants" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=-num_descendant&prev_sort={{sort}}">#descendants</a></th>
+                            {% endif %}
+                            {% if sort == 'num_image' %}
+                                <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_image&prev_sort={{sort}}"><b>#photos&uarr;</b></a></th>
+                            {% elif sort == '-num_image' %}
+                                <th class="d-none d-sm-table-cell"><a href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=num_image&prev_sort={{sort}}"><b>#photos&darr;</b></a></th>
+                            {% else %}
+                                <th class="d-none d-sm-table-cell"><a data-toggle="tooltip" title="Click to sort by number of images" href="?alpha={{ alpha }}&spc={{spc}}&genus={{genus}}&author={{author}}&year={{ year }}&status={{status}}&subgenus={{subgenus_obj.subgenus}}&section={{section_obj.section}}&subsection={{subsection_obj.subsection}}&series={{series_obj.series}}&dist={{dist}}&sort=-num_image&prev_sort={{sort}}">#photos</a></th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    {% for species in page_list %}
+                        <tr>
+                            <td align="left">
+                                {% if species.status == 'synonym' %}
+                                    <i>{{species.genus}} {{species.get_species}}</i>
+                                    {% if species.author %} {{species.author}}{% endif %}
+                                    {% if species.year > 0 %}<span  style="font-size: 12px;"> {{species.year}}</span>{% endif %}
+                                    {% if role == 'cur' %}
+                                        (syn. <a href="{% url 'detail:photos' species.getAccepted.pid %}?role={{role}}">{{species.getAccepted.name|safe}}</a>)
+                                    {% else %}
+                                        (syn. <a href="{% url 'detail:information' %}?pid={{species.getAccepted.pid}}&role={{role}}">{{species.getAccepted.name|safe}}</a>)
+                                    {% endif %}
                                 {% else %}
-                                    (syn. <a href="{% url 'detail:information' %}?pid={{species.getAccepted.pid}}&role={{role}}">{{species.getAccepted.name|safe}}</a>)
+                                    {% if role == 'cur' %}
+                                        <a href="{% url 'detail:photos' species.pid %}?role={{role}}"><i>{{species.genus}}</i> {{species.fullspeciesname|safe}} </a>
+                                    {% else %}
+                                        <a href="{% url 'detail:information' %}?pid={{species.pid}}&role={{role}}"><i>{{species.genus}}</i> {{species.fullspeciesname|safe}}</a>
+                                    {% endif %}
+                                    {% if species.author %} {{species.author}}{% endif %}
+                                    {% if species.year > 0 %}<span  style="font-size: 12px;"> {{species.year}}</span>{% endif %}
                                 {% endif %}
-                            {% else %}
-                                {% if role == 'cur' %}
-                                    <a href="{% url 'detail:photos' species.pid %}?role={{role}}"><i>{{species.genus}}</i> {{species.fullspeciesname|safe}} </a>
+
+
+                            {% if not subgenus_obj and not section_obj and not subsection_obj and not series_obj %}
+                                {% if species.status == 'synonym' %}
+                                    {% if species.subgenus %}{{species.subgenus.subgenus}}{% endif %}
                                 {% else %}
-                                    <a href="{% url 'detail:information' %}?pid={{species.pid}}&role={{role}}"><i>{{species.genus}}</i> {{species.fullspeciesname|safe}}</a>
+                                    {% if species.accepted.subgenus %}Subgen. <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&type=species&gen={{gen}}">{{species.accepted.subgenus}}</a>{% endif %}
+                                    {% if species.accepted.section %} Sec. <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&type=species&gen={{gen}}">{{species.accepted.section}}</a>{% endif %}
+                                    {% if species.accepted.subsection %} Subsec. <a href="{% url 'orchidlist:browse' %}?subsection={{species.accepted.subsection}}&type=species&gen={{gen}}">{{species.accepted.subsection}}</a>{% endif %}
+                                    {% if species.accepted.series %} Ser. <a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&type=species&gen={{gen}}">{{species.accepted.series}}</a>{% endif %}
                                 {% endif %}
-                                {% if species.author %} {{species.author}}{% endif %}
-                                {% if species.year > 0 %}<span  style="font-size: 12px;"> {{species.year}}</span>{% endif %}
+                            </td>
                             {% endif %}
-
-
-                        {% if not subgenus_obj and not section_obj and not subsection_obj and not series_obj %}
-                            {% if species.status == 'synonym' %}
-                                {% if species.subgenus %}{{species.subgenus.subgenus}}{% endif %}
-                            {% else %}
-                                {% if species.accepted.subgenus %}Subgen. <a href="{% url 'orchidlist:browse' %}?subgenus={{species.accepted.subgenus}}&type=species&gen={{gen}}">{{species.accepted.subgenus}}</a>{% endif %}
-                                {% if species.accepted.section %} Sec. <a href="{% url 'orchidlist:browse' %}?section={{species.accepted.section}}&type=species&gen={{gen}}">{{species.accepted.section}}</a>{% endif %}
-                                {% if species.accepted.subsection %} Subsec. <a href="{% url 'orchidlist:browse' %}?subsection={{species.accepted.subsection}}&type=species&gen={{gen}}">{{species.accepted.subsection}}</a>{% endif %}
-                                {% if species.accepted.series %} Ser. <a href="{% url 'orchidlist:browse' %}?series={{species.accepted.series}}&type=species&gen={{gen}}">{{species.accepted.series}}</a>{% endif %}
-                            {% endif %}
-                        </td>
-                        {% endif %}
-                        <td class="align-center">
-                            {% if species.status == 'synonym' %}
-                                {% if species.getAccepted.distribution %}
-                                    {{species.getAccepted.distribution}}
+                            <td class="align-center">
+                                {% if species.status == 'synonym' %}
+                                    {% if species.getAccepted.distribution %}
+                                        {{species.getAccepted.distribution}}
+                                    {% endif %}
+                                {% else %}
+                                    {% if species.distribution %}
+                                        {{species.distribution}}
+                                    {% endif %}
                                 {% endif %}
-                            {% else %}
-                                {% if species.distribution %}
-                                    {{species.distribution}}
+                            </td>
+                            <td class="d-none d-sm-table-cell text-center">
+                                {% if species.num_descendant %}
+                                    <a href="{% url 'orchidlist:progeny' species.pid %}?pid={{species.pid}}&role={{role}}">{{species.num_descendant}}</a>
                                 {% endif %}
-                            {% endif %}
-                        </td>
-                        <td class="d-none d-sm-table-cell text-center">
-                            {% if species.num_descendant %}
-                                <a href="{% url 'orchidlist:progeny' species.pid %}?pid={{species.pid}}&role={{role}}">{{species.num_descendant}}</a>
-                            {% endif %}
-                        </td>
-                        <td class="d-none d-sm-table-cell text-center">{% if species.num_image %}{{species.num_image}}{% endif %}</td>
-                    </tr>
-                {% endfor %}
-            </table>
+                            </td>
+                            <td class="d-none d-sm-table-cell text-center">{% if species.num_image %}{{species.num_image}}{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
         <!--Pagination-->
-        </div>
-        {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
-    {% endif %}
+            </div>
+            {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
+        {% endif %}
     </div>
 </div>
 

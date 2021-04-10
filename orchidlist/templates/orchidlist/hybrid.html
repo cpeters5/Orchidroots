@@ -207,17 +207,22 @@ td {
                     <option value="{{g}}">{{g}}</option>
                 {% endfor %}
             </datalist>
-            {% if subtotal == 0 %}
-                <div style="margin: 50px 0 0 10px;"><br>No results available! Please try {% if status == 'accepted' %}synonym{% else %}accepted{% endif %} status, or select different filters.</div>
-            {% endif %}
         </div>
+
+        {% if msg %}
+        &nbsp;&nbsp;{{msg}}
+        {% elif msg2 %}
+            &nbsp;&nbsp;{{msg2}}
+        {% elif subtotal == 0 %}
+            No results. Please modify your search criteria
+        {% endif %}
+        {% include "orchidlist/alpha_list.html" %}
 
         <!--Main table-->
 
         <!--Pagination        -->
+        {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
         {% if my_list %}
-            {% include "orchidlist/alpha_list.html" %}
-            {% if last_page > 1 %} {% include "./paginator_brw.html" %} {% endif %}
             <!--main table-->
             <div class="table mytable" style="">
                 <table class="table table-sm table-condensed table-bordered table-hover" id="myTable">

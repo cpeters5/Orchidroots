@@ -192,6 +192,9 @@ class Photographer(BaseModel):
             return '%s (%s)' % (self.displayname, self.fullname)
         return self.fullname
 
+    def get_authid(self):
+        return self.author_id
+
     # def mypriphoto (self):
     #     myimg = SpcImages.objects.filter(rank__gt=0).filter(user_id=self.user_id).count() + \
     #             SpcImages.objects.filter(rank__gt=0).filter(user_id=self.user_id).count() + \

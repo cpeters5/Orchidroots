@@ -2010,19 +2010,24 @@ def approvemediaphoto(request, pid):
 
 @login_required
 def uploadfile(request, pid):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('/login/')
+    role = getRole(request)
     if request.user.is_authenticated and (request.user.tier.tier < 2 or not request.user.photographer.author_id):
         message = 'You dont have access to upload files. Please update your profile to gain access. ' \
                   'Or contact admin@orchidroots.org'
         return HttpResponse(message)
-
-    author, author_list = get_author(request)
     try:
         species = Species.objects.get(pk=pid)
     except Species.DoesNotExist:
         message = 'This hybrid does not exist! Use arrow key to go back to previous page.'
         return HttpResponse(message)
+    if species.get_num_img_by_author(request.user.photographer.get_authid()) > 2:
+        message = 'Each user may upload at most 3 private photos for each species/hybrid. ' \
+                'Please delete one or more of your photos before uploading a new one.'
+        logger.error(">>> message = " + message)
+        return HttpResponse(message)
+    logger.error(">>> num_image uploaded = " + str(species.get_num_img_by_author(request.user.photographer.author_id)))
+
+    author, author_list = get_author(request)
     if species.status == 'synonym':
         synonym = Synonym.objects.get(pk=pid)
         pid = synonym.acc_id

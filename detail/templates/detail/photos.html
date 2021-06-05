@@ -385,10 +385,10 @@ a:hover {
                             {% else %}
                                 {% if image.source_url %}
                                     <a href="{{image.source_url}}" target="_blank">{{image.imgname|safe}}</a>
-                                    <br>Photo: <a href="{{image.source_url}}" target="_blank">{{image.author.displayname }}</a>
+                                    <br>Photo: <a href="{{image.source_url}}" target="_blank">{{image.get_displayname }}</a>
                                 {% else %}
                                     {{image.imgname|safe}}
-                                    <br>{{image.author.displayname }}
+                                    <br>{{image.get_displayname }}
                                 {% endif %}
                             {% endif %}
                             {% if role == 'pri' and image.rank == 0 %}

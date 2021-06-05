@@ -242,9 +242,9 @@ div.text-br {
                                     {{image.imgname|safe}}
                                 {% endif %}
                                 {% if image.source_url %}
-                                    <br>Photo: <a href="{{image.source_url}}" target="_blank">{{image.author.displayname }}</a>
+                                    <br>Photo: <a href="{{image.source_url}}" target="_blank">{{image.get_displayname }}</a>
                                 {% else %}
-                                    {{image.author.displayname }}
+                                    {{image.get_displayname }}
                                 {% endif %}
                             {% endif %}
                             - <a href="{% url 'detail:deletewebphoto' image.pid_id %}?id={{image.id}}&role={{role}}" >Delete</a>

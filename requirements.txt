@@ -65,7 +65,7 @@ djangorestframework==3.11.0
 djangorestframework-simplejwt==4.4.0
 dnspython==1.16.0
 docutils==0.16
-eventlet==0.26.1
+eventlet==0.31.0
 fbchat==1.9.7
 filelock==3.0.12
 future==0.18.2
